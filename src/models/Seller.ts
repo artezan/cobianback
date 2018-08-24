@@ -24,6 +24,10 @@ export interface ISeller extends Document {
   notification: INotification[];
   password: string;
   timestamp: Date;
+  /**
+   * Vende o Renta
+   */
+  isRenter: boolean;
 }
 const SellerSchema: Schema = new Schema({
   timestamp: {
@@ -38,6 +42,9 @@ const SellerSchema: Schema = new Schema({
   },
   lastName: {
     type: String,
+  },
+  isRenter: {
+    type: Boolean,
   },
   /**
    * Propiedades

@@ -29,7 +29,7 @@ export interface IBuyer extends Document {
    */
   isSingle: boolean;
   /**
-   * Tipos de Vivienda
+   * Tipos de Vivienda casa, departamento, terreno, nave industrial, etc., con la posibilidad de agregar alguna opción que no aparezca dentro del listado.
    */
   typeOfProperty: string[];
   /**
@@ -64,6 +64,62 @@ export interface IBuyer extends Document {
    * Notificaciones guardadas
    */
   notification: INotification[];
+  /**
+   * es Renta?
+   */
+  isRenter: boolean;
+  /**
+   * Fecha posible
+   */
+  dateToBuy: Date;
+  /**
+   * Zona de compra/renta
+   */
+  zone: string;
+  /**
+   * Costo minimo
+   */
+  minPrice: number;
+  /**
+   * Costo maximo
+   */
+  maxPrice: number;
+  /**
+   * num recamaras
+   */
+  numRooms: number;
+  /**
+   * num de lugares para estacionaminto
+   */
+  numCars: number;
+  /**
+   * Nueva o usada
+   */
+  isNew: boolean;
+  /**
+   * un fraccionamiento cerrado
+   */
+  isClose: boolean;
+  /**
+   * numero de banos
+   */
+  numBathrooms: number;
+  /**
+   * jardin
+   */
+  hasGarden: boolean;
+  /**
+   * Si se desea recámara en planta baja
+   */
+  isLowLevel: boolean;
+  /**
+   * Elevador
+   */
+  hasElevator: boolean;
+  /**
+   * todos servicios
+   */
+  allServices: boolean;
 }
 const BuyerSchema: Schema = new Schema({
   name: {
@@ -198,6 +254,87 @@ const BuyerSchema: Schema = new Schema({
       default: [],
     },
   ],
+  isRenter: {
+    type: Boolean,
+  },
+  /**
+   * Fecha posible
+   */
+  dateToBuy: {
+    type: String,
+  },
+  /**
+   * Zona de compra/renta
+   */
+  zone: {
+    type: String,
+  },
+  /**
+   * Costo minimo
+   */
+  minPrice: {
+    type: Number,
+  },
+  /**
+   * Costo maximo
+   */
+  maxPrice: {
+    type: Number,
+  },
+  /**
+   * num recamaras
+   */
+  numRooms: {
+    type: Number,
+  },
+  /**
+   * num de lugares para estacionaminto
+   */
+  numCars: {
+    type: Number,
+  },
+  /**
+   * Nueva o usada
+   */
+  isNew: {
+    type: Boolean,
+  },
+  /**
+   * un fraccionamiento cerrado
+   */
+  isClose: {
+    type: Boolean,
+  },
+  /**
+   * numero de banos
+   */
+  numBathrooms: {
+    type: Number,
+  },
+  /**
+   * jardin
+   */
+  hasGarden: {
+    type: Boolean,
+  },
+  /**
+   * Si se desea recámara en planta baja
+   */
+  isLowLevel: {
+    type: Boolean,
+  },
+  /**
+   * Elevador
+   */
+  hasElevator: {
+    type: Boolean,
+  },
+  /**
+   * todos servicios
+   */
+  allServices: {
+    type: Boolean,
+  },
 });
 
 export default model<IBuyer>("Buyer", BuyerSchema);

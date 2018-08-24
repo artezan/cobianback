@@ -9,18 +9,34 @@ const helmet = require("helmet");
 const mongoose = require("mongoose");
 const logger = require("morgan");
 const path = require("path");
-const TicketsRouter_1 = require("./router/TicketsRouter");
-const CustomersRouter_1 = require("./router/CustomersRouter");
-const ConsultantRouter_1 = require("./router/ConsultantRouter");
-const CompaniesRouter_1 = require("./router/CompaniesRouter");
-const PostsRouter_1 = require("./router/PostsRouter");
+const AdministratorRouter_1 = require("./router/AdministratorRouter");
+const AdviserRouter_1 = require("./router/AdviserRouter");
+const BuyerRouter_1 = require("./router/BuyerRouter");
+const NotificationRouter_1 = require("./router/NotificationRouter");
+const GoalRouter_1 = require("./router/GoalRouter");
+const ManagementRouter_1 = require("./router/ManagementRouter");
+const CreditRouter_1 = require("./router/CreditRouter");
+const OfertRouter_1 = require("./router/OfertRouter");
+const OfficeRouter_1 = require("./router/OfficeRouter");
+const PropertyRouter_1 = require("./router/PropertyRouter");
+const ScheduleRouter_1 = require("./router/ScheduleRouter");
+const SellerRouter_1 = require("./router/SellerRouter");
+const StatusBuyerPropertyRouter_1 = require("./router/StatusBuyerPropertyRouter");
 class Server {
     constructor() {
-        this.ticketsRouter = new TicketsRouter_1.TicketsRouter();
-        this.customersRouter = new CustomersRouter_1.CustomersRouter();
-        this.consultantsRouter = new ConsultantRouter_1.ConsultantRouter();
-        this.companiesRouter = new CompaniesRouter_1.CompaniesRouter();
-        this.postsRouter = new PostsRouter_1.PostsRouter();
+        this.administratorRouter = new AdministratorRouter_1.AdministratorRouter();
+        this.adviserRouter = new AdviserRouter_1.AdviserRouter();
+        this.buyerRouter = new BuyerRouter_1.BuyerRouter();
+        this.creditRouter = new CreditRouter_1.CreditRouter();
+        this.goalRouter = new GoalRouter_1.GoalRouter();
+        this.managementRouter = new ManagementRouter_1.ManagementRouter();
+        this.notificationRouter = new NotificationRouter_1.NotificationRouter();
+        this.ofertRouter = new OfertRouter_1.OfertRouter();
+        this.officeRouter = new OfficeRouter_1.OfficeRouter();
+        this.propertyRouter = new PropertyRouter_1.PropertyRouter();
+        this.scheduleRouter = new ScheduleRouter_1.ScheduleRouter();
+        this.sellerRouter = new SellerRouter_1.SellerRouter();
+        this.statusBuyerPropertyRouter = new StatusBuyerPropertyRouter_1.StatusBuyerPropertyRouter();
         this.app = express();
         this.config();
         this.routes();
@@ -94,11 +110,19 @@ class Server {
           next();
         }); */
         this.app.use("/", router);
-        this.app.use("/api/v1/companies", this.companiesRouter.router);
-        this.app.use("/api/v1/consultants", this.consultantsRouter.router);
-        this.app.use("/api/v1/customers", this.customersRouter.router);
-        this.app.use("/api/v1/tickets", this.ticketsRouter.router);
-        this.app.use("/api/v1/posts", this.postsRouter.router);
+        this.app.use("/api/v1/administrator", this.administratorRouter.router);
+        this.app.use("/api/v1/adviser", this.adviserRouter.router);
+        this.app.use("/api/v1/buyer", this.buyerRouter.router);
+        this.app.use("/api/v1/credit", this.creditRouter.router);
+        this.app.use("/api/v1/goal", this.goalRouter.router);
+        this.app.use("/api/v1/management", this.managementRouter.router);
+        this.app.use("/api/v1/notification", this.notificationRouter.router);
+        this.app.use("/api/v1/ofert", this.ofertRouter.router);
+        this.app.use("/api/v1/office", this.officeRouter.router);
+        this.app.use("/api/v1/property", this.propertyRouter.router);
+        this.app.use("/api/v1/schedule", this.scheduleRouter.router);
+        this.app.use("/api/v1/seller", this.sellerRouter.router);
+        this.app.use("/api/v1/status", this.statusBuyerPropertyRouter.router);
     }
 }
 // export

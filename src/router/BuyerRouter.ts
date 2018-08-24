@@ -136,6 +136,20 @@ export class BuyerRouter {
     const typeOfProperty: string[] = req.body.typeOfProperty;
     const space: number = req.body.space;
     const tag: string[] = req.body.tag;
+    const isRenter: boolean = req.body.isRenter;
+    const dateToBuy: string = req.body.dateToBuy;
+    const zone: string = req.body.zone;
+    const minPrice: number = req.body.minPrice;
+    const maxPrice: number = req.body.maxPrice;
+    const numRooms: number = req.body.numRooms;
+    const numCars: number = req.body.numCars;
+    const isNew: boolean = req.body.isNew;
+    const isClose: boolean = req.body.isClose;
+    const numBathrooms: number = req.body.numBathrooms;
+    const hasGarden: boolean = req.body.hasGarden;
+    const isLowLevel: boolean = req.body.isLowLevel;
+    const hasElevator: boolean = req.body.hasElevator;
+    const allServices: boolean = req.body.allServices;
 
     const buyer = new Buyer({
       name,
@@ -151,6 +165,20 @@ export class BuyerRouter {
       typeOfProperty,
       space,
       tag,
+      isRenter,
+      dateToBuy,
+      zone,
+      minPrice,
+      maxPrice,
+      numRooms,
+      numCars,
+      isNew,
+      isClose,
+      numBathrooms,
+      hasGarden,
+      isLowLevel,
+      hasElevator,
+      allServices,
     });
 
     buyer

@@ -29,6 +29,12 @@ const OfertSchema = new mongoose_1.Schema({
     ofertPrice: {
         type: Number,
     },
+    files: [
+        {
+            type: String,
+            default: [],
+        },
+    ],
 });
 exports.default = mongoose_1.model("Ofert", OfertSchema);
 //# sourceMappingURL=Ofert.js.map

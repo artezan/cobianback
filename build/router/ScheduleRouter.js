@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const base64 = require("base-64");
-const Buyer_1 = require("../models/Buyer");
+const Schedule_1 = require("../models/Schedule");
 /**
  * @apiDefine ConsultantResponseParams
  * @apiSuccess {Date} timestamp
@@ -15,7 +14,7 @@ const Buyer_1 = require("../models/Buyer");
  * @apiSuccess {string} password
  * @apiSuccess {ObjectId} companyId
  */
-class BuyerRouter {
+class ScheduleRouter {
     constructor() {
         this.router = express_1.Router();
         this.routes();
@@ -33,12 +32,12 @@ class BuyerRouter {
      * { "data": [ { "timestamp": "2018-08-10T16:08:32.439Z", "rankingAverage": 0, "tickets": [], "_id": "5b6db8805291313ddcc318b9", "name": "Consultor 1", "lastName": "Apellido", "password": "1234", "description": "Especialidad en", "companyId": "5b6db7c05291313ddcc318b7", "__v": 0 } ] }
      */
     all(req, res) {
-        Buyer_1.default.find()
-            .populate("schedule")
-            .populate("credit")
+        Schedule_1.default.find()
             .populate("property")
+            .populate("buyer")
             .populate("adviser")
-            .populate("notification")
+            .populate("seller")
+            .sort({ dateOfEvent: "asc" })
             .then(data => {
             res.status(200).json({ data });
         })
@@ -67,24 +66,11 @@ class BuyerRouter {
      */
     oneById(req, res) {
         const id = req.params.id;
-        Buyer_1.default.findById(id)
-            .populate("schedule")
-            .populate("credit")
+        Schedule_1.default.findById(id)
             .populate("property")
+            .populate("buyer")
             .populate("adviser")
-            .populate("notification")
-            .then(data => {
-            res.status(200).json({ data });
-        })
-            .catch(error => {
-            res.status(500).json({ error });
-        });
-    }
-    byPassword(req, res) {
-        const strDecode = base64.decode(req.params.base64);
-        const name = strDecode.substring(0, strDecode.indexOf(":"));
-        const password = strDecode.substring(strDecode.indexOf(":") + 1, strDecode.length);
-        Buyer_1.default.find({ password: password, name: name })
+            .populate("seller")
             .then(data => {
             res.status(200).json({ data });
         })
@@ -114,63 +100,29 @@ class BuyerRouter {
      * { "data": { "timestamp": "2018-08-10T16:08:32.439Z", "rankingAverage": 0, "tickets": [], "_id": "5b6db8805291313ddcc318b9", "name": "Consultor 1", "lastName": "Apellido", "password": "1234", "description": "Especialidad en", "companyId": "5b6db7c05291313ddcc318b7", "__v": 0 } }
      */
     create(req, res) {
-        const name = req.body.name;
-        const fatherLastName = req.body.fatherLastName;
-        const motherLastName = req.body.motherLastName;
-        const password = req.body.password;
-        const email = req.body.email;
-        const phone = req.body.phone;
-        const years = req.body.years;
-        const isMale = req.body.isMale;
-        const numOfFamily = req.body.numOfFamily;
-        const isSingle = req.body.isSingle;
-        const typeOfProperty = req.body.typeOfProperty;
-        const space = req.body.space;
-        const tag = req.body.tag;
-        const isRenter = req.body.isRenter;
-        const dateToBuy = req.body.dateToBuy;
-        const zone = req.body.zone;
-        const minPrice = req.body.minPrice;
-        const maxPrice = req.body.maxPrice;
-        const numRooms = req.body.numRooms;
-        const numCars = req.body.numCars;
-        const isNew = req.body.isNew;
-        const isClose = req.body.isClose;
-        const numBathrooms = req.body.numBathrooms;
-        const hasGarden = req.body.hasGarden;
-        const isLowLevel = req.body.isLowLevel;
-        const hasElevator = req.body.hasElevator;
-        const allServices = req.body.allServices;
-        const buyer = new Buyer_1.default({
-            name,
-            fatherLastName,
-            motherLastName,
-            password,
-            email,
-            phone,
-            years,
-            isMale,
-            numOfFamily,
-            isSingle,
-            typeOfProperty,
-            space,
-            tag,
-            isRenter,
-            dateToBuy,
-            zone,
-            minPrice,
-            maxPrice,
-            numRooms,
-            numCars,
-            isNew,
-            isClose,
-            numBathrooms,
-            hasGarden,
-            isLowLevel,
-            hasElevator,
-            allServices,
+        const dateOfEventStr = req.body.dateOfEvent;
+        const title = req.body.title;
+        const address = req.body.address;
+        const property = req.body.property;
+        const buyer = req.body.buyer;
+        const adviser = req.body.adviser;
+        const seller = req.body.seller;
+        const status = req.body.status;
+        const note = req.body.note;
+        // trasforma a fecha
+        const dateOfEvent = new Date(dateOfEventStr);
+        const schedule = new Schedule_1.default({
+            title,
+            address,
+            property,
+            buyer,
+            adviser,
+            seller,
+            status,
+            note,
+            dateOfEvent,
         });
-        buyer
+        schedule
             .save()
             .then(data => {
             res.status(201).json({ data });
@@ -203,7 +155,7 @@ class BuyerRouter {
      */
     update(req, res) {
         const _id = req.params.id;
-        Buyer_1.default.findByIdAndUpdate({ _id: _id }, req.body)
+        Schedule_1.default.findByIdAndUpdate({ _id: _id }, req.body)
             .then(() => {
             res.status(200).json({ data: true });
         })
@@ -228,7 +180,7 @@ class BuyerRouter {
      */
     delete(req, res) {
         const _id = req.params.id;
-        Buyer_1.default.findByIdAndRemove({ _id: _id })
+        Schedule_1.default.findByIdAndRemove({ _id: _id })
             .then(() => {
             res.status(200).json({ data: true });
         })
@@ -239,12 +191,12 @@ class BuyerRouter {
     // set up our routes
     routes() {
         this.router.get("/", this.all);
-        this.router.get("/bybuyerid/:id", this.oneById);
-        this.router.get("/bybuyerpassword/:base64", this.byPassword);
+        this.router.get("/byscheduleid/:id", this.oneById);
+        // this.router.get("/bybuyerpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
         this.router.put("/:id", this.update);
         this.router.delete("/:id", this.delete);
     }
 }
-exports.BuyerRouter = BuyerRouter;
-//# sourceMappingURL=BuyerRouter.js.map
+exports.ScheduleRouter = ScheduleRouter;
+//# sourceMappingURL=ScheduleRouter.js.map

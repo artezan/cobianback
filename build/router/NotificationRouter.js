@@ -14,7 +14,7 @@ const Notification_1 = require("../models/Notification");
  * @apiSuccess {string} password
  * @apiSuccess {ObjectId} companyId
  */
-class CreditRouter {
+class NotificationRouter {
     constructor() {
         this.router = express_1.Router();
         this.routes();
@@ -189,5 +189,5 @@ class CreditRouter {
         this.router.delete("/:id", this.delete);
     }
 }
-exports.CreditRouter = CreditRouter;
+exports.NotificationRouter = NotificationRouter;
 //# sourceMappingURL=NotificationRouter.js.map

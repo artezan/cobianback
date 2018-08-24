@@ -122,11 +122,13 @@ export class SellerRouter {
     const name: string = req.body.name;
     const lastName: string = req.body.lastName;
     const password: string = req.body.password;
+    const isRenter: boolean = req.body.isRenter;
 
     const seller = new Seller({
       name,
       lastName,
       password,
+      isRenter,
     });
 
     seller

@@ -9,8 +9,14 @@ const SellerSchema = new mongoose_1.Schema({
     name: {
         type: String,
     },
+    password: {
+        type: String,
+    },
     lastName: {
         type: String,
+    },
+    isRenter: {
+        type: Boolean,
     },
     /**
      * Propiedades

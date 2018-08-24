@@ -134,6 +134,87 @@ const BuyerSchema = new mongoose_1.Schema({
             default: [],
         },
     ],
+    isRenter: {
+        type: Boolean,
+    },
+    /**
+     * Fecha posible
+     */
+    dateToBuy: {
+        type: String,
+    },
+    /**
+     * Zona de compra/renta
+     */
+    zone: {
+        type: String,
+    },
+    /**
+     * Costo minimo
+     */
+    minPrice: {
+        type: Number,
+    },
+    /**
+     * Costo maximo
+     */
+    maxPrice: {
+        type: Number,
+    },
+    /**
+     * num recamaras
+     */
+    numRooms: {
+        type: Number,
+    },
+    /**
+     * num de lugares para estacionaminto
+     */
+    numCars: {
+        type: Number,
+    },
+    /**
+     * Nueva o usada
+     */
+    isNew: {
+        type: Boolean,
+    },
+    /**
+     * un fraccionamiento cerrado
+     */
+    isClose: {
+        type: Boolean,
+    },
+    /**
+     * numero de banos
+     */
+    numBathrooms: {
+        type: Number,
+    },
+    /**
+     * jardin
+     */
+    hasGarden: {
+        type: Boolean,
+    },
+    /**
+     * Si se desea recámara en planta baja
+     */
+    isLowLevel: {
+        type: Boolean,
+    },
+    /**
+     * Elevador
+     */
+    hasElevator: {
+        type: Boolean,
+    },
+    /**
+     * todos servicios
+     */
+    allServices: {
+        type: Boolean,
+    },
 });
 exports.default = mongoose_1.model("Buyer", BuyerSchema);
 //# sourceMappingURL=Buyer.js.map
