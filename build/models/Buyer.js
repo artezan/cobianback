@@ -176,7 +176,7 @@ const BuyerSchema = new mongoose_1.Schema({
     /**
      * Nueva o usada
      */
-    isNew: {
+    isOld: {
         type: Boolean,
     },
     /**

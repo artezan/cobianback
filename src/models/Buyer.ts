@@ -95,7 +95,7 @@ export interface IBuyer extends Document {
   /**
    * Nueva o usada
    */
-  isNew: boolean;
+  isOld: boolean;
   /**
    * un fraccionamiento cerrado
    */
@@ -296,7 +296,7 @@ const BuyerSchema: Schema = new Schema({
   /**
    * Nueva o usada
    */
-  isNew: {
+  isOld: {
     type: Boolean,
   },
   /**

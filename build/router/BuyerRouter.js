@@ -134,7 +134,7 @@ class BuyerRouter {
         const maxPrice = req.body.maxPrice;
         const numRooms = req.body.numRooms;
         const numCars = req.body.numCars;
-        const isNew = req.body.isNew;
+        const isOld = req.body.isOld;
         const isClose = req.body.isClose;
         const numBathrooms = req.body.numBathrooms;
         const hasGarden = req.body.hasGarden;
@@ -162,7 +162,7 @@ class BuyerRouter {
             maxPrice,
             numRooms,
             numCars,
-            isNew,
+            isOld,
             isClose,
             numBathrooms,
             hasGarden,

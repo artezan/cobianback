@@ -143,7 +143,7 @@ export class BuyerRouter {
     const maxPrice: number = req.body.maxPrice;
     const numRooms: number = req.body.numRooms;
     const numCars: number = req.body.numCars;
-    const isNew: boolean = req.body.isNew;
+    const isOld: boolean = req.body.isOld;
     const isClose: boolean = req.body.isClose;
     const numBathrooms: number = req.body.numBathrooms;
     const hasGarden: boolean = req.body.hasGarden;
@@ -172,7 +172,7 @@ export class BuyerRouter {
       maxPrice,
       numRooms,
       numCars,
-      isNew,
+      isOld,
       isClose,
       numBathrooms,
       hasGarden,
