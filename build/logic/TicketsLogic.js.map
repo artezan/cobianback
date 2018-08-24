@@ -1,0 +1,1 @@
+{"version":3,"file":"TicketsLogic.js","sourceRoot":"","sources":["../../src/logic/TicketsLogic.ts"],"names":[],"mappings":";;AAAA,MAAa,YAAY;;AACP,qBAAQ,GAAG;IACrB,IAAI,IAAI,CAAC,SAAS,EAAE;QAClB,OAAO,IAAI,CAAC,SAAS,CAAC;KACvB;SAAM;QACL,OAAO,CAAC,IAAI,CAAC,SAAS,GAAG,IAAI,IAAI,EAAE,CAAC,CAAC;KACtC;AACH,CAAC,CAAC;AAPR,oCAQC"}
