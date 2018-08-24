@@ -27,7 +27,8 @@ class Server {
     }
     // application config
     config() {
-        const MONGO_URI = "mongodb://cesar:180292@ds117469.mlab.com:17469/cesar";
+        const MONGO_URI = "mongodb://vleeko:180292cesar@ds131942.mlab.com:31942/vleeko";
+        // "mongodb://cesar:180292@ds117469.mlab.com:17469/cesar";
         // "mongodb://31.220.52.51:27017/db2";
         mongoose.connect(MONGO_URI || process.env.MONGODB_URI);
         // express middleware
@@ -59,39 +60,39 @@ class Server {
         const router = express.Router();
         // seguridad por credenciales
         /*   this.app.use(async (req, res, next) => {
-            console.log(req.headers.authorization);
-            // pide en el header user y authorization
-            if (!req.headers.authorization && !req.headers.user) {
-              return res.status(403).json({ error: "No credentials sent!" });
-            } else {
-              // cliente
-              if (req.headers.user === "customer") {
-                const isFind = await CustmersLogic.Instance().checkCustomer(
-                  req.headers.authorization,
-                );
-                if (!isFind) {
-                  return res.status(403).json({ error: "No credentials match!" });
-                } // consultor
-              } else if (req.headers.user === "consultant") {
-                const isFind = await ConsultantsLogic.Instance().checkConsultant(
-                  req.headers.authorization,
-                );
-                if (!isFind) {
-                  return res.status(403).json({ error: "No credentials match!" });
-                } // company
-              } else if (req.headers.user === "company") {
-                const isFind = await CompaniesLogic.Instance().checkCompany(
-                  req.headers.authorization,
-                );
-                if (!isFind) {
-                  return res.status(403).json({ error: "No credentials match!" });
-                } // no user
-              } else {
+          console.log(req.headers.authorization);
+          // pide en el header user y authorization
+          if (!req.headers.authorization && !req.headers.user) {
+            return res.status(403).json({ error: "No credentials sent!" });
+          } else {
+            // cliente
+            if (req.headers.user === "customer") {
+              const isFind = await CustmersLogic.Instance().checkCustomer(
+                req.headers.authorization,
+              );
+              if (!isFind) {
                 return res.status(403).json({ error: "No credentials match!" });
-              }
+              } // consultor
+            } else if (req.headers.user === "consultant") {
+              const isFind = await ConsultantsLogic.Instance().checkConsultant(
+                req.headers.authorization,
+              );
+              if (!isFind) {
+                return res.status(403).json({ error: "No credentials match!" });
+              } // company
+            } else if (req.headers.user === "company") {
+              const isFind = await CompaniesLogic.Instance().checkCompany(
+                req.headers.authorization,
+              );
+              if (!isFind) {
+                return res.status(403).json({ error: "No credentials match!" });
+              } // no user
+            } else {
+              return res.status(403).json({ error: "No credentials match!" });
             }
-            next();
-          }); */
+          }
+          next();
+        }); */
         this.app.use("/", router);
         this.app.use("/api/v1/companies", this.companiesRouter.router);
         this.app.use("/api/v1/consultants", this.consultantsRouter.router);

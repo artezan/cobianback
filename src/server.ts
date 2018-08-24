@@ -7,21 +7,34 @@ import * as helmet from "helmet";
 import * as mongoose from "mongoose";
 import * as logger from "morgan";
 import * as path from "path";
-import { TicketsRouter } from "./router/TicketsRouter";
-import { CustomersRouter } from "./router/CustomersRouter";
-import { ConsultantRouter } from "./router/ConsultantRouter";
-import { CompaniesRouter } from "./router/CompaniesRouter";
-import { PostsRouter } from "./router/PostsRouter";
-import { CustmersLogic } from "./logic/CustumersLogic";
-import { ConsultantsLogic } from "./logic/ConsultantsLogic";
-import { CompaniesLogic } from "./logic/CompaniesLogic";
+import { AdministratorRouter } from "./router/AdministratorRouter";
+import { AdviserRouter } from "./router/AdviserRouter";
+import { BuyerRouter } from "./router/BuyerRouter";
+import { NotificationRouter } from "./router/NotificationRouter";
+import { GoalRouter } from "./router/GoalRouter";
+import { ManagementRouter } from "./router/ManagementRouter";
+import { CreditRouter } from "./router/CreditRouter";
+import { OfertRouter } from "./router/OfertRouter";
+import { OfficeRouter } from "./router/OfficeRouter";
+import { PropertyRouter } from "./router/PropertyRouter";
+import { ScheduleRouter } from "./router/ScheduleRouter";
+import { SellerRouter } from "./router/SellerRouter";
+import { StatusBuyerPropertyRouter } from "./router/StatusBuyerPropertyRouter";
 
 class Server {
-  public ticketsRouter = new TicketsRouter();
-  public customersRouter = new CustomersRouter();
-  public consultantsRouter = new ConsultantRouter();
-  public companiesRouter = new CompaniesRouter();
-  public postsRouter = new PostsRouter();
+  public administratorRouter = new AdministratorRouter();
+  public adviserRouter = new AdviserRouter();
+  public buyerRouter = new BuyerRouter();
+  public creditRouter = new CreditRouter();
+  public goalRouter = new GoalRouter();
+  public managementRouter = new ManagementRouter();
+  public notificationRouter = new NotificationRouter();
+  public ofertRouter = new OfertRouter();
+  public officeRouter = new OfficeRouter();
+  public propertyRouter = new PropertyRouter();
+  public scheduleRouter = new ScheduleRouter();
+  public sellerRouter = new SellerRouter();
+  public statusBuyerPropertyRouter = new StatusBuyerPropertyRouter();
 
   // set app to be of type express.Application
   public app: express.Application;
@@ -35,8 +48,9 @@ class Server {
   // application config
   public config(): void {
     const MONGO_URI: string =
-      "mongodb://cesar:180292@ds117469.mlab.com:17469/cesar";
-      // "mongodb://31.220.52.51:27017/db2";
+      "mongodb://vleeko:180292cesar@ds131942.mlab.com:31942/vleeko";
+    // "mongodb://cesar:180292@ds117469.mlab.com:17469/cesar";
+    // "mongodb://31.220.52.51:27017/db2";
     mongoose.connect(MONGO_URI || process.env.MONGODB_URI);
 
     // express middleware
@@ -75,7 +89,7 @@ class Server {
   public routes(): void {
     const router: express.Router = express.Router();
     // seguridad por credenciales
-  /*   this.app.use(async (req, res, next) => {
+    /*   this.app.use(async (req, res, next) => {
       console.log(req.headers.authorization);
       // pide en el header user y authorization
       if (!req.headers.authorization && !req.headers.user) {
@@ -110,11 +124,19 @@ class Server {
       next();
     }); */
     this.app.use("/", router);
-    this.app.use("/api/v1/companies", this.companiesRouter.router);
-    this.app.use("/api/v1/consultants", this.consultantsRouter.router);
-    this.app.use("/api/v1/customers", this.customersRouter.router);
-    this.app.use("/api/v1/tickets", this.ticketsRouter.router);
-    this.app.use("/api/v1/posts", this.postsRouter.router);
+    this.app.use("/api/v1/administrator", this.administratorRouter.router);
+    this.app.use("/api/v1/adviser", this.adviserRouter.router);
+    this.app.use("/api/v1/buyer", this.buyerRouter.router);
+    this.app.use("/api/v1/credit", this.creditRouter.router);
+    this.app.use("/api/v1/goal", this.goalRouter.router);
+    this.app.use("/api/v1/management", this.managementRouter.router);
+    this.app.use("/api/v1/notification", this.notificationRouter.router);
+    this.app.use("/api/v1/ofert", this.ofertRouter.router);
+    this.app.use("/api/v1/office", this.officeRouter.router);
+    this.app.use("/api/v1/property", this.propertyRouter.router);
+    this.app.use("/api/v1/schedule", this.scheduleRouter.router);
+    this.app.use("/api/v1/seller", this.sellerRouter.router);
+    this.app.use("/api/v1/status", this.statusBuyerPropertyRouter.router);
   }
 }
 
