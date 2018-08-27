@@ -19,6 +19,10 @@ export interface ICredit extends Document {
    * Documentos para el credito
    */
   files: string[];
+  /**
+   * Notas
+   */
+  notes: string;
 }
 const CreditSchema: Schema = new Schema({
   buyer: {
@@ -36,6 +40,9 @@ const CreditSchema: Schema = new Schema({
    * status Gris Verde Amarillo Rojo
    */
   status: {
+    type: String,
+  },
+  notes: {
     type: String,
   },
   timestamp: {

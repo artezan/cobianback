@@ -12,9 +12,6 @@ const PropertySchema = new mongoose_1.Schema({
     name: {
         type: String,
     },
-    address: {
-        type: String,
-    },
     /**
      * tipo de propiedad
      */
@@ -22,42 +19,118 @@ const PropertySchema = new mongoose_1.Schema({
         type: String,
     },
     /**
-     * forma de compra
+     * num de Visitas
      */
-    wayToBuy: [
+    numVisit: {
+        type: Number,
+    },
+    /**
+     * Espacio de vivienda
+     */
+    space: {
+        type: Number,
+    },
+    /**
+     * Etiquetas
+     */
+    tag: [
         {
             type: String,
             default: [],
         },
     ],
+    /**
+     * Documentos
+     */
+    files: [
+        {
+            type: String,
+            default: [],
+        },
+    ],
+    /**
+     * Fecha posible
+     */
     dateToBuy: {
         type: String,
     },
     /**
-     * costo minimo
+     * Zona de compra/renta
+     */
+    zone: {
+        type: String,
+    },
+    /**
+     * Costo minimo
      */
     minPrice: {
         type: Number,
-        default: 0,
     },
     /**
-     * costo maximo
+     * Costo maximo
      */
     maxPrice: {
         type: Number,
-        default: 0,
     },
-    tag: [
-        {
-            type: String,
-        },
-    ],
     /**
-     * num de Visitas
+     * num recamaras
      */
-    numVisit: {
+    numRooms: {
         type: Number,
-        default: 0,
+    },
+    /**
+     * num de lugares para estacionaminto
+     */
+    numCars: {
+        type: Number,
+    },
+    /**
+     * Nueva o usada
+     */
+    isOld: {
+        type: Boolean,
+    },
+    /**
+     * un fraccionamiento cerrado
+     */
+    isClose: {
+        type: Boolean,
+    },
+    /**
+     * numero de banos
+     */
+    numBathrooms: {
+        type: Number,
+    },
+    /**
+     * jardin
+     */
+    hasGarden: {
+        type: Boolean,
+    },
+    /**
+     * Si se desea recámara en planta baja
+     */
+    isLowLevel: {
+        type: Boolean,
+    },
+    /**
+     * Elevador
+     */
+    hasElevator: {
+        type: Boolean,
+    },
+    /**
+     * todos servicios
+     */
+    allServices: {
+        type: Boolean,
+    },
+    /**
+     * Forma de compra FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros
+     */
+    wayToBuy: {
+        type: String,
     },
 });
 exports.default = mongoose_1.model("Property", PropertySchema);

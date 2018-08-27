@@ -57,12 +57,10 @@ const BuyerSchema = new mongoose_1.Schema({
     /**
      * Tipos de Vivienda
      */
-    typeOfProperty: [
-        {
-            type: String,
-            default: [],
-        },
-    ],
+    typeOfProperty: {
+        type: String,
+        default: [],
+    },
     /**
      * Espacio de vivienda
      */
@@ -85,6 +83,13 @@ const BuyerSchema = new mongoose_1.Schema({
         {
             type: mongoose_1.Schema.Types.ObjectId,
             ref: "Schedule",
+            default: [],
+        },
+    ],
+    statusBuyerProperty: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "StatusBuyerProperty",
             default: [],
         },
     ],
@@ -117,6 +122,13 @@ const BuyerSchema = new mongoose_1.Schema({
             default: [],
         },
     ],
+    propertySave: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "Property",
+            default: [],
+        },
+    ],
     /**
      * Asesores
      */
@@ -131,6 +143,13 @@ const BuyerSchema = new mongoose_1.Schema({
         {
             type: mongoose_1.Schema.Types.ObjectId,
             ref: "Notification",
+            default: [],
+        },
+    ],
+    ofert: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "Ofert",
             default: [],
         },
     ],
@@ -214,6 +233,9 @@ const BuyerSchema = new mongoose_1.Schema({
      */
     allServices: {
         type: Boolean,
+    },
+    wayToBuy: {
+        type: String,
     },
 });
 exports.default = mongoose_1.model("Buyer", BuyerSchema);

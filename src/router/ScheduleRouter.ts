@@ -3,18 +3,6 @@ import { ObjectId } from "../../node_modules/@types/bson";
 import * as base64 from "base-64";
 import Schedule from "../models/Schedule";
 
-/**
- * @apiDefine ConsultantResponseParams
- * @apiSuccess {Date} timestamp
- * @apiSuccess {number} rankingAverage Promedio de ranking de los tickets del consultor
- * @apiSuccess {ObjectId} _id
- * @apiSuccess {tickets[]} tickets
- * @apiSuccess {string} name
- * @apiSuccess {string} lastName
- * @apiSuccess {string} description Area de especialidad del Consultor
- * @apiSuccess {string} password
- * @apiSuccess {ObjectId} companyId
- */
 export class ScheduleRouter {
   public router: Router;
 
@@ -23,16 +11,11 @@ export class ScheduleRouter {
     this.routes();
   }
   /**
-   * @api {GET} /consultants/bycompanyid/:companyId Request all by company
+   * @api {GET} /schedule/:id Request all by company
    * @apiVersion  0.1.0
    * @apiName get
-   * @apiGroup Consultant
+   * @apiGroup schedule
    *
-   *
-   * @apiSampleRequest /consultants/bycompanyid/:companyId
-   *
-   * @apiSuccessExample {json} Success-Response a JSON-Array<consultant>:
-   * { "data": [ { "timestamp": "2018-08-10T16:08:32.439Z", "rankingAverage": 0, "tickets": [], "_id": "5b6db8805291313ddcc318b9", "name": "Consultor 1", "lastName": "Apellido", "password": "1234", "description": "Especialidad en", "companyId": "5b6db7c05291313ddcc318b7", "__v": 0 } ] }
    */
   public all(req: Request, res: Response): void {
     Schedule.find()
@@ -49,23 +32,11 @@ export class ScheduleRouter {
       });
   }
   /**
-   * @api {GET} /consultants/byconsultantid/:consultantId Request by Object Id
+   * @api {GET} /schedule/byscheduleid/:id Request by Object Id
    * @apiVersion  0.1.0
    * @apiName getById
-   * @apiGroup Consultant
+   * @apiGroup schedule
    *
-   *
-   * @apiParam {ObjectId} consultantId Must be provided as QueryParam
-   *
-   * @apiExample Example usage:
-   * http://31.220.52.51:3000/api/v1/consultants/byconsultantid/5b6db8805291313ddcc318b9
-   *
-   * @apiSampleRequest /consultants/byconsultantid/5b6db8805291313ddcc318b9
-   *
-   * @apiUse ConsultantResponseParams
-   *
-   * @apiSuccessExample {json} Success-Response Consultant:
-   * { "data": { "timestamp": "2018-08-10T16:08:32.439Z", "rankingAverage": 0, "tickets": [], "_id": "5b6db8805291313ddcc318b9", "name": "Consultor 1", "lastName": "Apellido", "password": "1234", "description": "Especialidad en", "companyId": "5b6db7c05291313ddcc318b7", "__v": 0 } }
    */
 
   public oneById(req: Request, res: Response): void {
@@ -84,29 +55,33 @@ export class ScheduleRouter {
       });
   }
   /**
-   * @api {POST} /consultants/ Request New
+   * @api {POST} /schedule/ Request New
    * @apiVersion  0.1.0
    * @apiName post
-   * @apiGroup Consultant
+   * @apiGroup schedule
    *
    *
-   * @apiParam {string} name
-   * @apiParam {string} lastName
-   * @apiParam {string} password
+   * @apiParam {string} dateOfEvent Fecha del evento dd/mm/aaaa
+   * @apiParam {string} title
+   * @apiParam {string} address
    * @apiParam {string} description
-   * @apiParam {ObjectId} companyId
+   * @apiParam {ObjectId} property
+   * @apiParam {ObjectId} buyer
+   * @apiParam {ObjectId} adviser
+   * @apiParam {ObjectId} seller
+   * @apiParam {string} status
+   * @apiParam {string} note
    *
    * @apiParamExample {json} Request-Example:
-   * { "name":"Consultor 1", "lastName":"Apellido", "password":"1234", "description":"Especialidad en", "companyId":"5b6db7c05291313ddcc318b7" }
+   * { "dateOfEvent":"20/18/2018", "title":"Evento2", "address":"La paz", "property":"5b842b334f965c30a03c1951", "buyer":"5b84586674acb1030cabb419", "adviser":"5b8082ba69a5a10b589abc75", "status":"Pendiente", "note":"Ver Propiedad segunda visita" }
    *
-   * @apiUse ConsultantResponseParams
    *
    * @apiSuccessExample {json} Success-Response Created User:
-   * { "data": { "timestamp": "2018-08-10T16:08:32.439Z", "rankingAverage": 0, "tickets": [], "_id": "5b6db8805291313ddcc318b9", "name": "Consultor 1", "lastName": "Apellido", "password": "1234", "description": "Especialidad en", "companyId": "5b6db7c05291313ddcc318b7", "__v": 0 } }
+   * { "data": { "timestamp": "2018-08-27T21:57:08.771Z", "_id": "5b8473b42a3ac4214ce7590b", "title": "Evento2", "address": "La paz", "property": "5b842b334f965c30a03c1951", "buyer": "5b84586674acb1030cabb419", "adviser": "5b8082ba69a5a10b589abc75", "status": "Pendiente", "note": "Ver Propiedad segunda visita", "dateOfEvent": "20/18/2018", "__v": 0 } }
    */
 
   public create(req: Request, res: Response): void {
-    const dateOfEventStr: string = req.body.dateOfEvent;
+    const dateOfEvent: string = req.body.dateOfEvent;
     const title: string = req.body.title;
     const address: string = req.body.address;
     const property: string = req.body.property;
@@ -115,9 +90,6 @@ export class ScheduleRouter {
     const seller: string = req.body.seller;
     const status: string = req.body.status;
     const note: string = req.body.note;
-    // trasforma a fecha
-    const dateOfEvent = new Date(dateOfEventStr);
-
     const schedule = new Schedule({
       title,
       address,
@@ -140,26 +112,11 @@ export class ScheduleRouter {
       });
   }
   /**
-   * @api {PUT} /consultants/:_id Request Update
+   * @api {PUT} /schedule/:_id Request Update
    * @apiVersion  0.1.0
    * @apiName put
-   * @apiGroup Consultant
+   * @apiGroup schedule
    *
-   * @apiParam {ObjectId} consultantId Must be provided as QueryParam
-   * @apiParam {string} name
-   * @apiParam {string} lastName
-   * @apiParam {string} password
-   * @apiParam {string} description
-   * @apiParam {ObjectId} companyId
-   *
-   * @apiExample Example usage:
-   * http://31.220.52.51:3000/api/v1/consultants/5b6db8805291313ddcc318b9
-   *
-   * @apiParamExample {json} Request-Example:
-   * { "password":"3ede3" }
-   *
-   * @apiSuccessExample {json} Success-Response:
-   * { "data": true }
    */
 
   public update(req: Request, res: Response): void {
@@ -173,19 +130,11 @@ export class ScheduleRouter {
       });
   }
   /**
-   * @api {DELETE} /consultants/:consultantId Request  Deleted
+   * @api {DELETE} /schedule/:id Request  Deleted
    * @apiVersion  0.1.0
    * @apiName deleteByToken
-   * @apiGroup Consultant
+   * @apiGroup schedule
    *
-   *
-   * @apiParam {ObjectId} consultantId Must be placed as QueryParam
-   *
-   * @apiExample Example usage:
-   * http://31.220.52.51:3000/api/v1/consultants/5b69b23777093a04244fae68
-   *
-   * @apiSuccessExample {json} Success-Response:
-   * {"data":true}
    */
 
   public delete(req: Request, res: Response): void {

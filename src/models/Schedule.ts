@@ -7,7 +7,7 @@ export interface ISchedule extends Document {
   /**
    * Fecha del Evento
    */
-  dateOfEvent: Date;
+  dateOfEvent: string;
   timestamp: Date;
   /**
    * Titulo del evento

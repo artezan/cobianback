@@ -4,7 +4,7 @@ const express_1 = require("express");
 const base64 = require("base-64");
 const Administrator_1 = require("../models/Administrator");
 /**
- * @apiDefine CompanyResponseParams
+ * @apiDefine AdministratorResponseParams
  * @apiSuccess {string} name
  * @apiSuccess {ObjectId} _id
  * @apiSuccess {Date} timestamp
@@ -15,16 +15,16 @@ class AdministratorRouter {
         this.routes();
     }
     /**
-     * @api {GET} /companies/ Request all
+     * @api {GET} /administrator/ Request all
      * @apiVersion  0.1.0
      * @apiName get
-     * @apiGroup Company
+     * @apiGroup administrator
      *
      *
-     * @apiSampleRequest /companies/
+     * @apiSampleRequest /administrator/
      *
-     * @apiSuccessExample {json} Success-Response a JSON-Array<company>:
-     * {"data":[{"timestamp":"2018-08-07T14:52:39.369Z","_id":"5b69b23777093a04244fae68","name":"Compañia 1","__v":0},{"timestamp":"2018-08-07T14:52:55.489Z","_id":"5b69b24777093a04244fae69","name":"Compañia 2","__v":0}]}
+     * @apiSuccessExample {json} Success-Response a JSON-Array<administrator>:
+     * { "data": { "timestamp": "2018-08-27T14:49:37.217Z", "_id": "5b840f8116b1cf2accc95ae4", "name": "admin2", "password": "cobian2018", "__v": 0 } }
      */
     all(req, res) {
         Administrator_1.default.find()
@@ -36,23 +36,21 @@ class AdministratorRouter {
         });
     }
     /**
-     * @api {GET} /companies/:companyId Request by Object Id
+     * @api {GET} /administrator/:b64 Request by Object Id
      * @apiVersion  0.1.0
      * @apiName getByNameAndPassword
-     * @apiGroup Company
+     * @apiGroup administrator
      *
      *
      * @apiParam {ObjectId} b64(name:password) Must be provided as QueryParam
      *
-     * @apiExample Example usage:
-     * http://31.220.52.51:3000/api/v1/companies/5b69b23777093a04244fae68/
      *
-     * @apiSampleRequest /companies/
+     * @apiSampleRequest /administrator/
      *
-     * @apiUse CompanyResponseParams
+     * @apiUse AdministratorResponseParams
      *
      * @apiSuccessExample {json} Success-Response Company:
-     * { "data": { "timestamp": "2018-08-07T14:52:39.369Z", "_id": "5b69b23777093a04244fae68", "name": "Compañia 1", "__v": 0 } }
+     * { "data": { "timestamp": "2018-08-27T14:49:37.217Z", "_id": "5b840f8116b1cf2accc95ae4", "name": "admin2", "password": "cobian2018", "__v": 0 } }
      */
     oneById(req, res) {
         const strDecode = base64.decode(req.params.nameAdministrator);
@@ -67,21 +65,22 @@ class AdministratorRouter {
         });
     }
     /**
-     * @api {POST} /companies/ Request New
+     * @api {POST} /administrator/ Request New
      * @apiVersion  0.1.0
      * @apiName post
-     * @apiGroup Company
+     * @apiGroup administrator
      *
      *
      * @apiParam {string} name
+     * @apiParam {string} password
      *
      * @apiParamExample {json} Request-Example:
-     * { "name": "Compañia 21" }
+     * { "name":"admin2", "password":"cobian2018" }
      *
-     * @apiUse CompanyResponseParams
+     * @apiUse AdministratorResponseParams
      *
      * @apiSuccessExample {json} Success-Response Created Company:
-     * { "data": { "timestamp": "2018-08-10T15:01:46.063Z", "_id": "5b6da8da15199540284396ce", "name": "Compañia 21", "__v": 0 } }
+     * { "data": { "timestamp": "2018-08-27T14:49:37.217Z", "_id": "5b840f8116b1cf2accc95ae4", "name": "admin2", "password": "cobian2018", "__v": 0 } }
      */
     createAdmin(req, res) {
         const name = req.body.name;
@@ -99,24 +98,6 @@ class AdministratorRouter {
             res.status(500).json({ error });
         });
     }
-    /**
-     * @api {PUT} /companies/:companyId Request Update
-     * @apiVersion  0.1.0
-     * @apiName put
-     * @apiGroup Company
-     *
-     *
-     * @apiParam {ObjectId} companyId Must be placed as QueryParam
-     *
-     * @apiExample Example usage:
-     * http://31.220.52.51:3000/api/v1/companies/5b69b23777093a04244fae68
-     *
-     * @apiParamExample {json} Request-Example:
-     * { "name": "Compañia 21" }
-     *
-     * @apiSuccessExample {json} Success-Response:
-     * { "data": { "timestamp": "2018-08-10T15:01:46.063Z", "_id": "5b6da8da15199540284396ce", "name": "Compañia 21", "__v": 0 } }
-     */
     update(req, res) {
         const _id = req.params.id;
         Administrator_1.default.findByIdAndUpdate({ _id: _id }, req.body)
@@ -127,21 +108,6 @@ class AdministratorRouter {
             res.status(500).json({ error });
         });
     }
-    /**
-     * @api {DELETE} /companies/:companyId Request  Deleted
-     * @apiVersion  0.1.0
-     * @apiName deleteByToken
-     * @apiGroup Company
-     *
-     *
-     * @apiParam {ObjectId} companyId Must be placed as QueryParam
-     *
-     * @apiExample Example usage:
-     * http://31.220.52.51:3000/api/v1/companies/5b69b23777093a04244fae68
-     *
-     * @apiSuccessExample {json} Success-Response:
-     * {"data":true}
-     */
     delete(req, res) {
         const _id = req.params.id;
         Administrator_1.default.findByIdAndRemove({ _id: _id })

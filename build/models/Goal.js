@@ -25,15 +25,19 @@ const GoalSchema = new mongoose_1.Schema({
     status: {
         type: String,
     },
+    title: {
+        type: String,
+    },
+    dateLimit: {
+        type: String,
+    },
     /**
      * Datos Cuantitativos
      */
-    dataNumber: [
-        {
-            type: Number,
-            default: [],
-        },
-    ],
+    dataNumber: {
+        type: Number,
+        default: 0,
+    },
     /**
      * Cumplido o no
      */

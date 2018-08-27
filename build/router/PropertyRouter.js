@@ -1,18 +1,42 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Property_1 = require("../models/Property");
+const PropertyLogic_1 = require("../logic/PropertyLogic");
+const Buyer_1 = require("../models/Buyer");
 /**
- * @apiDefine ConsultantResponseParams
+ * @apiDefine PropertyResponseParams
  * @apiSuccess {Date} timestamp
- * @apiSuccess {number} rankingAverage Promedio de ranking de los tickets del consultor
+ * @apiSuccess {boolean} isRent Renta o Compra
  * @apiSuccess {ObjectId} _id
- * @apiSuccess {tickets[]} tickets
  * @apiSuccess {string} name
- * @apiSuccess {string} lastName
- * @apiSuccess {string} description Area de especialidad del Consultor
- * @apiSuccess {string} password
- * @apiSuccess {ObjectId} companyId
+ * apiSuccess {string[]} typeOfProperty Tipos de Vivienda casa, departamento, terreno, nave industrial, etc., con la posibilidad de agregar alguna opción que no aparezca dentro del listado.
+ * @apiSuccess {number} space Espacio de vivienda
+ * @apiSuccess {number} numVisit num de Visitas
+ * @apiSuccess {string[]} tag Etiquetas
+ * @apiSuccess {string[]} files Documentos
+ * @apiSuccess {string} dateToBuy Fecha posible compra/renta
+ * @apiSuccess {string} zone Zona de compra/renta
+ * @apiSuccess {number} minPrice Costo minimo
+ * @apiSuccess {number} maxPrice Costo maximo
+ * @apiSuccess {number} numRooms Numero de recamaras
+ * @apiSuccess {number} numCars Numero de lugares de estacionamiento
+ * @apiSuccess {boolean} isOld Nuevo o usado
+ * @apiSuccess {boolean} isClose fraccionamiento cerrado o abierto
+ * @apiSuccess {number} numBathrooms numero de banos
+ * @apiSuccess {boolean} hasGarden jardin
+ * @apiSuccess {boolean} isLowLevel Si se desea recámara en planta baja
+ * @apiSuccess {boolean} hasElevator Elevador
+ * @apiSuccess {boolean} allServices Con o sin servicios
+ * @apiSuccess {boolean} wayToBuy Forma de compra FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros
  */
 class PropertyRouter {
     constructor() {
@@ -20,16 +44,10 @@ class PropertyRouter {
         this.routes();
     }
     /**
-     * @api {GET} /consultants/bycompanyid/:companyId Request all by company
+     * @api {GET} /property/ Request all
      * @apiVersion  0.1.0
      * @apiName get
-     * @apiGroup Consultant
-     *
-     *
-     * @apiSampleRequest /consultants/bycompanyid/:companyId
-     *
-     * @apiSuccessExample {json} Success-Response a JSON-Array<consultant>:
-     * { "data": [ { "timestamp": "2018-08-10T16:08:32.439Z", "rankingAverage": 0, "tickets": [], "_id": "5b6db8805291313ddcc318b9", "name": "Consultor 1", "lastName": "Apellido", "password": "1234", "description": "Especialidad en", "companyId": "5b6db7c05291313ddcc318b7", "__v": 0 } ] }
+     * @apiGroup property
      */
     all(req, res) {
         Property_1.default.find()
@@ -41,23 +59,20 @@ class PropertyRouter {
         });
     }
     /**
-     * @api {GET} /consultants/byconsultantid/:consultantId Request by Object Id
+     * @api {GET} /property/bypropertyid/:id Request by Object Id
      * @apiVersion  0.1.0
      * @apiName getById
-     * @apiGroup Consultant
+     * @apiGroup property
      *
      *
-     * @apiParam {ObjectId} consultantId Must be provided as QueryParam
+     * @apiParam {ObjectId} propertyId Must be provided as QueryParam
      *
-     * @apiExample Example usage:
-     * http://31.220.52.51:3000/api/v1/consultants/byconsultantid/5b6db8805291313ddcc318b9
+     * @apiSampleRequest /property/bypropertyid/5b842b334f965c30a03c1951
      *
-     * @apiSampleRequest /consultants/byconsultantid/5b6db8805291313ddcc318b9
-     *
-     * @apiUse ConsultantResponseParams
+     * @apiUse PropertyResponseParams
      *
      * @apiSuccessExample {json} Success-Response Consultant:
-     * { "data": { "timestamp": "2018-08-10T16:08:32.439Z", "rankingAverage": 0, "tickets": [], "_id": "5b6db8805291313ddcc318b9", "name": "Consultor 1", "lastName": "Apellido", "password": "1234", "description": "Especialidad en", "companyId": "5b6db7c05291313ddcc318b7", "__v": 0 } }
+     * { "data": { "timestamp": "2018-08-27T16:47:47.968Z", "tag": [ "UPAEP" ], "files": [ "documento1", "documento2" ], "_id": "5b842b334f965c30a03c1951", "isRent": true, "name": "Depa 1", "typeOfProperty": "departamento", "space": 45, "dateToBuy": "18/11/2018", "zone": "La Paz", "minPrice": 2500, "maxPrice": 2500, "numRooms": 1, "numCars": 1, "isOld": false, "isClose": false, "numBathrooms": 2, "hasGarden": false, "isLowLevel": false, "hasElevator": false, "allServices": true, "wayToBuy": "otros", "__v": 0 } }
      */
     oneById(req, res) {
         const id = req.params.id;
@@ -70,48 +85,84 @@ class PropertyRouter {
         });
     }
     /**
-     * @api {POST} /consultants/ Request New
+     * @api {POST} /property/ Request New
      * @apiVersion  0.1.0
      * @apiName post
-     * @apiGroup Consultant
+     * @apiGroup property
      *
      *
      * @apiParam {string} name
-     * @apiParam {string} lastName
-     * @apiParam {string} password
-     * @apiParam {string} description
-     * @apiParam {ObjectId} companyId
+     * @apiParam {boolean} isRent Renta o Compra
+     * @apiParam {string[]} typeOfProperty Tipos de Vivienda casa, departamento, terreno, nave industrial, etc., con la posibilidad de agregar alguna opción que no aparezca dentro del listado.
+     * @apiParam {number} space Espacio de vivienda
+     * @apiParam {number} numVisit num de Visitas
+     * @apiParam {string[]} tag Etiquetas
+     * @apiParam {string[]} files Documentos
+     * @apiParam {string} dateToBuy Fecha posible compra/renta
+     * @apiParam {string} zone Zona de compra/renta
+     * @apiParam {number} minPrice Costo minimo
+     * @apiParam {number} maxPrice Costo maximo
+     * @apiParam {number} numRooms Numero de recamaras
+     * @apiParam {number} numCars Numero de lugares de estacionamiento
+     * @apiParam {boolean} isOld Nuevo o usado
+     * @apiParam {boolean} isClose fraccionamiento cerrado o abierto
+     * @apiParam {number} numBathrooms numero de banos
+     * @apiParam {boolean} hasGarden jardin
+     * @apiParam {boolean} isLowLevel Si se desea recámara en planta baja
+     * @apiParam {boolean} hasElevator Elevador
+     * @apiParam {boolean} allServices Con o sin servicios
+     * @apiParam {boolean} wayToBuy Forma de compra FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros
      *
      * @apiParamExample {json} Request-Example:
-     * { "name":"Consultor 1", "lastName":"Apellido", "password":"1234", "description":"Especialidad en", "companyId":"5b6db7c05291313ddcc318b7" }
+     * { "isRent":true, "name":"Depa 1", "typeOfProperty":"departamento", "space":45, "tag":["UPAEP"], "files":["documento1","documento2"], "dateToBuy":"18/11/2018", "zone":"La Paz", "minPrice":2500, "maxPrice":2500, "numRooms":1, "numCars":1, "isOld":false, "isClose":false, "numBathrooms":2, "hasGarden":false, "isLowLevel":false, "hasElevator":false, "allServices":true, "wayToBuy":"otros" }
      *
-     * @apiUse ConsultantResponseParams
+     * @apiUse PropertyResponseParams
      *
      * @apiSuccessExample {json} Success-Response Created User:
-     * { "data": { "timestamp": "2018-08-10T16:08:32.439Z", "rankingAverage": 0, "tickets": [], "_id": "5b6db8805291313ddcc318b9", "name": "Consultor 1", "lastName": "Apellido", "password": "1234", "description": "Especialidad en", "companyId": "5b6db7c05291313ddcc318b7", "__v": 0 } }
+     * { "data": { "timestamp": "2018-08-27T16:47:47.968Z", "tag": [ "UPAEP" ], "files": [ "documento1", "documento2" ], "_id": "5b842b334f965c30a03c1951", "isRent": true, "name": "Depa 1", "typeOfProperty": "departamento", "space": 45, "dateToBuy": "18/11/2018", "zone": "La Paz", "minPrice": 2500, "maxPrice": 2500, "numRooms": 1, "numCars": 1, "isOld": false, "isClose": false, "numBathrooms": 2, "hasGarden": false, "isLowLevel": false, "hasElevator": false, "allServices": true, "wayToBuy": "otros", "__v": 0 } }
      */
     create(req, res) {
         const isRent = req.body.isRent;
         const name = req.body.name;
-        const address = req.body.address;
         const typeOfProperty = req.body.typeOfProperty;
-        const wayToBuy = req.body.wayToBuy;
+        const space = req.body.space;
+        const tag = req.body.tag;
+        const files = req.body.files;
         const dateToBuy = req.body.dateToBuy;
+        const zone = req.body.zone;
         const minPrice = req.body.minPrice;
         const maxPrice = req.body.maxPrice;
-        const tag = req.body.tag;
-        const numVisit = req.body.numVisit;
+        const numRooms = req.body.numRooms;
+        const numCars = req.body.numCars;
+        const isOld = req.body.isOld;
+        const isClose = req.body.isClose;
+        const numBathrooms = req.body.numBathrooms;
+        const hasGarden = req.body.hasGarden;
+        const isLowLevel = req.body.isLowLevel;
+        const hasElevator = req.body.hasElevator;
+        const allServices = req.body.allServices;
+        const wayToBuy = req.body.wayToBuy;
         const property = new Property_1.default({
             isRent,
             name,
-            address,
             typeOfProperty,
-            wayToBuy,
+            space,
+            tag,
+            files,
             dateToBuy,
+            zone,
             minPrice,
             maxPrice,
-            tag,
-            numVisit,
+            numRooms,
+            numCars,
+            isOld,
+            isClose,
+            numBathrooms,
+            hasGarden,
+            isLowLevel,
+            hasElevator,
+            allServices,
+            wayToBuy,
         });
         property
             .save()
@@ -123,23 +174,37 @@ class PropertyRouter {
         });
     }
     /**
-     * @api {PUT} /consultants/:_id Request Update
+     * @api {PUT} /property/:_id Request Update
      * @apiVersion  0.1.0
      * @apiName put
-     * @apiGroup Consultant
+     * @apiGroup property
      *
-     * @apiParam {ObjectId} consultantId Must be provided as QueryParam
+     * @apiParam {ObjectId} propertyId Must be provided as QueryParam
      * @apiParam {string} name
-     * @apiParam {string} lastName
-     * @apiParam {string} password
-     * @apiParam {string} description
-     * @apiParam {ObjectId} companyId
+     * @apiParam {boolean} isRent Renta o Compra
+     * @apiParam {string[]} typeOfProperty Tipos de Vivienda casa, departamento, terreno, nave industrial, etc., con la posibilidad de agregar alguna opción que no aparezca dentro del listado.
+     * @apiParam {number} space Espacio de vivienda
+     * @apiParam {number} numVisit num de Visitas
+     * @apiParam {string[]} tag Etiquetas
+     * @apiParam {string[]} files Documentos
+     * @apiParam {string} dateToBuy Fecha posible compra/renta
+     * @apiParam {string} zone Zona de compra/renta
+     * @apiParam {number} minPrice Costo minimo
+     * @apiParam {number} maxPrice Costo maximo
+     * @apiParam {number} numRooms Numero de recamaras
+     * @apiParam {number} numCars Numero de lugares de estacionamiento
+     * @apiParam {boolean} isOld Nuevo o usado
+     * @apiParam {boolean} isClose fraccionamiento cerrado o abierto
+     * @apiParam {number} numBathrooms numero de banos
+     * @apiParam {boolean} hasGarden jardin
+     * @apiParam {boolean} isLowLevel Si se desea recámara en planta baja
+     * @apiParam {boolean} hasElevator Elevador
+     * @apiParam {boolean} allServices Con o sin servicios
+     * @apiParam {boolean} wayToBuy Forma de compra FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros
      *
-     * @apiExample Example usage:
-     * http://31.220.52.51:3000/api/v1/consultants/5b6db8805291313ddcc318b9
      *
      * @apiParamExample {json} Request-Example:
-     * { "password":"3ede3" }
+     * { "files":["documento1","documento2", "documento3"] }
      *
      * @apiSuccessExample {json} Success-Response:
      * { "data": true }
@@ -155,16 +220,12 @@ class PropertyRouter {
         });
     }
     /**
-     * @api {DELETE} /consultants/:consultantId Request  Deleted
+     * @api {DELETE} /property/:id Request  Deleted
      * @apiVersion  0.1.0
      * @apiName deleteByToken
-     * @apiGroup Consultant
+     * @apiGroup property
      *
-     *
-     * @apiParam {ObjectId} consultantId Must be placed as QueryParam
-     *
-     * @apiExample Example usage:
-     * http://31.220.52.51:3000/api/v1/consultants/5b69b23777093a04244fae68
+     * @apiParam {ObjectId} propertyId Must be provided as QueryParam
      *
      * @apiSuccessExample {json} Success-Response:
      * {"data":true}
@@ -179,10 +240,113 @@ class PropertyRouter {
             res.status(500).json({ error });
         });
     }
+    /**
+     * @api  {POST} /property/matchsearchbybuyer/:id Request match search by buyer
+     * @apiVersion  0.1.0
+     * @apiName demomatch
+     * @apiGroup property
+     *
+     * @apiParam {ObjectId} buyerId Must be provided as QueryParam
+     * @apiParam {number} percentage  % Minimo de match
+     * @apiParamExample {json} Request-Example:
+     * { "percentage": 60 }
+     * @apiSuccessExample {json} Success-Response:
+     * {"data":true}
+     */
+    setPropiertiesToBuyer(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // id de buyer
+            const _id = req.params.id;
+            // percentage
+            const percentage = req.body.percentage;
+            const properties = yield PropertyLogic_1.PropertyLogic.Instance().matchSearchByBuyerId(_id, percentage);
+            Buyer_1.default.findByIdAndUpdate(_id, { property: properties })
+                .then(() => {
+                res.status(200).json({ data: true });
+            })
+                .catch(error => {
+                res.status(500).json({ error });
+            });
+        });
+    }
+    /**
+     * @api {POST} /property/matchsearchbydemo/ Request demo match
+     * @apiVersion  0.1.0
+     * @apiName matchsearchbybuyer
+     * @apiGroup property
+     *
+     *
+     * @apiParam {number} percentage  % Minimo de match
+     * @apiParam {string} typeOfProperty Tipos de Vivienda casa, departamento, terreno, nave industrial, etc., con la posibilidad de agregar alguna opción que no aparezca dentro del listado.
+     * @apiParam {number} space Espacio de vivienda
+     * @apiParam {string[]} tag Etiquetas
+     * @apiParam {ISchedule[]} schedule Eventos programados
+     * @apiParam {ICredit[]} credit Creditos
+     * @apiParam {string[]} files Documentos
+     * @apiParam {IProperty[]} property Lista de sugerencias
+     * @apiParam {IProperty[]} propertySave Lista Propiedades guardadas o que le interesan
+     * @apiParam {IAdviser[]} adviser Asesores Asignados
+     * @apiParam {INotification[]} notification Notificaciones guardadas
+     * @apiParam {boolean} isRenter Renta o Compra
+     * @apiParam {string} dateToBuy Fecha posible compra/renta
+     * @apiParam {string} zone Zona de compra/renta
+     * @apiParam {number} minPrice Costo minimo
+     * @apiParam {number} maxPrice Costo maximo
+     * @apiParam {number} numRooms Numero de recamaras
+     * @apiParam {number} numCars Numero de lugares de estacionamiento
+     * @apiParam {boolean} isOld Nuevo o usado
+     * @apiParam {boolean} isClose fraccionamiento cerrado o abierto
+     * @apiParam {number} numBathrooms numero de banos
+     * @apiParam {boolean} hasGarden jardin
+     * @apiParam {boolean} isLowLevel Si se desea recámara en planta baja
+     * @apiParam {boolean} hasElevator Elevador
+     * @apiParam {boolean} allServices Con o sin servicios
+     * @apiParam {boolean} wayToBuy Forma de compra FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros
+     * @apiParamExample {json} Request-Example:
+     * { "typeOfProperty":"departamento", "space":40, "tag":["mascotas", "estudiante"], "isRenter":true, "dateToBuy":"20/12/2018", "zone":"La Paz", "minPrice":2000, "maxPrice":4000, "numRooms":1, "numCars":0, "isOld":false, "isClose":false, "numBathrooms":2, "hasGarden":false, "isLowLevel":false, "hasElevator":false, "allServices":true, "wayToBuy":"otro", "percentage": 60 }
+     * @apiSuccessExample {json} Success-Response:
+     * { "data": [ { "timestamp": "2018-08-27T16:47:47.968Z", "tag": [ "UPAEP" ], "files": [ "documento1", "documento2", "documento3" ], "_id": "5b842b334f965c30a03c1951", "isRent": true, "name": "Depa 1", "typeOfProperty": "departamento", "space": 45, "dateToBuy": "18/11/2018", "zone": "La Paz", "minPrice": 2500, "maxPrice": 2500, "numRooms": 1, "numCars": 1, "isOld": false, "isClose": false, "numBathrooms": 2, "hasGarden": false, "isLowLevel": false, "hasElevator": false, "allServices": true, "wayToBuy": "otros", "__v": 0 } ] }
+     */
+    demoMatchSearch(req, res) {
+        // obj de tipo buyer
+        const demoBuyer = {
+            isRenter: req.body.isRenter,
+            typeOfProperty: req.body.typeOfProperty,
+            space: req.body.space,
+            dateToBuy: req.body.dateToBuy,
+            zone: req.body.zone,
+            minPrice: req.body.minPrice,
+            maxPrice: req.body.maxPrice,
+            numRooms: req.body.numRooms,
+            numCars: req.body.numCars,
+            isOld: req.body.isOld,
+            isClose: req.body.isClose,
+            numBathrooms: req.body.numBathrooms,
+            hasGarden: req.body.hasGarden,
+            isLowLevel: req.body.isLowLevel,
+            hasElevator: req.body.hasElevator,
+            allServices: req.body.allServices,
+            wayToBuy: req.body.wayToBuy,
+            tag: req.body.tag,
+        };
+        // percentage
+        const percentage = req.body.percentage;
+        // resultado
+        PropertyLogic_1.PropertyLogic.Instance()
+            .resultOfProperty(demoBuyer, percentage)
+            .then(result => {
+            res.status(200).json({ data: result });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
     // set up our routes
     routes() {
         this.router.get("/", this.all);
         this.router.get("/bypropertyid/:id", this.oneById);
+        this.router.post("/matchsearchbybuyer/:id", this.setPropiertiesToBuyer);
+        this.router.post("/matchsearchbydemo/", this.demoMatchSearch);
         this.router.post("/", this.create);
         this.router.put("/:id", this.update);
         this.router.delete("/:id", this.delete);

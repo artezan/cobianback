@@ -17,11 +17,11 @@
     ]
   },
   "apidoc": {
-    "name": "API-Doc-Consultores-SAP",
+    "name": "API-Doc-Cobian",
     "version": "0.1.0",
-    "description": "Documentation for Consultores SAP",
-    "url": "http://31.220.52.51:3000/api/v1",
-    "sampleUrl": "http://31.220.52.51:3000/api/v1"
+    "description": "Documentation for Cobian API",
+    "url": "https://cobianback.herokuapp.com/api/v1",
+    "sampleUrl": "https://cobianback.herokuapp.com/api/v1"
   },
   "dependencies": {
     "actions-on-google": "^2.1.1",

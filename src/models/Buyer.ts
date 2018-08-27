@@ -4,6 +4,8 @@ import { ISchedule } from "./Schedule";
 import { ICredit } from "./Credit";
 import { IProperty } from "./Property";
 import { INotification } from "./Notification";
+import { IOfert } from "./Ofert";
+import { IStatusBuyerProperty } from "./StatusBuyerProperty";
 export interface IBuyer extends Document {
   name: string;
   fatherLastName: string;
@@ -31,7 +33,7 @@ export interface IBuyer extends Document {
   /**
    * Tipos de Vivienda casa, departamento, terreno, nave industrial, etc., con la posibilidad de agregar alguna opción que no aparezca dentro del listado.
    */
-  typeOfProperty: string[];
+  typeOfProperty: string;
   /**
    * Espacio de vivienda
    */
@@ -56,6 +58,10 @@ export interface IBuyer extends Document {
    * Lista de sugerencias
    */
   property: IProperty[];
+  /**
+   * Lista Propiedades guardadas o que le interesan
+   */
+  propertySave: IProperty[];
   /**
    * Asesores
    */
@@ -120,6 +126,18 @@ export interface IBuyer extends Document {
    * todos servicios
    */
   allServices: boolean;
+  /**
+   * Forma de compra FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros
+   */
+  wayToBuy: string;
+  /**
+   * Ofertas
+   */
+  ofert: IOfert[];
+  /**
+   * Estado buyer/property
+   */
+  statusBuyerProperty: IStatusBuyerProperty[];
 }
 const BuyerSchema: Schema = new Schema({
   name: {
@@ -177,12 +195,11 @@ const BuyerSchema: Schema = new Schema({
   /**
    * Tipos de Vivienda
    */
-  typeOfProperty: [
-    {
-      type: String,
-      default: [],
-    },
-  ],
+  typeOfProperty: {
+    type: String,
+    default: [],
+  },
+
   /**
    * Espacio de vivienda
    */
@@ -205,6 +222,13 @@ const BuyerSchema: Schema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: "Schedule",
+      default: [],
+    },
+  ],
+  statusBuyerProperty: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "StatusBuyerProperty",
       default: [],
     },
   ],
@@ -237,6 +261,13 @@ const BuyerSchema: Schema = new Schema({
       default: [],
     },
   ],
+  propertySave: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Property",
+      default: [],
+    },
+  ],
   /**
    * Asesores
    */
@@ -251,6 +282,13 @@ const BuyerSchema: Schema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: "Notification",
+      default: [],
+    },
+  ],
+  ofert: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Ofert",
       default: [],
     },
   ],
@@ -334,6 +372,9 @@ const BuyerSchema: Schema = new Schema({
    */
   allServices: {
     type: Boolean,
+  },
+  wayToBuy: {
+    type: String,
   },
 });
 

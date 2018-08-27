@@ -19,6 +19,9 @@ const CreditSchema = new mongoose_1.Schema({
     status: {
         type: String,
     },
+    notes: {
+        type: String,
+    },
     timestamp: {
         type: Date,
         default: Date.now,
