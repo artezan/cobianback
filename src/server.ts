@@ -20,6 +20,7 @@ import { PropertyRouter } from "./router/PropertyRouter";
 import { ScheduleRouter } from "./router/ScheduleRouter";
 import { SellerRouter } from "./router/SellerRouter";
 import { StatusBuyerPropertyRouter } from "./router/StatusBuyerPropertyRouter";
+import { UserSession } from "./router/UserSession";
 
 class Server {
   public administratorRouter = new AdministratorRouter();
@@ -35,6 +36,7 @@ class Server {
   public scheduleRouter = new ScheduleRouter();
   public sellerRouter = new SellerRouter();
   public statusBuyerPropertyRouter = new StatusBuyerPropertyRouter();
+  public userSession = new UserSession();
 
   // set app to be of type express.Application
   public app: express.Application;
@@ -137,6 +139,7 @@ class Server {
     this.app.use("/api/v1/schedule", this.scheduleRouter.router);
     this.app.use("/api/v1/seller", this.sellerRouter.router);
     this.app.use("/api/v1/status", this.statusBuyerPropertyRouter.router);
+    this.app.use("/api/v1/usersession", this.userSession.router);
   }
 }
 
