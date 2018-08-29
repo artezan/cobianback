@@ -23,30 +23,30 @@ export class UserSession {
       strDecode.length,
     );
     // crea promise con respuesta si encuentra o no
-    const promise = new Promise<string>((resolve, reject) => {
+    const promise = new Promise<any>((resolve, reject) => {
       // busca la info
       try {
         //   admin
         Administrator.find({ password: password, name: name })
           .then(data => {
             if (data.length > 0) {
-              resolve("administrator");
+              resolve({ data: data, type: "administrator" });
             } else {
               //   buyer
               Buyer.find({ password: password, name: name })
                 .then(data => {
                   if (data.length > 0) {
-                    resolve("buyer");
+                    resolve({ data: data, type: "buyer" });
                   } else {
                     Seller.find({ password: password, name: name })
                       .then(data => {
                         if (data.length > 0) {
-                          resolve("seller");
+                          resolve({ data: data, type: "seller" });
                         } else {
                           Adviser.find({ password: password, name: name })
                             .then(data => {
                               if (data.length > 0) {
-                                resolve("adviser");
+                                resolve({ data: data, type: "adviser" });
                               } else {
                                 // resolve("error");
                                 Management.find({
@@ -55,7 +55,10 @@ export class UserSession {
                                 })
                                   .then(data => {
                                     if (data.length > 0) {
-                                      resolve("management");
+                                      resolve({
+                                        data: data,
+                                        type: "management",
+                                      });
                                     } else {
                                       resolve("error");
                                     }

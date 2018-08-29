@@ -33,26 +33,26 @@ class UserSession {
                     Administrator_1.default.find({ password: password, name: name })
                         .then(data => {
                         if (data.length > 0) {
-                            resolve("administrator");
+                            resolve({ data: data, type: "administrator" });
                         }
                         else {
                             //   buyer
                             Buyer_1.default.find({ password: password, name: name })
                                 .then(data => {
                                 if (data.length > 0) {
-                                    resolve("buyer");
+                                    resolve({ data: data, type: "buyer" });
                                 }
                                 else {
                                     Seller_1.default.find({ password: password, name: name })
                                         .then(data => {
                                         if (data.length > 0) {
-                                            resolve("seller");
+                                            resolve({ data: data, type: "seller" });
                                         }
                                         else {
                                             Adviser_1.default.find({ password: password, name: name })
                                                 .then(data => {
                                                 if (data.length > 0) {
-                                                    resolve("adviser");
+                                                    resolve({ data: data, type: "adviser" });
                                                 }
                                                 else {
                                                     // resolve("error");
@@ -62,7 +62,10 @@ class UserSession {
                                                     })
                                                         .then(data => {
                                                         if (data.length > 0) {
-                                                            resolve("management");
+                                                            resolve({
+                                                                data: data,
+                                                                type: "management",
+                                                            });
                                                         }
                                                         else {
                                                             resolve("error");
