@@ -37,6 +37,10 @@ export interface IAdviser extends Document {
    * Si vende o renta
    */
   isRenter: boolean;
+  /**
+   * ciudad para filtar
+   */
+  city: string;
 }
 const AdviserSchema: Schema = new Schema({
   timestamp: {
@@ -55,6 +59,9 @@ const AdviserSchema: Schema = new Schema({
     required: true,
   },
   email: {
+    type: String,
+  },
+  city: {
     type: String,
   },
   schedule: [

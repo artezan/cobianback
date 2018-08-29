@@ -43,6 +43,28 @@ class ManagementRouter {
         });
     }
     /**
+     * @api {GET} /bymanagementcity/:city Request by Object City
+     * @apiVersion  0.1.0
+     * @apiName getByCity
+     * @apiGroup management
+     *
+     *
+     */
+    byCity(req, res) {
+        const city = req.params.city;
+        Management_1.default.find({ city: city })
+            .populate("schedule")
+            .populate("buyer")
+            .populate("goal")
+            .populate("notification")
+            .then(data => {
+            res.status(200).json({ data });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
+    /**
      * @api {GET} /management/bymanagementpassword/:b64 Request by Object Id
      * @apiVersion  0.1.0
      * @apiName getById
@@ -75,7 +97,8 @@ class ManagementRouter {
     create(req, res) {
         const name = req.body.name;
         const password = req.body.password;
-        const management = new Management_1.default({ name, password });
+        const city = req.body.city;
+        const management = new Management_1.default({ name, password, city });
         management
             .save()
             .then(data => {
@@ -123,6 +146,7 @@ class ManagementRouter {
     routes() {
         this.router.get("/", this.all);
         this.router.get("/bymanagementid/:id", this.oneById);
+        this.router.get("/bymanagementcity/:city", this.byCity);
         this.router.get("/bymanagementpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
         this.router.put("/:id", this.update);

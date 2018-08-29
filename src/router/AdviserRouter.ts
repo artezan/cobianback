@@ -118,6 +118,29 @@ export class AdviserRouter {
       });
   }
   /**
+   * @api {GET} /byadvisercity/:city Request by Object City
+   * @apiVersion  0.1.0
+   * @apiName getByCity
+   * @apiGroup adviser
+   *
+   *
+   */
+  public byCity(req: Request, res: Response): void {
+    const city: string = req.params.city;
+
+    Adviser.find({ city: city })
+      .populate("schedule")
+      .populate("buyer")
+      .populate("goal")
+      .populate("notification")
+      .then(data => {
+        res.status(200).json({ data });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
+  /**
    * @api {POST} /adviser/ Request New
    * @apiVersion  0.1.0
    * @apiName post
@@ -147,6 +170,7 @@ export class AdviserRouter {
     const lastName: string = req.body.lastName;
     const password: string = req.body.password;
     const email: string = req.body.email;
+    const city: string = req.body.city;
     const hourStart: number = req.body.hourStart;
     const hourEnd: number = req.body.hourEnd;
     const isRenter: boolean = req.body.isRenter;
@@ -159,6 +183,7 @@ export class AdviserRouter {
       hourStart,
       hourEnd,
       isRenter,
+      city,
     });
 
     adviser
@@ -231,6 +256,7 @@ export class AdviserRouter {
   public routes() {
     this.router.get("/", this.all);
     this.router.get("/byadviserid/:id", this.oneById);
+    this.router.get("/byadvisercity/:city", this.byCity);
     this.router.get("/byadviserpassword/:base64", this.byPassword);
     this.router.post("/", this.create);
     this.router.put("/:id", this.update);

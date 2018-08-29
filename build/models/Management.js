@@ -14,6 +14,9 @@ const ManagementSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    city: {
+        type: String,
+    },
 });
 exports.default = mongoose_1.model("Management", ManagementSchema);
 //# sourceMappingURL=Management.js.map

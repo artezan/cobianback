@@ -28,8 +28,15 @@ export interface ISeller extends Document {
    * Vende o Renta
    */
   isRenter: boolean;
+  /**
+   * city
+   */
+  city: string;
 }
 const SellerSchema: Schema = new Schema({
+  city: {
+    type: String,
+  },
   timestamp: {
     type: Date,
     default: Date.now,

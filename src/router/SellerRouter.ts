@@ -82,6 +82,29 @@ export class SellerRouter {
       });
   }
   /**
+   * @api {GET} /bysellercity/:city Request by Object City
+   * @apiVersion  0.1.0
+   * @apiName getByCity
+   * @apiGroup seller
+   *
+   *
+   */
+  public byCity(req: Request, res: Response): void {
+    const city: string = req.params.city;
+
+    Seller.find({ city: city })
+      .populate("schedule")
+      .populate("buyer")
+      .populate("goal")
+      .populate("notification")
+      .then(data => {
+        res.status(200).json({ data });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
+  /**
    * @api {POST} /seller/ Request New
    * @apiVersion  0.1.0
    * @apiName post
@@ -107,12 +130,14 @@ export class SellerRouter {
     const lastName: string = req.body.lastName;
     const password: string = req.body.password;
     const isRenter: boolean = req.body.isRenter;
+    const city: string = req.body.city;
 
     const seller = new Seller({
       name,
       lastName,
       password,
       isRenter,
+      city,
     });
 
     seller
@@ -166,6 +191,7 @@ export class SellerRouter {
   public routes() {
     this.router.get("/", this.all);
     this.router.get("/bysellerid/:id", this.oneById);
+    this.router.get("/bysellercity/:city", this.byCity);
     this.router.get("/bysellerpassword/:base64", this.byPassword);
     this.router.post("/", this.create);
     this.router.put("/:id", this.update);

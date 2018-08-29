@@ -133,6 +133,28 @@ class BuyerRouter {
         });
     }
     /**
+     * @api {GET} /bybuyercity/:city Request by Object City
+     * @apiVersion  0.1.0
+     * @apiName getByCity
+     * @apiGroup buyer
+     *
+     *
+     */
+    byCity(req, res) {
+        const city = req.params.city;
+        Buyer_1.default.find({ city: city })
+            .populate("schedule")
+            .populate("buyer")
+            .populate("goal")
+            .populate("notification")
+            .then(data => {
+            res.status(200).json({ data });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
+    /**
      * @api {POST} /buyer/ Request New
      * @apiVersion  0.1.0
      * @apiName post
@@ -207,6 +229,7 @@ class BuyerRouter {
         const hasElevator = req.body.hasElevator;
         const allServices = req.body.allServices;
         const wayToBuy = req.body.wayToBuy;
+        const city = req.body.city;
         const buyer = new Buyer_1.default({
             name,
             fatherLastName,
@@ -236,6 +259,7 @@ class BuyerRouter {
             hasElevator,
             allServices,
             wayToBuy,
+            city,
         });
         buyer
             .save()
@@ -332,6 +356,7 @@ class BuyerRouter {
     routes() {
         this.router.get("/", this.all);
         this.router.get("/bybuyerid/:id", this.oneById);
+        this.router.get("/bybuyercity/:city", this.byCity);
         this.router.get("/bybuyerpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
         this.router.put("/:id", this.update);

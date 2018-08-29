@@ -47,6 +47,29 @@ export class ManagementRouter {
       });
   }
   /**
+   * @api {GET} /bymanagementcity/:city Request by Object City
+   * @apiVersion  0.1.0
+   * @apiName getByCity
+   * @apiGroup management
+   *
+   *
+   */
+  public byCity(req: Request, res: Response): void {
+    const city: string = req.params.city;
+
+    Management.find({ city: city })
+      .populate("schedule")
+      .populate("buyer")
+      .populate("goal")
+      .populate("notification")
+      .then(data => {
+        res.status(200).json({ data });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
+  /**
    * @api {GET} /management/bymanagementpassword/:b64 Request by Object Id
    * @apiVersion  0.1.0
    * @apiName getById
@@ -84,8 +107,9 @@ export class ManagementRouter {
   public create(req: Request, res: Response): void {
     const name: string = req.body.name;
     const password: string = req.body.password;
+    const city: string = req.body.city;
 
-    const management = new Management({ name, password });
+    const management = new Management({ name, password, city });
 
     management
       .save()
@@ -138,6 +162,7 @@ export class ManagementRouter {
   public routes() {
     this.router.get("/", this.all);
     this.router.get("/bymanagementid/:id", this.oneById);
+    this.router.get("/bymanagementcity/:city", this.byCity);
     this.router.get("/bymanagementpassword/:base64", this.byPassword);
     this.router.post("/", this.create);
     this.router.put("/:id", this.update);

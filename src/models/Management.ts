@@ -12,6 +12,9 @@ const ManagementSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  city: {
+    type: String,
+  },
 });
 
 export default model("Management", ManagementSchema);

@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const SellerSchema = new mongoose_1.Schema({
+    city: {
+        type: String,
+    },
     timestamp: {
         type: Date,
         default: Date.now,

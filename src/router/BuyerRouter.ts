@@ -141,6 +141,29 @@ export class BuyerRouter {
       });
   }
   /**
+   * @api {GET} /bybuyercity/:city Request by Object City
+   * @apiVersion  0.1.0
+   * @apiName getByCity
+   * @apiGroup buyer
+   *
+   *
+   */
+  public byCity(req: Request, res: Response): void {
+    const city: string = req.params.city;
+
+    Buyer.find({ city: city })
+      .populate("schedule")
+      .populate("buyer")
+      .populate("goal")
+      .populate("notification")
+      .then(data => {
+        res.status(200).json({ data });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
+  /**
    * @api {POST} /buyer/ Request New
    * @apiVersion  0.1.0
    * @apiName post
@@ -216,6 +239,7 @@ export class BuyerRouter {
     const hasElevator: boolean = req.body.hasElevator;
     const allServices: boolean = req.body.allServices;
     const wayToBuy: boolean = req.body.wayToBuy;
+    const city: string = req.body.city;
 
     const buyer = new Buyer({
       name,
@@ -246,6 +270,7 @@ export class BuyerRouter {
       hasElevator,
       allServices,
       wayToBuy,
+      city,
     });
 
     buyer
@@ -347,6 +372,7 @@ export class BuyerRouter {
   public routes() {
     this.router.get("/", this.all);
     this.router.get("/bybuyerid/:id", this.oneById);
+    this.router.get("/bybuyercity/:city", this.byCity);
     this.router.get("/bybuyerpassword/:base64", this.byPassword);
     this.router.post("/", this.create);
     this.router.put("/:id", this.update);

@@ -20,6 +20,9 @@ const AdviserSchema = new mongoose_1.Schema({
     email: {
         type: String,
     },
+    city: {
+        type: String,
+    },
     schedule: [
         {
             type: mongoose_1.Schema.Types.ObjectId,

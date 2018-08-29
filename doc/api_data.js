@@ -202,6 +202,21 @@ define({ "api": [
   },
   {
     "type": "GET",
+    "url": "/byadvisercity/:city",
+    "title": "Request by Object City",
+    "version": "0.1.0",
+    "name": "getByCity",
+    "group": "adviser",
+    "filename": "src/router/AdviserRouter.ts",
+    "groupTitle": "adviser",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/byadvisercity/:city"
+      }
+    ]
+  },
+  {
+    "type": "GET",
     "url": "/adviser/byadviserid/:id",
     "title": "Request by Object Id",
     "version": "0.1.0",
@@ -817,6 +832,21 @@ define({ "api": [
     },
     "filename": "src/router/BuyerRouter.ts",
     "groupTitle": "buyer"
+  },
+  {
+    "type": "GET",
+    "url": "/bybuyercity/:city",
+    "title": "Request by Object City",
+    "version": "0.1.0",
+    "name": "getByCity",
+    "group": "buyer",
+    "filename": "src/router/BuyerRouter.ts",
+    "groupTitle": "buyer",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/bybuyercity/:city"
+      }
+    ]
   },
   {
     "type": "GET",
@@ -2027,16 +2057,16 @@ define({ "api": [
   },
   {
     "type": "GET",
-    "url": "/management/bymanagementid/:id",
-    "title": "Request by Object Id",
+    "url": "/bymanagementcity/:city",
+    "title": "Request by Object City",
     "version": "0.1.0",
-    "name": "getById",
+    "name": "getByCity",
     "group": "management",
     "filename": "src/router/ManagementRouter.ts",
     "groupTitle": "management",
     "sampleRequest": [
       {
-        "url": "https://cobianback.herokuapp.com/api/v1/management/bymanagementid/:id"
+        "url": "https://cobianback.herokuapp.com/api/v1/bymanagementcity/:city"
       }
     ]
   },
@@ -2052,6 +2082,21 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "https://cobianback.herokuapp.com/api/v1/management/bymanagementpassword/:b64"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/management/bymanagementid/:id",
+    "title": "Request by Object Id",
+    "version": "0.1.0",
+    "name": "getById",
+    "group": "management",
+    "filename": "src/router/ManagementRouter.ts",
+    "groupTitle": "management",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/management/bymanagementid/:id"
       }
     ]
   },
@@ -3643,6 +3688,21 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "https://cobianback.herokuapp.com/api/v1/seller/"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/bysellercity/:city",
+    "title": "Request by Object City",
+    "version": "0.1.0",
+    "name": "getByCity",
+    "group": "seller",
+    "filename": "src/router/SellerRouter.ts",
+    "groupTitle": "seller",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/bysellercity/:city"
       }
     ]
   },

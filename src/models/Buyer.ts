@@ -138,8 +138,15 @@ export interface IBuyer extends Document {
    * Estado buyer/property
    */
   statusBuyerProperty: IStatusBuyerProperty[];
+  /**
+   * ciudad
+   */
+  city: string;
 }
 const BuyerSchema: Schema = new Schema({
+  city: {
+    type: String,
+  },
   name: {
     type: String,
     required: true,
