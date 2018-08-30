@@ -84,6 +84,11 @@ class ScheduleRouter {
         const seller = req.body.seller;
         const status = req.body.status;
         const note = req.body.note;
+        const day = req.body.day;
+        const month = req.body.month;
+        const year = req.body.year;
+        const hour = req.body.hour;
+        const minute = req.body.minute;
         const schedule = new Schedule_1.default({
             title,
             address,
@@ -94,6 +99,11 @@ class ScheduleRouter {
             status,
             note,
             dateOfEvent,
+            day,
+            month,
+            year,
+            hour,
+            minute,
         });
         schedule
             .save()

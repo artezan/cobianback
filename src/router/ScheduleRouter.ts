@@ -90,6 +90,11 @@ export class ScheduleRouter {
     const seller: string = req.body.seller;
     const status: string = req.body.status;
     const note: string = req.body.note;
+    const day: string = req.body.day;
+    const month: string = req.body.month;
+    const year: string = req.body.year;
+    const hour: string = req.body.hour;
+    const minute: string = req.body.minute;
     const schedule = new Schedule({
       title,
       address,
@@ -100,6 +105,11 @@ export class ScheduleRouter {
       status,
       note,
       dateOfEvent,
+      day,
+      month,
+      year,
+      hour,
+      minute,
     });
 
     schedule

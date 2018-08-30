@@ -7,7 +7,11 @@ export interface ISchedule extends Document {
   /**
    * Fecha del Evento
    */
-  dateOfEvent: string;
+  day: number;
+  month: number;
+  year: number;
+  hour: number;
+  minute: number;
   timestamp: Date;
   /**
    * Titulo del evento
@@ -43,8 +47,20 @@ export interface ISchedule extends Document {
   note: string;
 }
 const ScheduleSchema: Schema = new Schema({
-  dateOfEvent: {
-    type: String,
+  day: {
+    type: Number,
+  },
+  month: {
+    type: Number,
+  },
+  year: {
+    type: Number,
+  },
+  hour: {
+    type: Number,
+  },
+  minute: {
+    type: Number,
   },
   timestamp: {
     type: Date,

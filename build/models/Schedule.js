@@ -2,8 +2,20 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const ScheduleSchema = new mongoose_1.Schema({
-    dateOfEvent: {
-        type: String,
+    day: {
+        type: Number,
+    },
+    month: {
+        type: Number,
+    },
+    year: {
+        type: Number,
+    },
+    hour: {
+        type: Number,
+    },
+    minute: {
+        type: Number,
     },
     timestamp: {
         type: Date,
