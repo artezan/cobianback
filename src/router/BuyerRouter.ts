@@ -67,7 +67,10 @@ export class BuyerRouter {
    */
   public all(req: Request, res: Response): void {
     Buyer.find()
-      .populate("schedule")
+      .populate({
+        path: "schedule",
+        populate: [{ path: "adviser" }, { path: "property" }],
+      })
       .populate("credit")
       .populate("property")
       .populate("adviser")
@@ -101,7 +104,10 @@ export class BuyerRouter {
     const id: string = req.params.id;
 
     Buyer.findById(id)
-      .populate("schedule")
+      .populate({
+        path: "schedule",
+        populate: [{ path: "adviser" }, { path: "property" }],
+      })
       .populate("credit")
       .populate("property")
       .populate("adviser")

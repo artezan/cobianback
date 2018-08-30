@@ -65,7 +65,10 @@ class BuyerRouter {
      */
     all(req, res) {
         Buyer_1.default.find()
-            .populate("schedule")
+            .populate({
+            path: "schedule",
+            populate: [{ path: "adviser" }, { path: "property" }],
+        })
             .populate("credit")
             .populate("property")
             .populate("adviser")
@@ -97,7 +100,10 @@ class BuyerRouter {
     oneById(req, res) {
         const id = req.params.id;
         Buyer_1.default.findById(id)
-            .populate("schedule")
+            .populate({
+            path: "schedule",
+            populate: [{ path: "adviser" }, { path: "property" }],
+        })
             .populate("credit")
             .populate("property")
             .populate("adviser")
