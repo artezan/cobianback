@@ -75,7 +75,10 @@ export class BuyerRouter {
       .populate("adviser")
       .populate("notification")
       .populate("ofert")
-      .populate("statusBuyerProperty")
+      .populate({
+        path: "statusBuyerProperty",
+        populate: [{ path: "buyer" }, { path: "property" }],
+      })
       .then(data => {
         res.status(200).json({ data });
       })
@@ -112,7 +115,10 @@ export class BuyerRouter {
       .populate("adviser")
       .populate("notification")
       .populate("ofert")
-      .populate("statusBuyerProperty")
+      .populate({
+        path: "statusBuyerProperty",
+        populate: [{ path: "buyer" }, { path: "property" }],
+      })
       .then(data => {
         res.status(200).json({ data });
       })
