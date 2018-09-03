@@ -362,6 +362,36 @@ class BuyerRouter {
             res.status(500).json({ error });
         });
     }
+    /**
+     * @api {POST} /buyer/checkbuyer/ Request Check
+     * @apiVersion  0.1.0
+     * @apiName postCheck
+     * @apiGroup buyer
+     *
+     *
+     * @apiParam {number} name
+     * @apiParam {string} fatherLastName
+     * @apiParam {string} motherLastName
+     * @apiParam {number} phone
+     */
+    checkBuyer(req, res) {
+        const name = req.body.name;
+        const fatherLastName = req.body.fatherLastName;
+        const motherLastName = req.body.motherLastName;
+        const phone = req.body.phone;
+        Buyer_1.default.findOne({
+            name: name,
+            fatherLastName: fatherLastName,
+            motherLastName: motherLastName,
+            phone: phone,
+        })
+            .then(data => {
+            res.status(200).json({ data: data });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
     // set up our routes
     routes() {
         this.router.get("/", this.all);
@@ -369,6 +399,7 @@ class BuyerRouter {
         this.router.get("/bybuyercity/:city", this.byCity);
         this.router.get("/bybuyerpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
+        this.router.post("/checkbuyer", this.checkBuyer);
         this.router.put("/:id", this.update);
         this.router.delete("/:id", this.delete);
     }

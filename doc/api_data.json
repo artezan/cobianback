@@ -1431,6 +1431,55 @@
     ]
   },
   {
+    "type": "POST",
+    "url": "/buyer/checkbuyer/",
+    "title": "Request Check",
+    "version": "0.1.0",
+    "name": "postCheck",
+    "group": "buyer",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "name",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "fatherLastName",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "motherLastName",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "phone",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "filename": "src/router/BuyerRouter.ts",
+    "groupTitle": "buyer",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/buyer/checkbuyer/"
+      }
+    ]
+  },
+  {
     "type": "PUT",
     "url": "/buyer/:_id",
     "title": "Request Update",
@@ -2058,21 +2107,6 @@
   },
   {
     "type": "GET",
-    "url": "/management/bymanagementpassword/:b64",
-    "title": "Request by Object Id",
-    "version": "0.1.0",
-    "name": "getById",
-    "group": "management",
-    "filename": "src/router/ManagementRouter.ts",
-    "groupTitle": "management",
-    "sampleRequest": [
-      {
-        "url": "https://cobianback.herokuapp.com/api/v1/management/bymanagementpassword/:b64"
-      }
-    ]
-  },
-  {
-    "type": "GET",
     "url": "/management/bymanagementid/:id",
     "title": "Request by Object Id",
     "version": "0.1.0",
@@ -2083,6 +2117,21 @@
     "sampleRequest": [
       {
         "url": "https://cobianback.herokuapp.com/api/v1/management/bymanagementid/:id"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/management/bymanagementpassword/:b64",
+    "title": "Request by Object Id",
+    "version": "0.1.0",
+    "name": "getById",
+    "group": "management",
+    "filename": "src/router/ManagementRouter.ts",
+    "groupTitle": "management",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/management/bymanagementpassword/:b64"
       }
     ]
   },
