@@ -1288,13 +1288,6 @@
           },
           {
             "group": "Success 200",
-            "type": "IProperty[]",
-            "optional": false,
-            "field": "propertySave",
-            "description": "<p>Lista Propiedades guardadas o que le interesan</p>"
-          },
-          {
-            "group": "Success 200",
             "type": "IAdviser[]",
             "optional": false,
             "field": "adviser",
@@ -1579,13 +1572,6 @@
             "optional": false,
             "field": "property",
             "description": "<p>Lista de sugerencias</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "IProperty[]",
-            "optional": false,
-            "field": "propertySave",
-            "description": "<p>Lista Propiedades guardadas o que le interesan</p>"
           },
           {
             "group": "Parameter",
@@ -3553,13 +3539,6 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "dateOfEvent",
-            "description": "<p>Fecha del evento dd/mm/aaaa</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": false,
             "field": "title",
             "description": ""
           },
@@ -3617,6 +3596,41 @@
             "type": "string",
             "optional": false,
             "field": "note",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "day",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "month",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "year",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "hour",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "minute",
             "description": ""
           }
         ]

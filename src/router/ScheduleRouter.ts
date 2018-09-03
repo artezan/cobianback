@@ -61,7 +61,7 @@ export class ScheduleRouter {
    * @apiGroup schedule
    *
    *
-   * @apiParam {string} dateOfEvent Fecha del evento dd/mm/aaaa
+   *
    * @apiParam {string} title
    * @apiParam {string} address
    * @apiParam {string} description
@@ -71,6 +71,11 @@ export class ScheduleRouter {
    * @apiParam {ObjectId} seller
    * @apiParam {string} status
    * @apiParam {string} note
+   * @apiParam {number} day
+   * @apiParam {number} month
+   * @apiParam {number} year
+   * @apiParam {number} hour
+   * @apiParam {number} minute
    *
    * @apiParamExample {json} Request-Example:
    * { "dateOfEvent":"20/18/2018", "title":"Evento2", "address":"La paz", "property":"5b842b334f965c30a03c1951", "buyer":"5b84586674acb1030cabb419", "adviser":"5b8082ba69a5a10b589abc75", "status":"Pendiente", "note":"Ver Propiedad segunda visita" }

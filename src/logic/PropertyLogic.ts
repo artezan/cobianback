@@ -118,6 +118,8 @@ export class PropertyLogic {
               console.log(sumTotal);
               console.log(items);
               if (avr >= percentage) {
+                // add % avr
+                // property["percentage"] = avr;
                 propertiesMatch.push(property);
               }
             });

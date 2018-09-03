@@ -24,7 +24,6 @@ const Buyer_1 = require("../models/Buyer");
  * @apiSuccess {ICredit[]} credit Creditos
  * @apiSuccess {string[]} files Documentos
  * @apiSuccess {IProperty[]} property Lista de sugerencias
- * @apiSuccess {IProperty[]} propertySave Lista Propiedades guardadas o que le interesan
  * @apiSuccess {IAdviser[]} adviser Asesores Asignados
  * @apiSuccess {INotification[]} notification Notificaciones guardadas
  * @apiSuccess {boolean} isRenter Renta o Compra
@@ -301,7 +300,6 @@ class BuyerRouter {
      * @apiParam {ICredit[]} credit Creditos
      * @apiParam {string[]} files Documentos
      * @apiParam {IProperty[]} property Lista de sugerencias
-     * @apiParam {IProperty[]} propertySave Lista Propiedades guardadas o que le interesan
      * @apiParam {IAdviser[]} adviser Asesores Asignados
      * @apiParam {INotification[]} notification Notificaciones guardadas
      * @apiParam {boolean} isRenter Renta o Compra

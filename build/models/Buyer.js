@@ -125,13 +125,6 @@ const BuyerSchema = new mongoose_1.Schema({
             default: [],
         },
     ],
-    propertySave: [
-        {
-            type: mongoose_1.Schema.Types.ObjectId,
-            ref: "Property",
-            default: [],
-        },
-    ],
     /**
      * Asesores
      */

@@ -59,10 +59,6 @@ export interface IBuyer extends Document {
    */
   property: IProperty[];
   /**
-   * Lista Propiedades guardadas o que le interesan
-   */
-  propertySave: IProperty[];
-  /**
    * Asesores
    */
   adviser: IAdviser[];
@@ -262,13 +258,6 @@ const BuyerSchema: Schema = new Schema({
    * Lista de sugerencias
    */
   property: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Property",
-      default: [],
-    },
-  ],
-  propertySave: [
     {
       type: Schema.Types.ObjectId,
       ref: "Property",
