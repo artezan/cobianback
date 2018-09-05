@@ -1,9 +1,9 @@
 import { Request, Response, Router } from "express";
-import { ObjectId } from "../../node_modules/@types/bson";
 import * as base64 from "base-64";
 import Property from "../models/Property";
 import { PropertyLogic } from "../logic/PropertyLogic";
 import Buyer, { IBuyer } from "../models/Buyer";
+import { ObjectId } from "mongodb";
 
 /**
  * @apiDefine PropertyResponseParams
@@ -270,14 +270,27 @@ export class PropertyRouter {
       _id,
       percentage,
     );
+    Buyer.findById(_id).then(buyer => {
+      properties.forEach(p => {
+        const isFinded = buyer.property.findIndex(
+          (property: any) =>
+            new ObjectId(property).toString() ===
+            new ObjectId(p._id).toString(),
+        );
 
-    Buyer.findByIdAndUpdate(_id, { $push: { property: properties } })
-      .then(() => {
-        res.status(200).json({ data: true });
-      })
-      .catch(error => {
-        res.status(500).json({ error });
+        if (isFinded === -1) {
+          buyer.property.push(p._id);
+        }
       });
+      buyer
+        .save()
+        .then(() => {
+          res.status(200).json({ data: true });
+        })
+        .catch(error => {
+          res.status(500).json({ error });
+        });
+    });
   }
   /**
    * @api {POST} /property/matchsearchbydemo/ Request demo match

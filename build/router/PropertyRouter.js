@@ -12,6 +12,7 @@ const express_1 = require("express");
 const Property_1 = require("../models/Property");
 const PropertyLogic_1 = require("../logic/PropertyLogic");
 const Buyer_1 = require("../models/Buyer");
+const mongodb_1 = require("mongodb");
 /**
  * @apiDefine PropertyResponseParams
  * @apiSuccess {Date} timestamp
@@ -260,12 +261,22 @@ class PropertyRouter {
             // percentage
             const percentage = req.body.percentage;
             const properties = yield PropertyLogic_1.PropertyLogic.Instance().matchSearchByBuyerId(_id, percentage);
-            Buyer_1.default.findByIdAndUpdate(_id, { $push: { property: properties } })
-                .then(() => {
-                res.status(200).json({ data: true });
-            })
-                .catch(error => {
-                res.status(500).json({ error });
+            Buyer_1.default.findById(_id).then(buyer => {
+                properties.forEach(p => {
+                    const isFinded = buyer.property.findIndex((property) => new mongodb_1.ObjectId(property).toString() ===
+                        new mongodb_1.ObjectId(p._id).toString());
+                    if (isFinded === -1) {
+                        buyer.property.push(p._id);
+                    }
+                });
+                buyer
+                    .save()
+                    .then(() => {
+                    res.status(200).json({ data: true });
+                })
+                    .catch(error => {
+                    res.status(500).json({ error });
+                });
             });
         });
     }
