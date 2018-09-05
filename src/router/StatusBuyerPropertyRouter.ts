@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { ObjectId } from "../../node_modules/@types/bson";
 import * as base64 from "base-64";
 import StatusBuyerProperty from "../models/StatusBuyerProperty";
+import { StatusBuyerPropertyLogic } from "../logic/StatusBuyerProperty";
 
 export class StatusBuyerPropertyRouter {
   public router: Router;
@@ -129,6 +130,45 @@ export class StatusBuyerPropertyRouter {
         res.status(500).json({ error });
       });
   }
+  /**
+   * @api {POST} /status/upgradelevelbyid/:id Request  UpgradeLevel
+   * @apiVersion  0.1.0
+   * @apiName UpgradeLevel
+   * @apiGroup status
+   *
+   * @apiParam {ObjectId} id
+   * @apiParam {string} status gris, verde, amarillo, rojo
+   */
+
+  public upgradeLevel(req: Request, res: Response): void {
+    const _id: string = req.params.id;
+    const status: string = req.body.status;
+
+    StatusBuyerProperty.findById({ _id: _id })
+      .then(s => {
+        const isUpdate = StatusBuyerPropertyLogic.Instance().isUpgradeStatus(
+          status,
+          s.status,
+        );
+        if (isUpdate) {
+          StatusBuyerProperty.findByIdAndUpdate(
+            { _id: _id },
+            { status: status },
+          )
+            .then(() => {
+              res.status(200).json({ data: true });
+            })
+            .catch(error => {
+              res.status(500).json({ error });
+            });
+        } else {
+          res.status(200).json({ data: false });
+        }
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
 
   // set up our routes
   public routes() {
@@ -136,6 +176,7 @@ export class StatusBuyerPropertyRouter {
     this.router.get("/bystatusid/:id", this.oneById);
     // this.router.get("/bybuyerpassword/:base64", this.byPassword);
     this.router.post("/", this.create);
+    this.router.post("/upgradelevelbyid/:id", this.upgradeLevel);
     this.router.put("/:id", this.update);
     this.router.delete("/:id", this.delete);
   }

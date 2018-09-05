@@ -377,12 +377,10 @@ class BuyerRouter {
     checkBuyer(req, res) {
         const name = req.body.name;
         const fatherLastName = req.body.fatherLastName;
-        const motherLastName = req.body.motherLastName;
         const phone = req.body.phone;
         Buyer_1.default.findOne({
             name: name,
             fatherLastName: fatherLastName,
-            motherLastName: motherLastName,
             phone: phone,
         })
             .then(data => {

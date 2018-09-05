@@ -393,13 +393,11 @@ export class BuyerRouter {
   public checkBuyer(req: Request, res: Response): void {
     const name: string = req.body.name;
     const fatherLastName: string = req.body.fatherLastName;
-    const motherLastName: string = req.body.motherLastName;
     const phone: number = req.body.phone;
 
     Buyer.findOne({
       name: name,
       fatherLastName: fatherLastName,
-      motherLastName: motherLastName,
       phone: phone,
     })
       .then(data => {

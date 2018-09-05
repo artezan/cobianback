@@ -8,7 +8,7 @@ export interface IStatusBuyerProperty extends Document {
   /**
    * Estado
    */
-  status: string;
+  status?: "verde" | "gris" | "amarillo" | "rojo" | "azul";
   buyer: IBuyer;
   property: IProperty;
   note: string;

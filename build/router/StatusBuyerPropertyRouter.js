@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const StatusBuyerProperty_1 = require("../models/StatusBuyerProperty");
+const StatusBuyerProperty_2 = require("../logic/StatusBuyerProperty");
 class StatusBuyerPropertyRouter {
     constructor() {
         this.router = express_1.Router();
@@ -118,12 +119,45 @@ class StatusBuyerPropertyRouter {
             res.status(500).json({ error });
         });
     }
+    /**
+     * @api {POST} /status/upgradelevelbyid/:id Request  UpgradeLevel
+     * @apiVersion  0.1.0
+     * @apiName UpgradeLevel
+     * @apiGroup status
+     *
+     * @apiParam {ObjectId} id
+     * @apiParam {string} status gris, verde, amarillo, rojo
+     */
+    upgradeLevel(req, res) {
+        const _id = req.params.id;
+        const status = req.body.status;
+        StatusBuyerProperty_1.default.findById({ _id: _id })
+            .then(s => {
+            const isUpdate = StatusBuyerProperty_2.StatusBuyerPropertyLogic.Instance().isUpgradeStatus(status, s.status);
+            if (isUpdate) {
+                StatusBuyerProperty_1.default.findByIdAndUpdate({ _id: _id }, { status: status })
+                    .then(() => {
+                    res.status(200).json({ data: true });
+                })
+                    .catch(error => {
+                    res.status(500).json({ error });
+                });
+            }
+            else {
+                res.status(200).json({ data: false });
+            }
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
     // set up our routes
     routes() {
         this.router.get("/", this.all);
         this.router.get("/bystatusid/:id", this.oneById);
         // this.router.get("/bybuyerpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
+        this.router.post("/upgradelevelbyid/:id", this.upgradeLevel);
         this.router.put("/:id", this.update);
         this.router.delete("/:id", this.delete);
     }

@@ -3932,6 +3932,41 @@ define({ "api": [
     ]
   },
   {
+    "type": "POST",
+    "url": "/status/upgradelevelbyid/:id",
+    "title": "Request  UpgradeLevel",
+    "version": "0.1.0",
+    "name": "UpgradeLevel",
+    "group": "status",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": "<p>gris, verde, amarillo, rojo</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/router/StatusBuyerPropertyRouter.ts",
+    "groupTitle": "status",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/status/upgradelevelbyid/:id"
+      }
+    ]
+  },
+  {
     "type": "DELETE",
     "url": "/status/:id",
     "title": "Request  Deleted",
