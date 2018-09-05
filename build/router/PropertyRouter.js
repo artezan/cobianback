@@ -260,7 +260,7 @@ class PropertyRouter {
             // percentage
             const percentage = req.body.percentage;
             const properties = yield PropertyLogic_1.PropertyLogic.Instance().matchSearchByBuyerId(_id, percentage);
-            Buyer_1.default.findByIdAndUpdate(_id, { property: properties })
+            Buyer_1.default.findByIdAndUpdate(_id, { $push: { property: properties } })
                 .then(() => {
                 res.status(200).json({ data: true });
             })

@@ -271,7 +271,7 @@ export class PropertyRouter {
       percentage,
     );
 
-    Buyer.findByIdAndUpdate(_id, { property: properties })
+    Buyer.findByIdAndUpdate(_id, { $push: { property: properties } })
       .then(() => {
         res.status(200).json({ data: true });
       })
