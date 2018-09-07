@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const base64 = require("base-64");
 const Administrator_1 = require("../models/Administrator");
 /**
  * @apiDefine AdministratorResponseParams
@@ -28,6 +27,10 @@ class AdministratorRouter {
      */
     all(req, res) {
         Administrator_1.default.find()
+            .populate({
+            path: "schedule",
+            populate: [{ path: "adviser" }, { path: "property" }],
+        })
             .then(data => {
             res.status(200).json({ data });
         })
@@ -36,13 +39,13 @@ class AdministratorRouter {
         });
     }
     /**
-     * @api {GET} /administrator/:b64 Request by Object Id
+     * @api {GET} /administrator/:id Request by Object Id
      * @apiVersion  0.1.0
      * @apiName getByNameAndPassword
      * @apiGroup administrator
      *
      *
-     * @apiParam {ObjectId} b64(name:password) Must be provided as QueryParam
+     * @apiParam {ObjectId} id Must be provided as QueryParam
      *
      *
      * @apiSampleRequest /administrator/
@@ -53,10 +56,13 @@ class AdministratorRouter {
      * { "data": { "timestamp": "2018-08-27T14:49:37.217Z", "_id": "5b840f8116b1cf2accc95ae4", "name": "admin2", "password": "cobian2018", "__v": 0 } }
      */
     oneById(req, res) {
-        const strDecode = base64.decode(req.params.nameAdministrator);
-        const name = strDecode.substring(0, strDecode.indexOf(":"));
-        const password = strDecode.substring(strDecode.indexOf(":") + 1, strDecode.length);
-        Administrator_1.default.find({ password: password, name: name })
+        const id = req.params.id;
+        Administrator_1.default.findById(id)
+            .populate({
+            path: "schedule",
+            populate: [{ path: "adviser" }, { path: "property" }],
+        })
+            .populate("goal")
             .then(data => {
             res.status(200).json({ data });
         })
@@ -102,7 +108,7 @@ class AdministratorRouter {
         const _id = req.params.id;
         Administrator_1.default.findByIdAndUpdate({ _id: _id }, req.body)
             .then(data => {
-            res.status(200).json({ data });
+            res.status(200).json({ data: true });
         })
             .catch(error => {
             res.status(500).json({ error });
@@ -121,7 +127,7 @@ class AdministratorRouter {
     // set up our routes
     routes() {
         this.router.get("/", this.all);
-        this.router.get("/:nameAdministrator", this.oneById);
+        this.router.get("/:id", this.oneById);
         this.router.post("/", this.createAdmin);
         this.router.put("/:id", this.update);
         this.router.delete("/:id", this.delete);

@@ -93,6 +93,8 @@ export class ScheduleRouter {
     const buyer: string = req.body.buyer;
     const adviser: string = req.body.adviser;
     const seller: string = req.body.seller;
+    const administrator: string = req.body.administrator;
+    const management: string = req.body.management;
     const status: string = req.body.status;
     const note: string = req.body.note;
     const day: string = req.body.day;
@@ -107,6 +109,8 @@ export class ScheduleRouter {
       buyer,
       adviser,
       seller,
+      administrator,
+      management,
       status,
       note,
       dateOfEvent,

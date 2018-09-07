@@ -15,6 +15,20 @@ const ManagementSchema: Schema = new Schema({
   city: {
     type: String,
   },
+  schedule: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Schedule",
+      default: [],
+    },
+  ],
+  goal: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Goal",
+      default: [],
+    },
+  ],
 });
 
 export default model("Management", ManagementSchema);

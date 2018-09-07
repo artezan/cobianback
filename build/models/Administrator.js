@@ -14,6 +14,20 @@ const AdministratorSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    schedule: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "Schedule",
+            default: [],
+        },
+    ],
+    goal: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "Goal",
+            default: [],
+        },
+    ],
 });
 exports.default = mongoose_1.model("Administrator", AdministratorSchema);
 //# sourceMappingURL=Administrator.js.map

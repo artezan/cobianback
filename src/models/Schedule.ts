@@ -45,6 +45,10 @@ export interface ISchedule extends Document {
    * Notas
    */
   note: string;
+  /**
+   * admin
+   */
+  administrator: string[];
 }
 const ScheduleSchema: Schema = new Schema({
   day: {
@@ -105,6 +109,20 @@ const ScheduleSchema: Schema = new Schema({
   seller: {
     type: Schema.Types.ObjectId,
     ref: "Seller",
+  },
+  /**
+   *  admin
+   */
+  administrator: {
+    type: Schema.Types.ObjectId,
+    ref: "Administrator",
+  },
+  /**
+   *  Management
+   */
+  management: {
+    type: Schema.Types.ObjectId,
+    ref: "Management",
   },
   /**
    * Estado

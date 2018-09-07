@@ -12,6 +12,20 @@ const AdministratorSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  schedule: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Schedule",
+      default: [],
+    },
+  ],
+  goal: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Goal",
+      default: [],
+    },
+  ],
 });
 
 export default model("Administrator", AdministratorSchema);

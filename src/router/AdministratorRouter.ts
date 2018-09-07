@@ -29,6 +29,10 @@ export class AdministratorRouter {
    */
   public all(req: Request, res: Response): void {
     Administrator.find()
+      .populate({
+        path: "schedule",
+        populate: [{ path: "adviser" }, { path: "property" }],
+      })
       .then(data => {
         res.status(200).json({ data });
       })
@@ -37,13 +41,13 @@ export class AdministratorRouter {
       });
   }
   /**
-   * @api {GET} /administrator/:b64 Request by Object Id
+   * @api {GET} /administrator/:id Request by Object Id
    * @apiVersion  0.1.0
    * @apiName getByNameAndPassword
    * @apiGroup administrator
    *
    *
-   * @apiParam {ObjectId} b64(name:password) Must be provided as QueryParam
+   * @apiParam {ObjectId} id Must be provided as QueryParam
    *
    *
    * @apiSampleRequest /administrator/
@@ -54,14 +58,14 @@ export class AdministratorRouter {
    * { "data": { "timestamp": "2018-08-27T14:49:37.217Z", "_id": "5b840f8116b1cf2accc95ae4", "name": "admin2", "password": "cobian2018", "__v": 0 } }
    */
   public oneById(req: Request, res: Response): void {
-    const strDecode: string = base64.decode(req.params.nameAdministrator);
-    const name = strDecode.substring(0, strDecode.indexOf(":"));
-    const password = strDecode.substring(
-      strDecode.indexOf(":") + 1,
-      strDecode.length,
-    );
+    const id: string = req.params.id;
 
-    Administrator.find({ password: password, name: name })
+    Administrator.findById(id)
+      .populate({
+        path: "schedule",
+        populate: [{ path: "adviser" }, { path: "property" }],
+      })
+      .populate("goal")
       .then(data => {
         res.status(200).json({ data });
       })
@@ -69,6 +73,7 @@ export class AdministratorRouter {
         res.status(500).json({ error });
       });
   }
+
   /**
    * @api {POST} /administrator/ Request New
    * @apiVersion  0.1.0
@@ -111,7 +116,7 @@ export class AdministratorRouter {
 
     Administrator.findByIdAndUpdate({ _id: _id }, req.body)
       .then(data => {
-        res.status(200).json({ data });
+        res.status(200).json({ data: true });
       })
       .catch(error => {
         res.status(500).json({ error });
@@ -133,7 +138,7 @@ export class AdministratorRouter {
   // set up our routes
   public routes() {
     this.router.get("/", this.all);
-    this.router.get("/:nameAdministrator", this.oneById);
+    this.router.get("/:id", this.oneById);
     this.router.post("/", this.createAdmin);
     this.router.put("/:id", this.update);
     this.router.delete("/:id", this.delete);

@@ -62,6 +62,20 @@ const ScheduleSchema = new mongoose_1.Schema({
         ref: "Seller",
     },
     /**
+     *  admin
+     */
+    administrator: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Administrator",
+    },
+    /**
+     *  Management
+     */
+    management: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Management",
+    },
+    /**
      * Estado
      */
     status: {

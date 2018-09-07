@@ -87,6 +87,8 @@ class ScheduleRouter {
         const buyer = req.body.buyer;
         const adviser = req.body.adviser;
         const seller = req.body.seller;
+        const administrator = req.body.administrator;
+        const management = req.body.management;
         const status = req.body.status;
         const note = req.body.note;
         const day = req.body.day;
@@ -101,6 +103,8 @@ class ScheduleRouter {
             buyer,
             adviser,
             seller,
+            administrator,
+            management,
             status,
             note,
             dateOfEvent,
