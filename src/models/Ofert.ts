@@ -20,9 +20,7 @@ export interface IOfert extends Document {
    */
   notes: string;
   ofertPrice: number;
-  /**
-   * Documentos
-   */
+
   files: string[];
 }
 const OfertSchema: Schema = new Schema({
