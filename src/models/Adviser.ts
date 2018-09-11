@@ -79,7 +79,6 @@ const AdviserSchema: Schema = new Schema({
   },
   isRenter: {
     type: Boolean,
-    required: true,
   },
   buyer: [
     {

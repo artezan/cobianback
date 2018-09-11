@@ -38,7 +38,6 @@ const AdviserSchema = new mongoose_1.Schema({
     },
     isRenter: {
         type: Boolean,
-        required: true,
     },
     buyer: [
         {
