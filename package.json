@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "server": "tsc && nodemon ./build/app.js",
-    "start:ubuntu": "node ./build/app.js",
-    "start": "tsc && nodemon ./build/app.js",
+    "start": "node ./build/app.js",
+    "start:ubuntu": "tsc && nodemon ./build/app.js",
     "ts:watch": "tsc -w",
     "build-doc": "apidoc -i src/ --silent",
     "build-api": "tsc"
