@@ -97,6 +97,7 @@ class OfertRouter {
      */
     update(req, res) {
         const _id = req.params.id;
+        req.body.timestamp = new Date();
         Ofert_1.default.findByIdAndUpdate({ _id: _id }, req.body)
             .then(() => {
             res.status(200).json({ data: true });

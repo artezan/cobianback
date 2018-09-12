@@ -94,6 +94,7 @@ class StatusBuyerPropertyRouter {
      */
     update(req, res) {
         const _id = req.params.id;
+        req.body.timestamp = new Date();
         StatusBuyerProperty_1.default.findByIdAndUpdate({ _id: _id }, req.body)
             .then(() => {
             res.status(200).json({ data: true });
@@ -135,7 +136,8 @@ class StatusBuyerPropertyRouter {
             .then(s => {
             const isUpdate = StatusBuyerProperty_2.StatusBuyerPropertyLogic.Instance().isUpgradeStatus(status, s.status);
             if (isUpdate) {
-                StatusBuyerProperty_1.default.findByIdAndUpdate({ _id: _id }, { status: status })
+                const timestamp = new Date();
+                StatusBuyerProperty_1.default.findByIdAndUpdate({ _id: _id }, { status: status, timestamp: timestamp })
                     .then(() => {
                     res.status(200).json({ data: true });
                 })

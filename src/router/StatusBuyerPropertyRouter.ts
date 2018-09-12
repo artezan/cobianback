@@ -103,6 +103,7 @@ export class StatusBuyerPropertyRouter {
 
   public update(req: Request, res: Response): void {
     const _id: string = req.params.id;
+    req.body.timestamp = new Date();
     StatusBuyerProperty.findByIdAndUpdate({ _id: _id }, req.body)
       .then(() => {
         res.status(200).json({ data: true });
@@ -151,9 +152,10 @@ export class StatusBuyerPropertyRouter {
           s.status,
         );
         if (isUpdate) {
+          const timestamp = new Date();
           StatusBuyerProperty.findByIdAndUpdate(
             { _id: _id },
-            { status: status },
+            { status: status, timestamp: timestamp },
           )
             .then(() => {
               res.status(200).json({ data: true });

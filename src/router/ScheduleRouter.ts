@@ -140,6 +140,7 @@ export class ScheduleRouter {
 
   public update(req: Request, res: Response): void {
     const _id: string = req.params.id;
+    req.body.timestamp = new Date();
     Schedule.findByIdAndUpdate({ _id: _id }, req.body)
       .then(() => {
         res.status(200).json({ data: true });

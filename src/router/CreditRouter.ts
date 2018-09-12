@@ -104,6 +104,7 @@ export class CreditRouter {
 
   public update(req: Request, res: Response): void {
     const _id: string = req.params.id;
+    req.body.timestamp = new Date();
     Credit.findByIdAndUpdate({ _id: _id }, req.body)
       .then(() => {
         res.status(200).json({ data: true });

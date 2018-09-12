@@ -101,6 +101,7 @@ class GoalRouter {
      */
     update(req, res) {
         const _id = req.params.id;
+        req.body.timestamp = new Date();
         Goal_1.default.findByIdAndUpdate({ _id: _id }, req.body)
             .then(() => {
             res.status(200).json({ data: true });
