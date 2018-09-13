@@ -153,10 +153,35 @@ class StatusBuyerPropertyRouter {
             res.status(500).json({ error });
         });
     }
+    /**
+     * @api {POST} /status/bybuyerpropid/ Request by Object Id
+     * @apiVersion  0.1.0
+     * @apiName getById
+     * @apiGroup status
+     *
+     *
+     */
+    oneByPropBuyer(req, res) {
+        const buyer = req.body.buyer;
+        const property = req.body.property;
+        StatusBuyerProperty_1.default.findOne({
+            buyer,
+            property,
+        })
+            .populate("buyer")
+            .populate("property")
+            .then(data => {
+            res.status(200).json({ data });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
     // set up our routes
     routes() {
         this.router.get("/", this.all);
         this.router.get("/bystatusid/:id", this.oneById);
+        this.router.post("/bybuyerpropid", this.oneByPropBuyer);
         // this.router.get("/bybuyerpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
         this.router.post("/upgradelevelbyid/:id", this.upgradeLevel);
