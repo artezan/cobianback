@@ -16,6 +16,7 @@ const ScheduleSchema = new mongoose_1.Schema({
     },
     minute: {
         type: Number,
+        default: 0,
     },
     timestamp: {
         type: Date,

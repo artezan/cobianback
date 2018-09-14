@@ -65,6 +65,7 @@ const ScheduleSchema: Schema = new Schema({
   },
   minute: {
     type: Number,
+    default: 0,
   },
   timestamp: {
     type: Date,
