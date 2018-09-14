@@ -43,7 +43,14 @@ const GoalSchema = new mongoose_1.Schema({
     /**
      * Datos Cuantitativos
      */
-    dataNumber: {
+    goalNumber: {
+        type: Number,
+        default: 0,
+    },
+    /**
+     * Datos Cuantitativos
+     */
+    currentNumber: {
         type: Number,
         default: 0,
     },

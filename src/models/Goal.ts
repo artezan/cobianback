@@ -75,7 +75,14 @@ const GoalSchema: Schema = new Schema({
   /**
    * Datos Cuantitativos
    */
-  dataNumber: {
+  goalNumber: {
+    type: Number,
+    default: 0,
+  },
+  /**
+   * Datos Cuantitativos
+   */
+  currentNumber: {
     type: Number,
     default: 0,
   },

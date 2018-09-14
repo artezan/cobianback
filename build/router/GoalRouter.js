@@ -72,10 +72,11 @@ class GoalRouter {
         const isComplete = req.body.isComplete;
         const isByManagement = req.body.isByManagement;
         const title = req.body.title;
-        const dateLimit = req.body.dateLimit;
         const day = req.body.day;
         const month = req.body.month;
         const year = req.body.year;
+        const goalNumber = req.body.goalNumber;
+        const currentNumber = req.body.currentNumber;
         const goal = new Goal_1.default({
             content,
             adviser,
@@ -84,7 +85,8 @@ class GoalRouter {
             isComplete,
             isByManagement,
             title,
-            dateLimit,
+            goalNumber,
+            currentNumber,
             day,
             month,
             year,

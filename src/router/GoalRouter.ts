@@ -78,10 +78,12 @@ export class GoalRouter {
     const isComplete: boolean = req.body.isComplete;
     const isByManagement: boolean = req.body.isByManagement;
     const title: boolean = req.body.title;
-    const dateLimit: string = req.body.dateLimit;
+
     const day: string = req.body.day;
     const month: string = req.body.month;
     const year: string = req.body.year;
+    const goalNumber: number = req.body.goalNumber;
+    const currentNumber: number = req.body.currentNumber;
 
     const goal = new Goal({
       content,
@@ -91,7 +93,8 @@ export class GoalRouter {
       isComplete,
       isByManagement,
       title,
-      dateLimit,
+      goalNumber,
+      currentNumber,
       day,
       month,
       year,
