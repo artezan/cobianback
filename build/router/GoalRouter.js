@@ -73,6 +73,9 @@ class GoalRouter {
         const isByManagement = req.body.isByManagement;
         const title = req.body.title;
         const dateLimit = req.body.dateLimit;
+        const day = req.body.day;
+        const month = req.body.month;
+        const year = req.body.year;
         const goal = new Goal_1.default({
             content,
             adviser,
@@ -82,6 +85,9 @@ class GoalRouter {
             isByManagement,
             title,
             dateLimit,
+            day,
+            month,
+            year,
         });
         goal
             .save()

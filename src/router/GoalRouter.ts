@@ -79,6 +79,9 @@ export class GoalRouter {
     const isByManagement: boolean = req.body.isByManagement;
     const title: boolean = req.body.title;
     const dateLimit: string = req.body.dateLimit;
+    const day: string = req.body.day;
+    const month: string = req.body.month;
+    const year: string = req.body.year;
 
     const goal = new Goal({
       content,
@@ -89,6 +92,9 @@ export class GoalRouter {
       isByManagement,
       title,
       dateLimit,
+      day,
+      month,
+      year,
     });
 
     goal

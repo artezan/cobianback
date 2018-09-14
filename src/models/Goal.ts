@@ -63,6 +63,15 @@ const GoalSchema: Schema = new Schema({
   dateLimit: {
     type: String,
   },
+  day: {
+    type: Number,
+  },
+  month: {
+    type: Number,
+  },
+  year: {
+    type: Number,
+  },
   /**
    * Datos Cuantitativos
    */

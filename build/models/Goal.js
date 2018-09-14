@@ -31,6 +31,15 @@ const GoalSchema = new mongoose_1.Schema({
     dateLimit: {
         type: String,
     },
+    day: {
+        type: Number,
+    },
+    month: {
+        type: Number,
+    },
+    year: {
+        type: Number,
+    },
     /**
      * Datos Cuantitativos
      */
