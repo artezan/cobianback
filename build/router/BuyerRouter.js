@@ -75,7 +75,6 @@ class BuyerRouter {
             .populate("property")
             .populate("adviser")
             .populate("notification")
-            .populate("ofert")
             .populate({
             path: "ofert",
             populate: [{ path: "buyer" }, { path: "property" }],

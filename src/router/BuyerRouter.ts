@@ -77,7 +77,6 @@ export class BuyerRouter {
       .populate("property")
       .populate("adviser")
       .populate("notification")
-      .populate("ofert")
       .populate({
         path: "ofert",
         populate: [{ path: "buyer" }, { path: "property" }],
@@ -121,7 +120,7 @@ export class BuyerRouter {
         path: "credit",
         populate: [{ path: "buyer" }, { path: "property" }],
       })
-.populate({
+        .populate({
         path: "ofert",
         populate: [{ path: "buyer" }, { path: "property" }],
       })
