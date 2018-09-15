@@ -70,7 +70,6 @@ export class BuyerRouter {
         path: "schedule",
         populate: [{ path: "adviser" }, { path: "property" }],
       })
-      
       .populate({
         path: "credit",
         populate: [{ path: "buyer" }, { path: "property" }],
