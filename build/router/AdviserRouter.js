@@ -38,7 +38,10 @@ class AdviserRouter {
      */
     all(req, res) {
         Adviser_1.default.find()
-            .populate("schedule")
+            .populate({
+            path: "schedule",
+            populate: [{ path: "buyer" }, { path: "property" }],
+        })
             .populate("buyer")
             .populate("goal")
             .populate("notification")
@@ -69,7 +72,10 @@ class AdviserRouter {
     oneById(req, res) {
         const id = req.params.id;
         Adviser_1.default.findById(id)
-            .populate("schedule")
+            .populate({
+            path: "schedule",
+            populate: [{ path: "buyer" }, { path: "property" }],
+        })
             .populate("buyer")
             .populate("goal")
             .populate("notification")

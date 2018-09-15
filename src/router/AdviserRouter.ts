@@ -40,7 +40,10 @@ export class AdviserRouter {
    */
   public all(req: Request, res: Response): void {
     Adviser.find()
-      .populate("schedule")
+      .populate({
+        path: "schedule",
+        populate: [{ path: "buyer" }, { path: "property" }],
+      })
       .populate("buyer")
       .populate("goal")
       .populate("notification")
@@ -73,7 +76,10 @@ export class AdviserRouter {
     const id: string = req.params.id;
 
     Adviser.findById(id)
-      .populate("schedule")
+      .populate({
+        path: "schedule",
+        populate: [{ path: "buyer" }, { path: "property" }],
+      })
       .populate("buyer")
       .populate("goal")
       .populate("notification")

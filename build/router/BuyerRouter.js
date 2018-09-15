@@ -68,11 +68,18 @@ class BuyerRouter {
             path: "schedule",
             populate: [{ path: "adviser" }, { path: "property" }],
         })
-            .populate("credit")
+            .populate({
+            path: "credit",
+            populate: [{ path: "buyer" }, { path: "property" }],
+        })
             .populate("property")
             .populate("adviser")
             .populate("notification")
             .populate("ofert")
+            .populate({
+            path: "ofert",
+            populate: [{ path: "buyer" }, { path: "property" }],
+        })
             .populate({
             path: "statusBuyerProperty",
             populate: [{ path: "buyer" }, { path: "property" }],
@@ -106,11 +113,17 @@ class BuyerRouter {
             path: "schedule",
             populate: [{ path: "adviser" }, { path: "property" }],
         })
-            .populate("credit")
+            .populate({
+            path: "credit",
+            populate: [{ path: "buyer" }, { path: "property" }],
+        })
+            .populate({
+            path: "ofert",
+            populate: [{ path: "buyer" }, { path: "property" }],
+        })
             .populate("property")
             .populate("adviser")
             .populate("notification")
-            .populate("ofert")
             .populate({
             path: "statusBuyerProperty",
             populate: [{ path: "buyer" }, { path: "property" }],
