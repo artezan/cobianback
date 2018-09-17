@@ -15,10 +15,6 @@ export interface IGoal extends Document {
    */
   status: string;
   /**
-   * Datos Cuantitativos
-   */
-  dataNumber: number[];
-  /**
    * Cumplido o no
    */
   isComplete: boolean;
@@ -31,7 +27,15 @@ export interface IGoal extends Document {
    */
   title: string;
   timestamp: Date;
-  dateLimit: string;
+  day: number;
+  month: number;
+  year: number;
+  goals: [
+    {
+      nameGoal: string;
+      isComplete: boolean;
+    }
+  ];
 }
 const GoalSchema: Schema = new Schema({
   timestamp: {
@@ -60,9 +64,6 @@ const GoalSchema: Schema = new Schema({
   title: {
     type: String,
   },
-  dateLimit: {
-    type: String,
-  },
   day: {
     type: Number,
   },
@@ -71,20 +72,6 @@ const GoalSchema: Schema = new Schema({
   },
   year: {
     type: Number,
-  },
-  /**
-   * Datos Cuantitativos
-   */
-  goalNumber: {
-    type: Number,
-    default: 0,
-  },
-  /**
-   * Datos Cuantitativos
-   */
-  currentNumber: {
-    type: Number,
-    default: 0,
   },
 
   /**
@@ -97,6 +84,12 @@ const GoalSchema: Schema = new Schema({
   isByManagement: {
     type: Boolean,
   },
+  goals: [
+    {
+      nameGoal: String,
+      isComplete: Boolean,
+    },
+  ],
 });
 
 export default model<IGoal>("Goal", GoalSchema);

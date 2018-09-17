@@ -28,9 +28,6 @@ const GoalSchema = new mongoose_1.Schema({
     title: {
         type: String,
     },
-    dateLimit: {
-        type: String,
-    },
     day: {
         type: Number,
     },
@@ -39,20 +36,6 @@ const GoalSchema = new mongoose_1.Schema({
     },
     year: {
         type: Number,
-    },
-    /**
-     * Datos Cuantitativos
-     */
-    goalNumber: {
-        type: Number,
-        default: 0,
-    },
-    /**
-     * Datos Cuantitativos
-     */
-    currentNumber: {
-        type: Number,
-        default: 0,
     },
     /**
      * Cumplido o no
@@ -64,6 +47,12 @@ const GoalSchema = new mongoose_1.Schema({
     isByManagement: {
         type: Boolean,
     },
+    goals: [
+        {
+            nameGoal: String,
+            isComplete: Boolean,
+        },
+    ],
 });
 exports.default = mongoose_1.model("Goal", GoalSchema);
 //# sourceMappingURL=Goal.js.map

@@ -74,27 +74,22 @@ export class GoalRouter {
     const content: string = req.body.content;
     const adviser: string[] = req.body.adviser;
     const status: string = req.body.status;
-    const dataNumber: number[] = req.body.dataNumber;
-    const isComplete: boolean = req.body.isComplete;
-    const isByManagement: boolean = req.body.isByManagement;
     const title: boolean = req.body.title;
-
     const day: string = req.body.day;
     const month: string = req.body.month;
     const year: string = req.body.year;
-    const goalNumber: number = req.body.goalNumber;
-    const currentNumber: number = req.body.currentNumber;
+    const isComplete: boolean = req.body.isComplete;
+    const isByManagement: boolean = req.body.isByManagement;
+    const goals: any = req.body.goals;
 
     const goal = new Goal({
       content,
       adviser,
       status,
-      dataNumber,
+      goals,
       isComplete,
       isByManagement,
       title,
-      goalNumber,
-      currentNumber,
       day,
       month,
       year,
@@ -119,7 +114,7 @@ export class GoalRouter {
 
   public update(req: Request, res: Response): void {
     const _id: string = req.params.id;
-    req.body.timestamp = new Date();
+    // req.body.timestamp = new Date();
     Goal.findByIdAndUpdate({ _id: _id }, req.body)
       .then(() => {
         res.status(200).json({ data: true });
