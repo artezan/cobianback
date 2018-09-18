@@ -7,6 +7,7 @@ import Buyer from "../models/Buyer";
 import Administrator from "../models/Administrator";
 import Adviser from "../models/Adviser";
 import Management from "../models/Management";
+import Maker from "../models/Maker";
 
 export class UserSession {
   public router: Router;
@@ -60,7 +61,19 @@ export class UserSession {
                                         type: "management",
                                       });
                                     } else {
-                                      resolve("error");
+                                      Maker.find({
+                                        password: password,
+                                        name: name,
+                                      }).then(data => {
+                                        if (data.length > 0) {
+                                          resolve({
+                                            data: data,
+                                            type: "maker",
+                                          });
+                                        } else {
+                                          resolve("error");
+                                        }
+                                      });
                                     }
                                   })
                                   .catch(error => {});

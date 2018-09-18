@@ -15,6 +15,7 @@ const Buyer_1 = require("../models/Buyer");
 const Administrator_1 = require("../models/Administrator");
 const Adviser_1 = require("../models/Adviser");
 const Management_1 = require("../models/Management");
+const Maker_1 = require("../models/Maker");
 class UserSession {
     constructor() {
         this.router = express_1.Router();
@@ -68,7 +69,20 @@ class UserSession {
                                                             });
                                                         }
                                                         else {
-                                                            resolve("error");
+                                                            Maker_1.default.find({
+                                                                password: password,
+                                                                name: name,
+                                                            }).then(data => {
+                                                                if (data.length > 0) {
+                                                                    resolve({
+                                                                        data: data,
+                                                                        type: "maker",
+                                                                    });
+                                                                }
+                                                                else {
+                                                                    resolve("error");
+                                                                }
+                                                            });
                                                         }
                                                     })
                                                         .catch(error => { });
