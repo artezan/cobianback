@@ -51,7 +51,7 @@ const BuildSchema: Schema = new Schema({
       dayToStart: Number,
       monthToStart: Number,
       yearToStart: Number,
-      dayToEdn: Number,
+      dayToEnd: Number,
       monthToEnd: Number,
       yearToEnd: Number,
       notes: String,

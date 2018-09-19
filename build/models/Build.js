@@ -17,7 +17,7 @@ const BuildSchema = new mongoose_1.Schema({
             dayToStart: Number,
             monthToStart: Number,
             yearToStart: Number,
-            dayToEdn: Number,
+            dayToEnd: Number,
             monthToEnd: Number,
             yearToEnd: Number,
             notes: String,
