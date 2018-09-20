@@ -4,6 +4,7 @@ import * as path from "path";
 import * as base64 from "base-64";
 import Build from "../models/Build";
 import { ObjectId } from "mongodb";
+import * as fs from "fs";
 
 export interface MulterFile {
   key: string; // Available using `S3`.
@@ -275,6 +276,19 @@ export class BuildRouter {
       }
     });
   }
+  public deleteFile(req: Request, res: Response) {
+    const filePath = `./build/public/${req.params.fileName}`;
+    console.log(filePath);
+    fs.unlink(filePath, err => {
+      if (err) {
+        res.status(500).json({ err });
+      } else {
+        console.log(filePath);
+        res.status(200).json({ data: true });
+      }
+    });
+    // const fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+  }
   /**
    * changeImgPhase
    */
@@ -306,6 +320,7 @@ export class BuildRouter {
   public routes() {
     this.router.get("/", this.all);
     this.router.get("/bybuildid/:id", this.oneById);
+    this.router.get("/deleteFile/:fileName", this.deleteFile);
     // this.router.get("/bybuildcity/:city", this.byCity);
     // this.router.get("/byadviserpassword/:base64", this.byPassword);
     this.router.post("/", this.create);

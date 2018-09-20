@@ -5,6 +5,7 @@ const multer = require("multer");
 const path = require("path");
 const Build_1 = require("../models/Build");
 const mongodb_1 = require("mongodb");
+const fs = require("fs");
 /**
  * @apiDefine AdviserResponseParams
  * @apiSuccess {Date} timestamp
@@ -257,6 +258,20 @@ class BuildRouter {
             }
         });
     }
+    deleteFile(req, res) {
+        const filePath = `./build/public/${req.params.fileName}`;
+        console.log(filePath);
+        fs.unlink(filePath, err => {
+            if (err) {
+                res.status(500).json({ err });
+            }
+            else {
+                console.log(filePath);
+                res.status(200).json({ data: true });
+            }
+        });
+        // const fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+    }
     /**
      * changeImgPhase
      */
@@ -285,6 +300,7 @@ class BuildRouter {
     routes() {
         this.router.get("/", this.all);
         this.router.get("/bybuildid/:id", this.oneById);
+        this.router.get("/deleteFile/:fileName", this.deleteFile);
         // this.router.get("/bybuildcity/:city", this.byCity);
         // this.router.get("/byadviserpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
