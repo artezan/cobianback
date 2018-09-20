@@ -58,6 +58,13 @@ const BuildSchema: Schema = new Schema({
       namePhase: String,
       isComplete: Boolean,
       imgUrls: [String],
+      imagesData: [
+        {
+          url: String,
+          notes: String,
+          date: String,
+        },
+      ],
     },
   ],
   /**

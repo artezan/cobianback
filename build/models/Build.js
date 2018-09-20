@@ -24,6 +24,13 @@ const BuildSchema = new mongoose_1.Schema({
             namePhase: String,
             isComplete: Boolean,
             imgUrls: [String],
+            imagesData: [
+                {
+                    url: String,
+                    notes: String,
+                    date: String,
+                },
+            ],
         },
     ],
     /**
