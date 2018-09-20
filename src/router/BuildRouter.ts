@@ -251,7 +251,6 @@ export class BuildRouter {
       });
   }
   public uploadFile(req: any, res: Response) {
-    console.log("s");
     const storage = multer.diskStorage({
       destination: "./build/public",
       // tslint:disable-next-line:no-shadowed-variable
@@ -278,12 +277,10 @@ export class BuildRouter {
   }
   public deleteFile(req: Request, res: Response) {
     const filePath = `./build/public/${req.params.fileName}`;
-    console.log(filePath);
     fs.unlink(filePath, err => {
       if (err) {
         res.status(500).json({ err });
       } else {
-        console.log(filePath);
         res.status(200).json({ data: true });
       }
     });
