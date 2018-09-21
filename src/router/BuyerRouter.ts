@@ -85,6 +85,7 @@ export class BuyerRouter {
         path: "statusBuyerProperty",
         populate: [{ path: "buyer" }, { path: "property" }],
       })
+      .sort({ timestamp: -1 })
       .then(data => {
         res.status(200).json({ data });
       })
@@ -120,7 +121,7 @@ export class BuyerRouter {
         path: "credit",
         populate: [{ path: "buyer" }, { path: "property" }],
       })
-        .populate({
+      .populate({
         path: "ofert",
         populate: [{ path: "buyer" }, { path: "property" }],
       })

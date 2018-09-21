@@ -17,6 +17,7 @@ class GoalRouter {
     all(req, res) {
         Goal_1.default.find()
             .populate("adviser")
+            .sort({ timestamp: -1 })
             .then(data => {
             res.status(200).json({ data });
         })

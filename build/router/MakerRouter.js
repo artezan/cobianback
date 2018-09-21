@@ -16,6 +16,7 @@ class MakerRouter {
      */
     all(req, res) {
         Maker_1.default.find()
+            .sort({ timestamp: -1 })
             .populate("build")
             .then(data => {
             res.status(200).json({ data });

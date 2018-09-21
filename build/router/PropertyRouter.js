@@ -52,6 +52,7 @@ class PropertyRouter {
      */
     all(req, res) {
         Property_1.default.find()
+            .sort({ timestamp: -1 })
             .then(data => {
             res.status(200).json({ data });
         })

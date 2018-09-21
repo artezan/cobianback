@@ -46,6 +46,7 @@ export class PropertyRouter {
    */
   public all(req: Request, res: Response): void {
     Property.find()
+      .sort({ timestamp: -1 })
       .then(data => {
         res.status(200).json({ data });
       })

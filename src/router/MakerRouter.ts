@@ -19,6 +19,7 @@ export class MakerRouter {
    */
   public all(req: Request, res: Response): void {
     Maker.find()
+      .sort({ timestamp: -1 })
       .populate("build")
       .then(data => {
         res.status(200).json({ data });

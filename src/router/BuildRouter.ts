@@ -52,6 +52,7 @@ export class BuildRouter {
   public all(req: Request, res: Response): void {
     Build.find()
       .populate("maker")
+      .sort({ timestamp: -1 })
       .then(data => {
         res.status(200).json({ data });
       })

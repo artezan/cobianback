@@ -42,6 +42,7 @@ class BuildRouter {
     all(req, res) {
         Build_1.default.find()
             .populate("maker")
+            .sort({ timestamp: -1 })
             .then(data => {
             res.status(200).json({ data });
         })
@@ -233,7 +234,6 @@ class BuildRouter {
         });
     }
     uploadFile(req, res) {
-        console.log("s");
         const storage = multer.diskStorage({
             destination: "./build/public",
             // tslint:disable-next-line:no-shadowed-variable
@@ -260,13 +260,11 @@ class BuildRouter {
     }
     deleteFile(req, res) {
         const filePath = `./build/public/${req.params.fileName}`;
-        console.log(filePath);
         fs.unlink(filePath, err => {
             if (err) {
                 res.status(500).json({ err });
             }
             else {
-                console.log(filePath);
                 res.status(200).json({ data: true });
             }
         });

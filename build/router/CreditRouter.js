@@ -18,6 +18,7 @@ class CreditRouter {
         Credit_1.default.find()
             .populate("buyer")
             .populate("property")
+            .sort({ timestamp: -1 })
             .then(data => {
             res.status(200).json({ data });
         })
