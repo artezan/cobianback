@@ -20,7 +20,7 @@ class ScheduleRouter {
             .populate("buyer")
             .populate("adviser")
             .populate("seller")
-            .sort({ timestamp: "desc" })
+            .sort({ timestamp: "asc" })
             .then(data => {
             res.status(200).json({ data });
         })

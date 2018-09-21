@@ -19,9 +19,12 @@ export class StatusBuyerPropertyRouter {
    */
   public all(req: Request, res: Response): void {
     StatusBuyerProperty.find()
-      .populate("buyer")
       .populate("property")
-      .sort({ dateOfEvent: "asc" })
+      .populate({
+        path: "buyer",
+        populate: [{ path: "credit" }, { path: "ofert" }],
+      })
+      .sort({ timestamp: -1 })
       .then(data => {
         res.status(200).json({ data });
       })
@@ -42,7 +45,10 @@ export class StatusBuyerPropertyRouter {
     const id: string = req.params.id;
 
     StatusBuyerProperty.findById(id)
-      .populate("buyer")
+      .populate({
+        path: "buyer",
+        populate: [{ path: "credit" }, { path: "ofert" }],
+      })
       .populate("property")
       .then(data => {
         res.status(200).json({ data });

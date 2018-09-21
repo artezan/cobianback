@@ -16,9 +16,12 @@ class StatusBuyerPropertyRouter {
      */
     all(req, res) {
         StatusBuyerProperty_1.default.find()
-            .populate("buyer")
             .populate("property")
-            .sort({ dateOfEvent: "asc" })
+            .populate({
+            path: "buyer",
+            populate: [{ path: "credit" }, { path: "ofert" }],
+        })
+            .sort({ timestamp: -1 })
             .then(data => {
             res.status(200).json({ data });
         })
@@ -37,7 +40,10 @@ class StatusBuyerPropertyRouter {
     oneById(req, res) {
         const id = req.params.id;
         StatusBuyerProperty_1.default.findById(id)
-            .populate("buyer")
+            .populate({
+            path: "buyer",
+            populate: [{ path: "credit" }, { path: "ofert" }],
+        })
             .populate("property")
             .then(data => {
             res.status(200).json({ data });
