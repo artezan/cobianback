@@ -35,6 +35,9 @@ const CreditSchema = new mongoose_1.Schema({
             default: [],
         },
     ],
+    isAccept: {
+        type: Boolean,
+    },
 });
 exports.default = mongoose_1.model("Credit", CreditSchema);
 //# sourceMappingURL=Credit.js.map

@@ -132,6 +132,18 @@ const PropertySchema = new mongoose_1.Schema({
     wayToBuy: {
         type: String,
     },
+    /**
+     * fecha de apartado
+     */
+    dateToApart: {
+        type: Date,
+    },
+    /**
+     * comprada
+     */
+    isBuy: {
+        type: Boolean,
+    },
 });
 exports.default = mongoose_1.model("Property", PropertySchema);
 //# sourceMappingURL=Property.js.map

@@ -83,6 +83,14 @@ export interface IProperty extends Document {
    * Forma de compra FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros
    */
   wayToBuy: string;
+  /**
+   * Fecha de apartado
+   */
+  dateToApart: Date;
+  /**
+   * esta comprada
+   */
+  isBuy: boolean;
 }
 const PropertySchema: Schema = new Schema({
   isRent: {
@@ -214,6 +222,18 @@ const PropertySchema: Schema = new Schema({
    */
   wayToBuy: {
     type: String,
+  },
+  /**
+   * fecha de apartado
+   */
+  dateToApart: {
+    type: Date,
+  },
+  /**
+   * comprada
+   */
+  isBuy: {
+    type: Boolean,
   },
 });
 

@@ -23,6 +23,10 @@ export interface ICredit extends Document {
    * Notas
    */
   notes: string;
+  /**
+   * is aceptado
+   */
+  isAccept: boolean;
 }
 const CreditSchema: Schema = new Schema({
   buyer: {
@@ -58,6 +62,9 @@ const CreditSchema: Schema = new Schema({
       default: [],
     },
   ],
+  isAccept: {
+    type: Boolean,
+  },
 });
 
 export default model<ICredit>("Credit", CreditSchema);

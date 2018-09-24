@@ -25,6 +25,7 @@ const StatusBuyerPropertyRouter_1 = require("./router/StatusBuyerPropertyRouter"
 const UserSession_1 = require("./router/UserSession");
 const BuildRouter_1 = require("./router/BuildRouter");
 const MakerRouter_1 = require("./router/MakerRouter");
+const SalesRouter_1 = require("./router/SalesRouter");
 class Server {
     constructor() {
         this.administratorRouter = new AdministratorRouter_1.AdministratorRouter();
@@ -43,6 +44,7 @@ class Server {
         this.userSession = new UserSession_1.UserSession();
         this.buildRouter = new BuildRouter_1.BuildRouter();
         this.makerRouter = new MakerRouter_1.MakerRouter();
+        this.saleRouter = new SalesRouter_1.SalesRouter();
         this.app = express();
         this.config();
         this.routes();
@@ -132,6 +134,7 @@ class Server {
         this.app.use("/api/v1/usersession", this.userSession.router);
         this.app.use("/api/v1/build", this.buildRouter.router);
         this.app.use("/api/v1/maker", this.makerRouter.router);
+        this.app.use("/api/v1/sale", this.saleRouter.router);
     }
 }
 // export

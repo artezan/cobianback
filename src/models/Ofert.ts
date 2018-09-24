@@ -22,6 +22,10 @@ export interface IOfert extends Document {
   ofertPrice: number;
 
   files: string[];
+  /**
+   * is aceptado
+   */
+  isAccept: boolean;
 }
 const OfertSchema: Schema = new Schema({
   buyer: {
@@ -57,6 +61,9 @@ const OfertSchema: Schema = new Schema({
       default: [],
     },
   ],
+  isAccept: {
+    type: Boolean,
+  },
 });
 
 export default model<IOfert>("Ofert", OfertSchema);
