@@ -254,6 +254,7 @@ class BuyerRouter {
         const allServices = req.body.allServices;
         const wayToBuy = req.body.wayToBuy;
         const city = req.body.city;
+        const adviser = req.body.adviser;
         const buyer = new Buyer_1.default({
             name,
             fatherLastName,
@@ -284,6 +285,7 @@ class BuyerRouter {
             allServices,
             wayToBuy,
             city,
+            adviser,
         });
         buyer
             .save()

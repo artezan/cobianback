@@ -264,6 +264,7 @@ export class BuyerRouter {
     const allServices: boolean = req.body.allServices;
     const wayToBuy: boolean = req.body.wayToBuy;
     const city: string = req.body.city;
+    const adviser = req.body.adviser;
 
     const buyer = new Buyer({
       name,
@@ -295,6 +296,7 @@ export class BuyerRouter {
       allServices,
       wayToBuy,
       city,
+      adviser,
     });
 
     buyer
