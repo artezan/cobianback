@@ -181,6 +181,7 @@ export class AdviserRouter {
     const hourStart: number = req.body.hourStart;
     const hourEnd: number = req.body.hourEnd;
     const isRenter: boolean = req.body.isRenter;
+    const buyer = req.body.buyer;
 
     const adviser = new Adviser({
       name,
@@ -191,6 +192,7 @@ export class AdviserRouter {
       hourEnd,
       isRenter,
       city,
+      buyer,
     });
 
     adviser

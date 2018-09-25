@@ -94,6 +94,7 @@ export class ScheduleRouter {
     const adviser: string = req.body.adviser;
     const seller: string = req.body.seller;
     const administrator: string = req.body.administrator;
+    const personal: string = req.body.personal;
     const management: string = req.body.management;
     const status: string = req.body.status;
     const note: string = req.body.note;
@@ -119,6 +120,7 @@ export class ScheduleRouter {
       year,
       hour,
       minute,
+      personal,
     });
 
     schedule

@@ -44,6 +44,17 @@ export class PropertyRouter {
    * @apiName get
    * @apiGroup property
    */
+  public allNoBuy(req: Request, res: Response): void {
+    Property.find()
+      .sort({ timestamp: -1 })
+      .then(data => {
+        const filterData = data.filter(d => !d.isBuy);
+        res.status(200).json({ data: filterData });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
   public all(req: Request, res: Response): void {
     Property.find()
       .sort({ timestamp: -1 })
@@ -368,7 +379,8 @@ export class PropertyRouter {
 
   // set up our routes
   public routes() {
-    this.router.get("/", this.all);
+    this.router.get("/all", this.all);
+    this.router.get("/", this.allNoBuy);
     this.router.get("/bypropertyid/:id", this.oneById);
     this.router.post("/matchsearchbybuyer/:id", this.setPropiertiesToBuyer);
     this.router.post("/matchsearchbydemo/", this.demoMatchSearch);

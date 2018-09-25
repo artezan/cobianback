@@ -132,6 +132,7 @@ export class SellerRouter {
     const password: string = req.body.password;
     const isRenter: boolean = req.body.isRenter;
     const city: string = req.body.city;
+    const property = req.body.property;
 
     const seller = new Seller({
       name,
@@ -139,6 +140,7 @@ export class SellerRouter {
       password,
       isRenter,
       city,
+      property,
     });
 
     seller

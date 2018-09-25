@@ -88,6 +88,15 @@ const ScheduleSchema = new mongoose_1.Schema({
     note: {
         type: String,
     },
+    /**
+     * personal
+     */
+    personal: {
+        type: String,
+    },
+    scoreByAdviser: {
+        type: String,
+    },
 });
 exports.default = mongoose_1.model("Schedule", ScheduleSchema);
 //# sourceMappingURL=Schedule.js.map

@@ -122,12 +122,14 @@ class SellerRouter {
         const password = req.body.password;
         const isRenter = req.body.isRenter;
         const city = req.body.city;
+        const property = req.body.property;
         const seller = new Seller_1.default({
             name,
             lastName,
             password,
             isRenter,
             city,
+            property,
         });
         seller
             .save()

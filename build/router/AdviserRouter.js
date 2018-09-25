@@ -171,6 +171,7 @@ class AdviserRouter {
         const hourStart = req.body.hourStart;
         const hourEnd = req.body.hourEnd;
         const isRenter = req.body.isRenter;
+        const buyer = req.body.buyer;
         const adviser = new Adviser_1.default({
             name,
             lastName,
@@ -180,6 +181,7 @@ class AdviserRouter {
             hourEnd,
             isRenter,
             city,
+            buyer,
         });
         adviser
             .save()

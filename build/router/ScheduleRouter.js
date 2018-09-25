@@ -88,6 +88,7 @@ class ScheduleRouter {
         const adviser = req.body.adviser;
         const seller = req.body.seller;
         const administrator = req.body.administrator;
+        const personal = req.body.personal;
         const management = req.body.management;
         const status = req.body.status;
         const note = req.body.note;
@@ -113,6 +114,7 @@ class ScheduleRouter {
             year,
             hour,
             minute,
+            personal,
         });
         schedule
             .save()

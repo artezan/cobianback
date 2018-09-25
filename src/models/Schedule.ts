@@ -49,6 +49,14 @@ export interface ISchedule extends Document {
    * admin
    */
   administrator: string[];
+  /**
+   * Personal
+   */
+  personal: string;
+  /**
+   * Calificacion
+   */
+  scoreByAdviser: string;
 }
 const ScheduleSchema: Schema = new Schema({
   day: {
@@ -135,6 +143,15 @@ const ScheduleSchema: Schema = new Schema({
    * Notas
    */
   note: {
+    type: String,
+  },
+  /**
+   * personal
+   */
+  personal: {
+    type: String,
+  },
+  scoreByAdviser: {
     type: String,
   },
 });
