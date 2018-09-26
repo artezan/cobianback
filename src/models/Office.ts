@@ -6,11 +6,18 @@ const OfficeSchema: Schema = new Schema({
   },
   name: {
     type: String,
-    required: true,
+  },
+  lastname: {
+    type: String,
   },
   password: {
     type: String,
-    required: true,
+  },
+  phone: {
+    type: Number,
+  },
+  email: {
+    type: String,
   },
 });
 

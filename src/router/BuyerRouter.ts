@@ -68,7 +68,11 @@ export class BuyerRouter {
     Buyer.find()
       .populate({
         path: "schedule",
-        populate: [{ path: "adviser" }, { path: "property" }],
+        populate: [
+          { path: "adviser" },
+          { path: "property" },
+          { path: "seller" },
+        ],
       })
       .populate({
         path: "credit",
@@ -115,7 +119,11 @@ export class BuyerRouter {
     Buyer.findById(id)
       .populate({
         path: "schedule",
-        populate: [{ path: "adviser" }, { path: "property" }],
+        populate: [
+          { path: "adviser" },
+          { path: "property" },
+          { path: "seller" },
+        ],
       })
       .populate({
         path: "credit",

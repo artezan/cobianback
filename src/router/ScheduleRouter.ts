@@ -1,7 +1,8 @@
 import { Request, Response, Router } from "express";
-import { ObjectId } from "../../node_modules/@types/bson";
+import { ObjectId } from "mongodb";
 import * as base64 from "base-64";
 import Schedule from "../models/Schedule";
+import Buyer from "../models/Buyer";
 
 export class ScheduleRouter {
   public router: Router;
@@ -170,6 +171,83 @@ export class ScheduleRouter {
         res.status(500).json({ error });
       });
   }
+  public check(req: Request, res: Response) {
+    const property: string = req.body.property;
+    const buyer: string = req.body.buyer;
+    const adviser: string = req.body.adviser;
+    const seller: string = req.body.seller;
+    const personal: string = req.body.personal;
+    const month: number = +req.body.month;
+    const year: number = +req.body.year;
+    const hour: number = +req.body.hour;
+    const day = +req.body.day;
+    const _id = req.body._id;
+    let check: {
+      buyerCan?: boolean;
+      adviserCan?: boolean;
+      propertyCan?: boolean;
+    } = {};
+    // const minute: string = req.body.minute;
+    Schedule.find()
+      .then(schedules => {
+        const arrSchedules = schedules.filter(
+          s => new ObjectId(s._id).toString() !== new ObjectId(_id).toString(),
+        );
+        const scheduleFind: any = arrSchedules.filter(
+          s =>
+            s.year === year &&
+            s.month === month &&
+            s.day === day &&
+            s.hour === hour,
+        );
+        console.log(scheduleFind);
+        if (scheduleFind.length > 0) {
+          check.buyerCan = !!!scheduleFind.find(
+            s =>
+              new ObjectId(s.buyer).toString() ===
+              new ObjectId(buyer).toString(),
+          );
+          check.adviserCan = !!!scheduleFind.find(
+            s =>
+              new ObjectId(s.adviser).toString() ===
+              new ObjectId(adviser).toString(),
+          );
+          check.propertyCan = !!!scheduleFind.find(
+            s =>
+              new ObjectId(s.property).toString() ===
+              new ObjectId(property).toString(),
+          );
+          /* check = {
+            adviserCan: !(
+              new ObjectId(scheduleFind.adviser).toString() ===
+                new ObjectId(adviser).toString() ||
+              (scheduleFind.personal &&
+                new ObjectId(scheduleFind.personal).toString() ===
+                  new ObjectId(adviser).toString())
+            ),
+            buyerCan: !(
+              new ObjectId(scheduleFind.buyer).toString() ===
+              new ObjectId(buyer).toString()
+            ),
+            propertyCan: !(
+              new ObjectId(scheduleFind.property).toString() ===
+              new ObjectId(property).toString()
+            ),
+          }; */
+        } else {
+          check = {
+            adviserCan: true,
+            buyerCan: true,
+            propertyCan: true,
+          };
+        }
+        console.log(check);
+        res.status(200).json({ data: check });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
 
   // set up our routes
   public routes() {
@@ -177,6 +255,7 @@ export class ScheduleRouter {
     this.router.get("/byscheduleid/:id", this.oneById);
     // this.router.get("/bybuyerpassword/:base64", this.byPassword);
     this.router.post("/", this.create);
+    this.router.post("/checkschedule", this.check);
     this.router.put("/:id", this.update);
     this.router.delete("/:id", this.delete);
   }

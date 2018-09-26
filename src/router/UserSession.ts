@@ -8,6 +8,7 @@ import Administrator from "../models/Administrator";
 import Adviser from "../models/Adviser";
 import Management from "../models/Management";
 import Maker from "../models/Maker";
+import Office from "../models/Office";
 
 export class UserSession {
   public router: Router;
@@ -64,16 +65,32 @@ export class UserSession {
                                       Maker.find({
                                         password: password,
                                         name: name,
-                                      }).then(data => {
-                                        if (data.length > 0) {
-                                          resolve({
-                                            data: data,
-                                            type: "maker",
-                                          });
-                                        } else {
-                                          resolve("error");
-                                        }
-                                      });
+                                      })
+                                        .then(data => {
+                                          if (data.length > 0) {
+                                            resolve({
+                                              data: data,
+                                              type: "maker",
+                                            });
+                                          } else {
+                                            Office.find({
+                                              password: password,
+                                              name: name,
+                                            })
+                                              .then(data => {
+                                                if (data.length > 0) {
+                                                  resolve({
+                                                    data: data,
+                                                    type: "office",
+                                                  });
+                                                } else {
+                                                  resolve("error");
+                                                }
+                                              })
+                                              .catch(error => {});
+                                          }
+                                        })
+                                        .catch(error => {});
                                     }
                                   })
                                   .catch(error => {});

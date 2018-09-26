@@ -75,10 +75,16 @@ export class OfficeRouter {
   public create(req: Request, res: Response): void {
     const name: string = req.body.name;
     const password: string = req.body.password;
+    const email: string = req.body.email;
+    const phone: number = req.body.phone;
+    const lastname: string = req.body.lastname;
 
     const office = new Office({
       name,
       password,
+      email,
+      phone,
+      lastname,
     });
 
     office

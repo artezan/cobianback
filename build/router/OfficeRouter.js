@@ -66,9 +66,15 @@ class OfficeRouter {
     create(req, res) {
         const name = req.body.name;
         const password = req.body.password;
+        const email = req.body.email;
+        const phone = req.body.phone;
+        const lastname = req.body.lastname;
         const office = new Office_1.default({
             name,
             password,
+            email,
+            phone,
+            lastname,
         });
         office
             .save()

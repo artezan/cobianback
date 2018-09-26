@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const mongodb_1 = require("mongodb");
 const Schedule_1 = require("../models/Schedule");
 class ScheduleRouter {
     constructor() {
@@ -160,12 +161,73 @@ class ScheduleRouter {
             res.status(500).json({ error });
         });
     }
+    check(req, res) {
+        const property = req.body.property;
+        const buyer = req.body.buyer;
+        const adviser = req.body.adviser;
+        const seller = req.body.seller;
+        const personal = req.body.personal;
+        const month = +req.body.month;
+        const year = +req.body.year;
+        const hour = +req.body.hour;
+        const day = +req.body.day;
+        const _id = req.body._id;
+        let check = {};
+        // const minute: string = req.body.minute;
+        Schedule_1.default.find()
+            .then(schedules => {
+            const arrSchedules = schedules.filter(s => new mongodb_1.ObjectId(s._id).toString() !== new mongodb_1.ObjectId(_id).toString());
+            const scheduleFind = arrSchedules.filter(s => s.year === year &&
+                s.month === month &&
+                s.day === day &&
+                s.hour === hour);
+            console.log(scheduleFind);
+            if (scheduleFind.length > 0) {
+                check.buyerCan = !!!scheduleFind.find(s => new mongodb_1.ObjectId(s.buyer).toString() ===
+                    new mongodb_1.ObjectId(buyer).toString());
+                check.adviserCan = !!!scheduleFind.find(s => new mongodb_1.ObjectId(s.adviser).toString() ===
+                    new mongodb_1.ObjectId(adviser).toString());
+                check.propertyCan = !!!scheduleFind.find(s => new mongodb_1.ObjectId(s.property).toString() ===
+                    new mongodb_1.ObjectId(property).toString());
+                /* check = {
+                  adviserCan: !(
+                    new ObjectId(scheduleFind.adviser).toString() ===
+                      new ObjectId(adviser).toString() ||
+                    (scheduleFind.personal &&
+                      new ObjectId(scheduleFind.personal).toString() ===
+                        new ObjectId(adviser).toString())
+                  ),
+                  buyerCan: !(
+                    new ObjectId(scheduleFind.buyer).toString() ===
+                    new ObjectId(buyer).toString()
+                  ),
+                  propertyCan: !(
+                    new ObjectId(scheduleFind.property).toString() ===
+                    new ObjectId(property).toString()
+                  ),
+                }; */
+            }
+            else {
+                check = {
+                    adviserCan: true,
+                    buyerCan: true,
+                    propertyCan: true,
+                };
+            }
+            console.log(check);
+            res.status(200).json({ data: check });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
     // set up our routes
     routes() {
         this.router.get("/", this.all);
         this.router.get("/byscheduleid/:id", this.oneById);
         // this.router.get("/bybuyerpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
+        this.router.post("/checkschedule", this.check);
         this.router.put("/:id", this.update);
         this.router.delete("/:id", this.delete);
     }

@@ -8,11 +8,18 @@ const OfficeSchema = new mongoose_1.Schema({
     },
     name: {
         type: String,
-        required: true,
+    },
+    lastname: {
+        type: String,
     },
     password: {
         type: String,
-        required: true,
+    },
+    phone: {
+        type: Number,
+    },
+    email: {
+        type: String,
     },
 });
 exports.default = mongoose_1.model("Office", OfficeSchema);
