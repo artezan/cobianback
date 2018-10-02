@@ -42,10 +42,20 @@ class NotificationRouter {
      */
     create(req, res) {
         const title = req.body.title;
-        const content = req.body.content;
+        const message = req.body.message;
+        const senderId = req.body.senderId;
+        const receiversId = req.body.receiversId;
+        const tags = req.body.tags;
+        const status = req.body.status;
+        const type = req.body.type;
         const notification = new Notification_1.default({
             title,
-            content,
+            message,
+            senderId,
+            receiversId,
+            tags,
+            status,
+            type,
         });
         notification
             .save()
@@ -63,8 +73,8 @@ class NotificationRouter {
      * @apiGroup notification
      */
     update(req, res) {
-        const _id = req.params.id;
-        Notification_1.default.findByIdAndUpdate({ _id: _id }, req.body)
+        const id = req.params.id;
+        Notification_1.default.findByIdAndUpdate(id, req.body)
             .then(() => {
             res.status(200).json({ data: true });
         })
@@ -89,12 +99,31 @@ class NotificationRouter {
             res.status(500).json({ error });
         });
     }
+    searchByIdOrTags(req, res) {
+        const id = req.body.id;
+        const pageNumber = req.body.pageNumber;
+        const nPerPage = req.body.nPerPage;
+        const tags = req.body.tags;
+        Notification_1.default.find({
+            $or: [{ senderId: id }, { receiversId: id }, { tags }],
+        })
+            .sort({ timestamp: -1 })
+            .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
+            .limit(nPerPage)
+            .then(data => {
+            res.status(200).json({ data });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
     // set up our routes
     routes() {
         this.router.get("/", this.all);
         this.router.get("/bynotificationid/:id", this.oneById);
         // this.router.get("/bybuyerpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
+        this.router.post("/search", this.searchByIdOrTags);
         this.router.put("/:id", this.update);
         this.router.delete("/:id", this.delete);
     }

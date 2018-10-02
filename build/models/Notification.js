@@ -8,11 +8,32 @@ const NotificationSchema = new mongoose_1.Schema({
     },
     title: {
         type: String,
-        required: true,
     },
-    content: {
+    message: {
         type: String,
-        required: true,
+    },
+    senderId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+    },
+    receiversId: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+        },
+    ],
+    tags: {
+        type: [String],
+    },
+    readBy: [
+        {
+            readerId: { type: mongoose_1.Schema.Types.ObjectId },
+            readAt: { type: Date, default: Date.now },
+        },
+    ],
+    status: {
+        type: String,
+    },
+    type: {
+        type: String,
     },
 });
 exports.default = mongoose_1.model("Notification", NotificationSchema);

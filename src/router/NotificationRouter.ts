@@ -48,11 +48,21 @@ export class NotificationRouter {
 
   public create(req: Request, res: Response): void {
     const title: string = req.body.title;
-    const content: string = req.body.content;
+    const message: string = req.body.message;
+    const senderId: string = req.body.senderId;
+    const receiversId = req.body.receiversId;
+    const tags = req.body.tags;
+    const status = req.body.status;
+    const type = req.body.type;
 
     const notification = new Notification({
       title,
-      content,
+      message,
+      senderId,
+      receiversId,
+      tags,
+      status,
+      type,
     });
 
     notification
@@ -72,8 +82,8 @@ export class NotificationRouter {
    */
 
   public update(req: Request, res: Response): void {
-    const _id: string = req.params.id;
-    Notification.findByIdAndUpdate({ _id: _id }, req.body)
+    const id: string = req.params.id;
+    Notification.findByIdAndUpdate(id, req.body)
       .then(() => {
         res.status(200).json({ data: true });
       })
@@ -100,6 +110,24 @@ export class NotificationRouter {
         res.status(500).json({ error });
       });
   }
+  public searchByIdOrTags(req: Request, res: Response): void {
+    const id = req.body.id;
+    const pageNumber = req.body.pageNumber;
+    const nPerPage = req.body.nPerPage;
+    const tags = req.body.tags;
+    Notification.find({
+      $or: [{ senderId: id }, { receiversId: id }, { tags }],
+    })
+      .sort({ timestamp: -1 })
+      .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
+      .limit(nPerPage)
+      .then(data => {
+        res.status(200).json({ data });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
 
   // set up our routes
   public routes() {
@@ -107,6 +135,7 @@ export class NotificationRouter {
     this.router.get("/bynotificationid/:id", this.oneById);
     // this.router.get("/bybuyerpassword/:base64", this.byPassword);
     this.router.post("/", this.create);
+    this.router.post("/search", this.searchByIdOrTags);
     this.router.put("/:id", this.update);
     this.router.delete("/:id", this.delete);
   }
