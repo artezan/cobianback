@@ -27,6 +27,10 @@ export interface ICredit extends Document {
    * is aceptado
    */
   isAccept: boolean;
+  /**
+   * notification one signal
+   */
+  notificationOneSignal: string;
 }
 const CreditSchema: Schema = new Schema({
   buyer: {
@@ -65,6 +69,7 @@ const CreditSchema: Schema = new Schema({
   isAccept: {
     type: Boolean,
   },
+  notificationOneSignal: { type: String },
 });
 
 export default model<ICredit>("Credit", CreditSchema);

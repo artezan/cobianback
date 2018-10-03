@@ -38,6 +38,7 @@ const OfertSchema = new mongoose_1.Schema({
     isAccept: {
         type: Boolean,
     },
+    notificationOneSignal: { type: String },
 });
 exports.default = mongoose_1.model("Ofert", OfertSchema);
 //# sourceMappingURL=Ofert.js.map
