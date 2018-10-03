@@ -29,7 +29,7 @@ export interface IOfert extends Document {
   /**
    * notif id
    */
-  notificationOneSignal: string;
+  notificationOneSignal: string[];
 }
 const OfertSchema: Schema = new Schema({
   buyer: {
@@ -68,7 +68,7 @@ const OfertSchema: Schema = new Schema({
   isAccept: {
     type: Boolean,
   },
-  notificationOneSignal: { type: String },
+  notificationOneSignal: { type: [String], default: [] },
 });
 
 export default model<IOfert>("Ofert", OfertSchema);
