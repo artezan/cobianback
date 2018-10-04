@@ -69,7 +69,7 @@ const CreditSchema: Schema = new Schema({
   isAccept: {
     type: Boolean,
   },
-  notificationOneSignal: { type: [String], default: [] },
+  notificationOneSignal: [{ type: String, default: [] }],
 });
 
 export default model<ICredit>("Credit", CreditSchema);

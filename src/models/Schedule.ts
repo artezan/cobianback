@@ -57,6 +57,10 @@ export interface ISchedule extends Document {
    * Calificacion
    */
   scoreByAdviser: string;
+  /**
+   * notificationOneSignal
+   */
+  notificationOneSignal: string[];
 }
 const ScheduleSchema: Schema = new Schema({
   day: {
@@ -154,6 +158,7 @@ const ScheduleSchema: Schema = new Schema({
   scoreByAdviser: {
     type: String,
   },
+  notificationOneSignal: [{ type: String, default: [] }],
 });
 
 export default model<ISchedule>("Schedule", ScheduleSchema);

@@ -97,6 +97,7 @@ const ScheduleSchema = new mongoose_1.Schema({
     scoreByAdviser: {
         type: String,
     },
+    notificationOneSignal: [{ type: String, default: [] }],
 });
 exports.default = mongoose_1.model("Schedule", ScheduleSchema);
 //# sourceMappingURL=Schedule.js.map

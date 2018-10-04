@@ -53,6 +53,7 @@ const GoalSchema = new mongoose_1.Schema({
             isComplete: Boolean,
         },
     ],
+    notificationOneSignal: [{ type: String, default: [] }],
 });
 exports.default = mongoose_1.model("Goal", GoalSchema);
 //# sourceMappingURL=Goal.js.map

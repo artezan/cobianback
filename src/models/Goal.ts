@@ -90,6 +90,7 @@ const GoalSchema: Schema = new Schema({
       isComplete: Boolean,
     },
   ],
+  notificationOneSignal: [{ type: String, default: [] }],
 });
 
 export default model<IGoal>("Goal", GoalSchema);

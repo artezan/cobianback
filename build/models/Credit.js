@@ -38,7 +38,7 @@ const CreditSchema = new mongoose_1.Schema({
     isAccept: {
         type: Boolean,
     },
-    notificationOneSignal: { type: String },
+    notificationOneSignal: [{ type: String, default: [] }],
 });
 exports.default = mongoose_1.model("Credit", CreditSchema);
 //# sourceMappingURL=Credit.js.map
