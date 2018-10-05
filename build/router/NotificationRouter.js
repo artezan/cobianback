@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Notification_1 = require("../models/Notification");
+const app_1 = require("../app");
 class NotificationRouter {
     constructor() {
         this.router = express_1.Router();
@@ -60,6 +61,8 @@ class NotificationRouter {
         notification
             .save()
             .then(data => {
+            // emit
+            app_1.IO.emit("NEW_NOTIFICATION", data);
             res.status(201).json({ data });
         })
             .catch(error => {
@@ -117,6 +120,23 @@ class NotificationRouter {
             res.status(500).json({ error });
         });
     }
+    searchByNotRead(req, res) {
+        const id = req.body.id;
+        const tags = req.body.tags;
+        Notification_1.default.find({
+            $or: [{ senderId: id }, { receiversId: id }, { tags }],
+        })
+            .sort({ timestamp: -1 })
+            .limit(20)
+            .then((data) => {
+            console.log(!"algo");
+            const read = data.filter(n => n.readBy && !n.readBy.find(r => r.readerId === id));
+            res.status(200).json({ data: read });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
     // set up our routes
     routes() {
         this.router.get("/", this.all);
@@ -124,6 +144,7 @@ class NotificationRouter {
         // this.router.get("/bybuyerpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
         this.router.post("/search", this.searchByIdOrTags);
+        this.router.post("/noread", this.searchByNotRead);
         this.router.put("/:id", this.update);
         this.router.delete("/:id", this.delete);
     }

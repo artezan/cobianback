@@ -1,7 +1,8 @@
 import { Request, Response, Router } from "express";
 import { ObjectId } from "../../node_modules/@types/bson";
 import * as base64 from "base-64";
-import Notification from "../models/Notification";
+import Notification, { INotification } from "../models/Notification";
+import { IO } from "../app";
 
 export class NotificationRouter {
   public router: Router;
@@ -68,6 +69,8 @@ export class NotificationRouter {
     notification
       .save()
       .then(data => {
+        // emit
+        IO.emit("NEW_NOTIFICATION", data);
         res.status(201).json({ data });
       })
       .catch(error => {
@@ -128,6 +131,26 @@ export class NotificationRouter {
         res.status(500).json({ error });
       });
   }
+  public searchByNotRead(req: Request, res: Response): void {
+    const id = req.body.id;
+    const tags = req.body.tags;
+    Notification.find({
+      $or: [{ senderId: id }, { receiversId: id }, { tags }],
+    })
+      .sort({ timestamp: -1 })
+      .limit(20)
+      .then((data: any) => {
+        console.log(!"algo");
+        const read = data.filter(
+          n => n.readBy && !n.readBy.find(r => r.readerId === id),
+        );
+
+        res.status(200).json({ data: read });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
 
   // set up our routes
   public routes() {
@@ -136,6 +159,7 @@ export class NotificationRouter {
     // this.router.get("/bybuyerpassword/:base64", this.byPassword);
     this.router.post("/", this.create);
     this.router.post("/search", this.searchByIdOrTags);
+    this.router.post("/noread", this.searchByNotRead);
     this.router.put("/:id", this.update);
     this.router.delete("/:id", this.delete);
   }
