@@ -1,7 +1,19 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Administrator_1 = require("../models/Administrator");
+const Ofert_1 = require("../models/Ofert");
+const Credit_1 = require("../models/Credit");
+const Schedule_1 = require("../models/Schedule");
+const StatusBuyerProperty_1 = require("../models/StatusBuyerProperty");
 /**
  * @apiDefine AdministratorResponseParams
  * @apiSuccess {string} name
@@ -124,10 +136,78 @@ class AdministratorRouter {
             res.status(500).json({ error });
         });
     }
+    allEvents(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const pageNumber = req.body.pageNumber;
+            const nPerPage = req.body.nPerPage;
+            const numSchemas = 4;
+            // ofert
+            const oferts = yield Ofert_1.default.find()
+                .sort({ timestamp: -1 })
+                .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
+                .limit(Math.round(nPerPage / numSchemas));
+            // credit
+            const credits = yield Credit_1.default.find()
+                .sort({ timestamp: -1 })
+                .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
+                .limit(Math.round(nPerPage / numSchemas));
+            // schedule
+            const schedules = yield Schedule_1.default.find()
+                .sort({ timestamp: -1 })
+                .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
+                .limit(Math.round(nPerPage / numSchemas));
+            // sbp
+            const sbps = yield StatusBuyerProperty_1.default.find()
+                .sort({ timestamp: -1 })
+                .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
+                .limit(Math.round(nPerPage / numSchemas));
+            // crear datos para front
+            const allData = [];
+            oferts.forEach(ofert => {
+                allData.push({
+                    type: "ofert",
+                    time: ofert.timestamp,
+                    data: { oferts: ofert },
+                });
+            });
+            schedules.forEach(schedule => {
+                if (!schedule.administrator && !schedule.personal) {
+                    allData.push({
+                        type: "schedule",
+                        time: schedule.timestamp.toString(),
+                        data: { schedules: schedule },
+                    });
+                }
+            });
+            credits.forEach(credit => {
+                allData.push({
+                    type: "credit",
+                    time: credit.timestamp.toString(),
+                    data: { credits: credit },
+                });
+            });
+            sbps.forEach(sbp => {
+                allData.push({
+                    type: "sbp",
+                    time: sbp.timestamp.toString(),
+                    data: { sbps: sbp },
+                });
+            });
+            allData.sort((a, b) => {
+                // Turn your strings into dates, and then subtract them
+                // to get a value that is either negative, positive, or zero.
+                return new Date(b.time) - new Date(a.time);
+            });
+            /* --pageNumber;
+            allData = allData.slice(pageNumber * nPerPage, (pageNumber + 1) * nPerPage);*/
+            res.status(200).json({ data: allData });
+        });
+    }
     // set up our routes
     routes() {
         this.router.get("/", this.all);
         this.router.get("/:id", this.oneById);
+        this.router.post("/events", this.allEvents);
         this.router.post("/", this.createAdmin);
         this.router.put("/:id", this.update);
         this.router.delete("/:id", this.delete);

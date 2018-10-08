@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { ObjectId } from "../../node_modules/@types/bson";
+import { ObjectId } from "mongodb";
 import * as base64 from "base-64";
 import Notification, { INotification } from "../models/Notification";
 import { IO } from "../app";
@@ -113,6 +113,19 @@ export class NotificationRouter {
         res.status(500).json({ error });
       });
   }
+  public deleteAfter(req: Request, res: Response): void {
+    // dias antes para borrar
+    const prevTime = 60 * 86400000;
+    const schedule = new Date(new Date().getTime() - prevTime);
+    Notification.find({ timestamp: { $lt: schedule } })
+      // .remove()
+      .then(data => {
+        res.status(200).json({ data: data });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
   public searchByIdOrTags(req: Request, res: Response): void {
     const id = req.body.id;
     const pageNumber = req.body.pageNumber;
@@ -134,16 +147,23 @@ export class NotificationRouter {
   public searchByNotRead(req: Request, res: Response): void {
     const id = req.body.id;
     const tags = req.body.tags;
+    console.log(id);
     Notification.find({
       $or: [{ senderId: id }, { receiversId: id }, { tags }],
     })
       .sort({ timestamp: -1 })
       .limit(20)
       .then((data: any) => {
-        console.log(!"algo");
-        const read = data.filter(
-          n => n.readBy && !n.readBy.find(r => r.readerId === id),
-        );
+        const read = data.filter(n => {
+          return (
+            n.readBy &&
+            !n.readBy.find(
+              r =>
+                new ObjectId(r.readerId).toString() ===
+                new ObjectId(id).toString(),
+            )
+          );
+        });
 
         res.status(200).json({ data: read });
       })
@@ -161,6 +181,7 @@ export class NotificationRouter {
     this.router.post("/search", this.searchByIdOrTags);
     this.router.post("/noread", this.searchByNotRead);
     this.router.put("/:id", this.update);
-    this.router.delete("/:id", this.delete);
+    // this.router.delete("/:id", this.delete);
+    this.router.delete("/clean", this.deleteAfter);
   }
 }

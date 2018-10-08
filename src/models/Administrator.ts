@@ -1,4 +1,8 @@
 import { model, Schema, Document } from "mongoose";
+import { IOfert } from "./Ofert";
+import { ICredit } from "./Credit";
+import { ISchedule } from "./Schedule";
+import { IStatusBuyerProperty } from "./StatusBuyerProperty";
 const AdministratorSchema: Schema = new Schema({
   timestamp: {
     type: Date,
@@ -29,3 +33,14 @@ const AdministratorSchema: Schema = new Schema({
 });
 
 export default model("Administrator", AdministratorSchema);
+
+export interface IEvents {
+  data?: {
+    oferts?: IOfert;
+    credits?: ICredit;
+    schedules?: ISchedule;
+    sbps?: IStatusBuyerProperty;
+  };
+  type?: string;
+  time?: any;
+}

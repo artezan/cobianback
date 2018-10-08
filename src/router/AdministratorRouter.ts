@@ -1,7 +1,11 @@
 import { Request, Response, Router } from "express";
 import { ObjectId } from "../../node_modules/@types/bson";
 import * as base64 from "base-64";
-import Administrator from "../models/Administrator";
+import Administrator, { IEvents } from "../models/Administrator";
+import Ofert from "../models/Ofert";
+import Credit from "../models/Credit";
+import Schedule from "../models/Schedule";
+import StatusBuyerProperty from "../models/StatusBuyerProperty";
 /**
  * @apiDefine AdministratorResponseParams
  * @apiSuccess {string} name
@@ -134,11 +138,77 @@ export class AdministratorRouter {
         res.status(500).json({ error });
       });
   }
+  public async allEvents(req: Request, res: Response): Promise<void> {
+    const pageNumber = req.body.pageNumber;
+    const nPerPage = req.body.nPerPage;
+    const numSchemas = 4;
+    // ofert
+    const oferts = await Ofert.find()
+      .sort({ timestamp: -1 })
+      .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
+      .limit(Math.round(nPerPage / numSchemas));
+    // credit
+    const credits = await Credit.find()
+      .sort({ timestamp: -1 })
+      .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
+      .limit(Math.round(nPerPage / numSchemas));
+    // schedule
+    const schedules = await Schedule.find()
+      .sort({ timestamp: -1 })
+      .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
+      .limit(Math.round(nPerPage / numSchemas));
+    // sbp
+    const sbps = await StatusBuyerProperty.find()
+      .sort({ timestamp: -1 })
+      .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
+      .limit(Math.round(nPerPage / numSchemas));
+    // crear datos para front
+    const allData: IEvents[] = [];
+    oferts.forEach(ofert => {
+      allData.push({
+        type: "ofert",
+        time: ofert.timestamp,
+        data: { oferts: ofert },
+      });
+    });
+    schedules.forEach(schedule => {
+      if (!schedule.administrator && !schedule.personal) {
+        allData.push({
+          type: "schedule",
+          time: schedule.timestamp.toString(),
+          data: { schedules: schedule },
+        });
+      }
+    });
+    credits.forEach(credit => {
+      allData.push({
+        type: "credit",
+        time: credit.timestamp.toString(),
+        data: { credits: credit },
+      });
+    });
+    sbps.forEach(sbp => {
+      allData.push({
+        type: "sbp",
+        time: sbp.timestamp.toString(),
+        data: { sbps: sbp },
+      });
+    });
+    allData.sort((a, b) => {
+      // Turn your strings into dates, and then subtract them
+      // to get a value that is either negative, positive, or zero.
+      return <any>new Date(b.time) - <any>new Date(a.time);
+    });
+    /* --pageNumber;
+    allData = allData.slice(pageNumber * nPerPage, (pageNumber + 1) * nPerPage);*/
+    res.status(200).json({ data: allData });
+  }
 
   // set up our routes
   public routes() {
     this.router.get("/", this.all);
     this.router.get("/:id", this.oneById);
+    this.router.post("/events", this.allEvents);
     this.router.post("/", this.createAdmin);
     this.router.put("/:id", this.update);
     this.router.delete("/:id", this.delete);

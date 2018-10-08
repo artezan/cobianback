@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const mongodb_1 = require("mongodb");
 const Notification_1 = require("../models/Notification");
 const app_1 = require("../app");
 class NotificationRouter {
@@ -102,6 +103,19 @@ class NotificationRouter {
             res.status(500).json({ error });
         });
     }
+    deleteAfter(req, res) {
+        // dias antes para borrar
+        const prevTime = 60 * 86400000;
+        const schedule = new Date(new Date().getTime() - prevTime);
+        Notification_1.default.find({ timestamp: { $lt: schedule } })
+            // .remove()
+            .then(data => {
+            res.status(200).json({ data: data });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
     searchByIdOrTags(req, res) {
         const id = req.body.id;
         const pageNumber = req.body.pageNumber;
@@ -123,14 +137,18 @@ class NotificationRouter {
     searchByNotRead(req, res) {
         const id = req.body.id;
         const tags = req.body.tags;
+        console.log(id);
         Notification_1.default.find({
             $or: [{ senderId: id }, { receiversId: id }, { tags }],
         })
             .sort({ timestamp: -1 })
             .limit(20)
             .then((data) => {
-            console.log(!"algo");
-            const read = data.filter(n => n.readBy && !n.readBy.find(r => r.readerId === id));
+            const read = data.filter(n => {
+                return (n.readBy &&
+                    !n.readBy.find(r => new mongodb_1.ObjectId(r.readerId).toString() ===
+                        new mongodb_1.ObjectId(id).toString()));
+            });
             res.status(200).json({ data: read });
         })
             .catch(error => {
@@ -146,7 +164,8 @@ class NotificationRouter {
         this.router.post("/search", this.searchByIdOrTags);
         this.router.post("/noread", this.searchByNotRead);
         this.router.put("/:id", this.update);
-        this.router.delete("/:id", this.delete);
+        // this.router.delete("/:id", this.delete);
+        this.router.delete("/clean", this.deleteAfter);
     }
 }
 exports.NotificationRouter = NotificationRouter;

@@ -104,9 +104,6 @@ class PropertyLogic {
                                 });
                             }
                             const avr = (sumTotal / items) * 100;
-                            console.log(avr);
-                            console.log(sumTotal);
-                            console.log(items);
                             if (avr >= percentage) {
                                 // add % avr
                                 // property["percentage"] = avr;

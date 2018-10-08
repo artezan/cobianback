@@ -32,6 +32,24 @@ export class ScheduleRouter {
         res.status(500).json({ error });
       });
   }
+  public allPage(req: Request, res: Response): void {
+    const pageNumber = req.body.pageNumber;
+    const nPerPage = req.body.nPerPage;
+    Schedule.find()
+      .populate("property")
+      .populate("buyer")
+      .populate("adviser")
+      .populate("seller")
+      .sort({ timestamp: -1 })
+      .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
+      .limit(nPerPage)
+      .then(data => {
+        res.status(200).json({ data });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
   /**
    * @api {GET} /schedule/byscheduleid/:id Request by Object Id
    * @apiVersion  0.1.0
@@ -255,6 +273,7 @@ export class ScheduleRouter {
     this.router.get("/byscheduleid/:id", this.oneById);
     // this.router.get("/bybuyerpassword/:base64", this.byPassword);
     this.router.post("/", this.create);
+    this.router.post("/page", this.allPage);
     this.router.post("/checkschedule", this.check);
     this.router.put("/:id", this.update);
     this.router.delete("/:id", this.delete);
