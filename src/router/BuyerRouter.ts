@@ -410,18 +410,18 @@ export class BuyerRouter {
    * @apiParam {number} name
    * @apiParam {string} fatherLastName
    * @apiParam {string} motherLastName
-   * @apiParam {number} phone
+   * @apiParam {number} email
    */
 
   public checkBuyer(req: Request, res: Response): void {
     const name: string = req.body.name;
     const fatherLastName: string = req.body.fatherLastName;
-    const phone: number = req.body.phone;
+    const email: string = req.body.email;
 
     Buyer.findOne({
       name: name,
       fatherLastName: fatherLastName,
-      phone: phone,
+      email: email,
     })
       .then(data => {
         res.status(200).json({ data: data });

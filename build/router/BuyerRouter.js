@@ -395,16 +395,16 @@ class BuyerRouter {
      * @apiParam {number} name
      * @apiParam {string} fatherLastName
      * @apiParam {string} motherLastName
-     * @apiParam {number} phone
+     * @apiParam {number} email
      */
     checkBuyer(req, res) {
         const name = req.body.name;
         const fatherLastName = req.body.fatherLastName;
-        const phone = req.body.phone;
+        const email = req.body.email;
         Buyer_1.default.findOne({
             name: name,
             fatherLastName: fatherLastName,
-            phone: phone,
+            email: email,
         })
             .then(data => {
             res.status(200).json({ data: data });

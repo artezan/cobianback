@@ -51,6 +51,10 @@ const SellerSchema = new mongoose_1.Schema({
             default: [],
         },
     ],
+    email: {
+        type: String,
+        required: true,
+    },
 });
 exports.default = mongoose_1.model("Seller", SellerSchema);
 //# sourceMappingURL=Seller.js.map

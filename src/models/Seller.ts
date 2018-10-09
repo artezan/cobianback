@@ -83,6 +83,10 @@ const SellerSchema: Schema = new Schema({
       default: [],
     },
   ],
+  email: {
+    type: String,
+    required: true,
+  },
 });
 
 export default model<ISeller>("Seller", SellerSchema);

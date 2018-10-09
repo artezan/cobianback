@@ -19,7 +19,7 @@ export class UserSession {
   }
   public async byPassword(req: Request, res: Response): Promise<void> {
     const strDecode: string = base64.decode(req.params.base64);
-    const name = strDecode.substring(0, strDecode.indexOf(":"));
+    const email = strDecode.substring(0, strDecode.indexOf(":"));
     const password = strDecode.substring(
       strDecode.indexOf(":") + 1,
       strDecode.length,
@@ -29,23 +29,23 @@ export class UserSession {
       // busca la info
       try {
         //   admin
-        Administrator.find({ password: password, name: name })
+        Administrator.find({ password: password, email: email })
           .then(data => {
             if (data.length > 0) {
               resolve({ data: data, type: "administrator" });
             } else {
               //   buyer
-              Buyer.find({ password: password, name: name })
+              Buyer.find({ password: password, email: email })
                 .then(data => {
                   if (data.length > 0) {
                     resolve({ data: data, type: "buyer" });
                   } else {
-                    Seller.find({ password: password, name: name })
+                    Seller.find({ password: password, email: email })
                       .then(data => {
                         if (data.length > 0) {
                           resolve({ data: data, type: "seller" });
                         } else {
-                          Adviser.find({ password: password, name: name })
+                          Adviser.find({ password: password, email: email })
                             .then(data => {
                               if (data.length > 0) {
                                 resolve({ data: data, type: "adviser" });
@@ -53,7 +53,7 @@ export class UserSession {
                                 // resolve("error");
                                 Management.find({
                                   password: password,
-                                  name: name,
+                                  email: email,
                                 })
                                   .then(data => {
                                     if (data.length > 0) {
@@ -64,7 +64,7 @@ export class UserSession {
                                     } else {
                                       Maker.find({
                                         password: password,
-                                        name: name,
+                                        email: email,
                                       })
                                         .then(data => {
                                           if (data.length > 0) {
@@ -75,7 +75,7 @@ export class UserSession {
                                           } else {
                                             Office.find({
                                               password: password,
-                                              name: name,
+                                              email: email,
                                             })
                                               .then(data => {
                                                 if (data.length > 0) {

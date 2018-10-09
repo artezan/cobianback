@@ -25,33 +25,33 @@ class UserSession {
     byPassword(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const strDecode = base64.decode(req.params.base64);
-            const name = strDecode.substring(0, strDecode.indexOf(":"));
+            const email = strDecode.substring(0, strDecode.indexOf(":"));
             const password = strDecode.substring(strDecode.indexOf(":") + 1, strDecode.length);
             // crea promise con respuesta si encuentra o no
             const promise = new Promise((resolve, reject) => {
                 // busca la info
                 try {
                     //   admin
-                    Administrator_1.default.find({ password: password, name: name })
+                    Administrator_1.default.find({ password: password, email: email })
                         .then(data => {
                         if (data.length > 0) {
                             resolve({ data: data, type: "administrator" });
                         }
                         else {
                             //   buyer
-                            Buyer_1.default.find({ password: password, name: name })
+                            Buyer_1.default.find({ password: password, email: email })
                                 .then(data => {
                                 if (data.length > 0) {
                                     resolve({ data: data, type: "buyer" });
                                 }
                                 else {
-                                    Seller_1.default.find({ password: password, name: name })
+                                    Seller_1.default.find({ password: password, email: email })
                                         .then(data => {
                                         if (data.length > 0) {
                                             resolve({ data: data, type: "seller" });
                                         }
                                         else {
-                                            Adviser_1.default.find({ password: password, name: name })
+                                            Adviser_1.default.find({ password: password, email: email })
                                                 .then(data => {
                                                 if (data.length > 0) {
                                                     resolve({ data: data, type: "adviser" });
@@ -60,7 +60,7 @@ class UserSession {
                                                     // resolve("error");
                                                     Management_1.default.find({
                                                         password: password,
-                                                        name: name,
+                                                        email: email,
                                                     })
                                                         .then(data => {
                                                         if (data.length > 0) {
@@ -72,7 +72,7 @@ class UserSession {
                                                         else {
                                                             Maker_1.default.find({
                                                                 password: password,
-                                                                name: name,
+                                                                email: email,
                                                             })
                                                                 .then(data => {
                                                                 if (data.length > 0) {
@@ -84,7 +84,7 @@ class UserSession {
                                                                 else {
                                                                     Office_1.default.find({
                                                                         password: password,
-                                                                        name: name,
+                                                                        email: email,
                                                                     })
                                                                         .then(data => {
                                                                         if (data.length > 0) {
