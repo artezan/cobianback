@@ -144,21 +144,34 @@ export class AdministratorRouter {
     const numSchemas = 4;
     // ofert
     const oferts = await Ofert.find()
+      .populate("buyer")
+      .populate("property")
       .sort({ timestamp: -1 })
       .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
       .limit(Math.round(nPerPage / numSchemas));
     // credit
     const credits = await Credit.find()
+      .populate("buyer")
+      .populate("property")
       .sort({ timestamp: -1 })
       .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
       .limit(Math.round(nPerPage / numSchemas));
     // schedule
     const schedules = await Schedule.find()
+      .populate("property")
+      .populate("buyer")
+      .populate("adviser")
+      .populate("seller")
       .sort({ timestamp: -1 })
       .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
       .limit(Math.round(nPerPage / numSchemas));
     // sbp
     const sbps = await StatusBuyerProperty.find()
+      .populate("property")
+      .populate({
+        path: "buyer",
+        populate: [{ path: "credit" }, { path: "ofert" }],
+      })
       .sort({ timestamp: -1 })
       .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
       .limit(Math.round(nPerPage / numSchemas));

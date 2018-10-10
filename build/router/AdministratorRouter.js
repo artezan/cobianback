@@ -143,21 +143,34 @@ class AdministratorRouter {
             const numSchemas = 4;
             // ofert
             const oferts = yield Ofert_1.default.find()
+                .populate("buyer")
+                .populate("property")
                 .sort({ timestamp: -1 })
                 .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
                 .limit(Math.round(nPerPage / numSchemas));
             // credit
             const credits = yield Credit_1.default.find()
+                .populate("buyer")
+                .populate("property")
                 .sort({ timestamp: -1 })
                 .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
                 .limit(Math.round(nPerPage / numSchemas));
             // schedule
             const schedules = yield Schedule_1.default.find()
+                .populate("property")
+                .populate("buyer")
+                .populate("adviser")
+                .populate("seller")
                 .sort({ timestamp: -1 })
                 .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
                 .limit(Math.round(nPerPage / numSchemas));
             // sbp
             const sbps = yield StatusBuyerProperty_1.default.find()
+                .populate("property")
+                .populate({
+                path: "buyer",
+                populate: [{ path: "credit" }, { path: "ofert" }],
+            })
                 .sort({ timestamp: -1 })
                 .skip(pageNumber > 0 ? (pageNumber - 1) * (nPerPage / numSchemas) : 0)
                 .limit(Math.round(nPerPage / numSchemas));
