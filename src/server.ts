@@ -79,7 +79,7 @@ class Server {
       res.header("Access-Control-Allow-Origin", "http://localhost:8100");
       res.header("Access-Control-Allow-Origin", "http://localhost:4200");
       res.header("Access-Control-Allow-Origin", "http://31.220.52.51:3002");
-      // res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Origin", "*");
       res.header(
         "Access-Control-Allow-Methods",
         "GET, POST, PUT, DELETE, OPTIONS",

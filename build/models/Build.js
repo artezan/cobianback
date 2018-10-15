@@ -55,6 +55,7 @@ const BuildSchema = new mongoose_1.Schema({
     city: {
         type: String,
     },
+    notificationOneSignal: [{ type: String, default: [] }],
 });
 exports.default = mongoose_1.model("Build", BuildSchema);
 //# sourceMappingURL=Build.js.map

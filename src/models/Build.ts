@@ -89,6 +89,7 @@ const BuildSchema: Schema = new Schema({
   city: {
     type: String,
   },
+  notificationOneSignal: [{ type: String, default: [] }],
 });
 
 export default model<IBuild>("Build", BuildSchema);
