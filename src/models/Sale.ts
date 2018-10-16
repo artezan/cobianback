@@ -19,7 +19,7 @@ export interface ISale extends Document {
   /**
    *  Asesor
    */
-  adviser: IAdviser;
+  adviser: IAdviser[];
   /**
    *  vendedor
    */
@@ -59,10 +59,13 @@ const ScheduleSchema: Schema = new Schema({
   /**
    *  Asesor
    */
-  adviser: {
-    type: Schema.Types.ObjectId,
-    ref: "Adviser",
-  },
+  adviser: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Adviser",
+      default: [],
+    },
+  ],
   /**
    *  Vendedor
    */

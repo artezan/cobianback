@@ -54,6 +54,14 @@ const GoalSchema = new mongoose_1.Schema({
         },
     ],
     notificationOneSignal: [{ type: String, default: [] }],
+    typeOfGoal: {
+        type: String,
+        default: "goals",
+    },
+    quantitative: {
+        type: Number,
+        default: 0,
+    },
 });
 exports.default = mongoose_1.model("Goal", GoalSchema);
 //# sourceMappingURL=Goal.js.map

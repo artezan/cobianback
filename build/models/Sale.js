@@ -23,10 +23,13 @@ const ScheduleSchema = new mongoose_1.Schema({
     /**
      *  Asesor
      */
-    adviser: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: "Adviser",
-    },
+    adviser: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: "Adviser",
+            default: [],
+        },
+    ],
     /**
      *  Vendedor
      */

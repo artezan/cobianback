@@ -76,6 +76,8 @@ class GoalRouter {
         const isComplete = req.body.isComplete;
         const isByManagement = req.body.isByManagement;
         const goals = req.body.goals;
+        const quantitative = req.body.quantitative;
+        const typeOfGoal = req.body.typeOfGoal;
         const goal = new Goal_1.default({
             content,
             adviser,
@@ -87,6 +89,8 @@ class GoalRouter {
             day,
             month,
             year,
+            quantitative,
+            typeOfGoal,
         });
         goal
             .save()

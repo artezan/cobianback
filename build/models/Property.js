@@ -144,6 +144,10 @@ const PropertySchema = new mongoose_1.Schema({
     isBuy: {
         type: Boolean,
     },
+    numOfLikes: {
+        type: Number,
+        default: 0,
+    },
 });
 exports.default = mongoose_1.model("Property", PropertySchema);
 //# sourceMappingURL=Property.js.map

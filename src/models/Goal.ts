@@ -36,6 +36,15 @@ export interface IGoal extends Document {
       isComplete: boolean;
     }
   ];
+  typeOfGoal:
+    | "goals"
+    | "salesTotal"
+    | "costOfSales"
+    | "rentTotal"
+    | "costOfRent"
+    | "rentSalesTotal"
+    | "rentSalesCost";
+  quantitative: number;
 }
 const GoalSchema: Schema = new Schema({
   timestamp: {
@@ -91,6 +100,14 @@ const GoalSchema: Schema = new Schema({
     },
   ],
   notificationOneSignal: [{ type: String, default: [] }],
+  typeOfGoal: {
+    type: String,
+    default: "goals",
+  },
+  quantitative: {
+    type: Number,
+    default: 0,
+  },
 });
 
 export default model<IGoal>("Goal", GoalSchema);

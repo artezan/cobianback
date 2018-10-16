@@ -82,6 +82,8 @@ export class GoalRouter {
     const isComplete: boolean = req.body.isComplete;
     const isByManagement: boolean = req.body.isByManagement;
     const goals: any = req.body.goals;
+    const quantitative = req.body.quantitative;
+    const typeOfGoal = req.body.typeOfGoal;
 
     const goal = new Goal({
       content,
@@ -94,6 +96,8 @@ export class GoalRouter {
       day,
       month,
       year,
+      quantitative,
+      typeOfGoal,
     });
 
     goal

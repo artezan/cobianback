@@ -91,6 +91,10 @@ export interface IProperty extends Document {
    * esta comprada
    */
   isBuy: boolean;
+  /**
+   * numero de likes
+   */
+  numOfLikes: number;
 }
 const PropertySchema: Schema = new Schema({
   isRent: {
@@ -234,6 +238,10 @@ const PropertySchema: Schema = new Schema({
    */
   isBuy: {
     type: Boolean,
+  },
+  numOfLikes: {
+    type: Number,
+    default: 0,
   },
 });
 
