@@ -419,8 +419,8 @@ export class BuyerRouter {
     const email: string = req.body.email;
 
     Buyer.findOne({
-      name: name,
-      fatherLastName: fatherLastName,
+      // name: name,
+      // fatherLastName: fatherLastName,
       email: email,
     })
       .then(data => {

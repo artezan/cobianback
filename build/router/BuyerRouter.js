@@ -402,8 +402,8 @@ class BuyerRouter {
         const fatherLastName = req.body.fatherLastName;
         const email = req.body.email;
         Buyer_1.default.findOne({
-            name: name,
-            fatherLastName: fatherLastName,
+            // name: name,
+            // fatherLastName: fatherLastName,
             email: email,
         })
             .then(data => {
