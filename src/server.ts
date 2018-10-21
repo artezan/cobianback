@@ -24,6 +24,7 @@ import { UserSession } from "./router/UserSession";
 import { BuildRouter } from "./router/BuildRouter";
 import { MakerRouter } from "./router/MakerRouter";
 import { SalesRouter } from "./router/SalesRouter";
+import { MailRouter } from "./router/MailRouter";
 
 class Server {
   public administratorRouter = new AdministratorRouter();
@@ -43,6 +44,7 @@ class Server {
   public buildRouter = new BuildRouter();
   public makerRouter = new MakerRouter();
   public saleRouter = new SalesRouter();
+  public mailRouter = new MailRouter();
 
   // set app to be of type express.Application
   public app: express.Application;
@@ -82,12 +84,12 @@ class Server {
       res.header("Access-Control-Allow-Origin", "*");
       res.header(
         "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, OPTIONS",
+        "GET, POST, PUT, DELETE, OPTIONS"
       );
       // tslint:disable-next-line:max-line-length
       res.header(
         "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials"
       );
       res.header("Access-Control-Allow-Credentials", "true");
       next();
@@ -150,6 +152,7 @@ class Server {
     this.app.use("/api/v1/build", this.buildRouter.router);
     this.app.use("/api/v1/maker", this.makerRouter.router);
     this.app.use("/api/v1/sale", this.saleRouter.router);
+    this.app.use("/api/v1/mail", this.mailRouter.router);
   }
 }
 
