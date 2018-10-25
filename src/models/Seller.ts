@@ -32,6 +32,10 @@ export interface ISeller extends Document {
    * city
    */
   city: string;
+  /**
+   * notas
+   */
+  notes: string;
 }
 const SellerSchema: Schema = new Schema({
   city: {
@@ -86,6 +90,9 @@ const SellerSchema: Schema = new Schema({
   email: {
     type: String,
     required: true,
+  },
+  notes: {
+    type: String,
   },
 });
 

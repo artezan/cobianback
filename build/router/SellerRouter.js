@@ -123,6 +123,7 @@ class SellerRouter {
         const isRenter = req.body.isRenter;
         const city = req.body.city;
         const property = req.body.property;
+        const notes = req.body.notes;
         const seller = new Seller_1.default({
             name,
             lastName,
@@ -130,6 +131,7 @@ class SellerRouter {
             isRenter,
             city,
             property,
+            notes,
         });
         seller
             .save()

@@ -103,18 +103,19 @@ class NotificationRouter {
             res.status(500).json({ error });
         });
     }
-    deleteAfter(req, res) {
+    deleteAfter(req, res, next) {
         // dias antes para borrar
         const prevTime = 60 * 86400000;
         const schedule = new Date(new Date().getTime() - prevTime);
-        Notification_1.default.find({ timestamp: { $lt: schedule } })
-            // .remove()
-            .then(data => {
+        Notification_1.default.find({ timestamp: { $lt: schedule } }).remove();
+        /*  .then(data => {
+            console.log("a");
             res.status(200).json({ data: data });
-        })
-            .catch(error => {
+          })
+          .catch(error => {
             res.status(500).json({ error });
-        });
+          }); */
+        next();
     }
     searchByIdOrTags(req, res) {
         const id = req.body.id;
@@ -161,11 +162,11 @@ class NotificationRouter {
         this.router.get("/bynotificationid/:id", this.oneById);
         // this.router.get("/bybuyerpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
-        this.router.post("/search", this.searchByIdOrTags);
+        this.router.post("/search", this.deleteAfter, this.searchByIdOrTags);
         this.router.post("/noread", this.searchByNotRead);
         this.router.put("/:id", this.update);
         // this.router.delete("/:id", this.delete);
-        this.router.delete("/clean", this.deleteAfter);
+        // this.router.delete("/clean", this.deleteAfter);
     }
 }
 exports.NotificationRouter = NotificationRouter;

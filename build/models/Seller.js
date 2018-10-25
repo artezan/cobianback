@@ -55,6 +55,9 @@ const SellerSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    notes: {
+        type: String,
+    },
 });
 exports.default = mongoose_1.model("Seller", SellerSchema);
 //# sourceMappingURL=Seller.js.map

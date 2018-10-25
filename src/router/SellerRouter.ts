@@ -133,6 +133,7 @@ export class SellerRouter {
     const isRenter: boolean = req.body.isRenter;
     const city: string = req.body.city;
     const property = req.body.property;
+    const notes = req.body.notes;
 
     const seller = new Seller({
       name,
@@ -141,6 +142,7 @@ export class SellerRouter {
       isRenter,
       city,
       property,
+      notes,
     });
 
     seller
