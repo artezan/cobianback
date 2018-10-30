@@ -25,6 +25,7 @@ import { BuildRouter } from "./router/BuildRouter";
 import { MakerRouter } from "./router/MakerRouter";
 import { SalesRouter } from "./router/SalesRouter";
 import { MailRouter } from "./router/MailRouter";
+import * as jwt from "./_helpers/jwt";
 
 class Server {
   public administratorRouter = new AdministratorRouter();
@@ -84,12 +85,12 @@ class Server {
       res.header("Access-Control-Allow-Origin", "*");
       res.header(
         "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, OPTIONS"
+        "GET, POST, PUT, DELETE, OPTIONS",
       );
       // tslint:disable-next-line:max-line-length
       res.header(
         "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials"
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials",
       );
       res.header("Access-Control-Allow-Credentials", "true");
       next();
@@ -99,41 +100,8 @@ class Server {
   // application routes
   public routes(): void {
     const router: express.Router = express.Router();
-    // seguridad por credenciales
-    /*   this.app.use(async (req, res, next) => {
-      console.log(req.headers.authorization);
-      // pide en el header user y authorization
-      if (!req.headers.authorization && !req.headers.user) {
-        return res.status(403).json({ error: "No credentials sent!" });
-      } else {
-        // cliente
-        if (req.headers.user === "customer") {
-          const isFind = await CustmersLogic.Instance().checkCustomer(
-            req.headers.authorization,
-          );
-          if (!isFind) {
-            return res.status(403).json({ error: "No credentials match!" });
-          } // consultor
-        } else if (req.headers.user === "consultant") {
-          const isFind = await ConsultantsLogic.Instance().checkConsultant(
-            req.headers.authorization,
-          );
-          if (!isFind) {
-            return res.status(403).json({ error: "No credentials match!" });
-          } // company
-        } else if (req.headers.user === "company") {
-          const isFind = await CompaniesLogic.Instance().checkCompany(
-            req.headers.authorization,
-          );
-          if (!isFind) {
-            return res.status(403).json({ error: "No credentials match!" });
-          } // no user
-        } else {
-          return res.status(403).json({ error: "No credentials match!" });
-        }
-      }
-      next();
-    }); */
+    // JWT auth
+    this.app.use(jwt.jwt());
     this.app.use("/", router);
     this.app.use("/api/v1/administrator", this.administratorRouter.router);
     this.app.use("/api/v1/adviser", this.adviserRouter.router);

@@ -98,7 +98,8 @@ class ManagementRouter {
         const name = req.body.name;
         const password = req.body.password;
         const city = req.body.city;
-        const management = new Management_1.default({ name, password, city });
+        const email = req.body.email;
+        const management = new Management_1.default({ name, password, city, email });
         management
             .save()
             .then(data => {

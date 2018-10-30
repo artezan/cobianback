@@ -10,8 +10,8 @@ const transporterGeneral = nodemailer.createTransport({
   port: 465,
   auth: {
     user: "artezan.cabrera@gmail.com", // generated ethereal user
-    pass: "180292CESARartezan" // generated ethereal password
-  }
+    pass: "180292CESARartezan", // generated ethereal password
+  },
 });
 
 export class MailRouter {
@@ -42,8 +42,8 @@ export class MailRouter {
         port: 465,
         auth: {
           user: "artezan.cabrera@gmail.com", // generated ethereal user
-          pass: "180292CESARartezan" // generated ethereal password
-        }
+          pass: "180292CESARartezan", // generated ethereal password
+        },
       });
 
       // setup email data with unicode symbols
@@ -52,7 +52,7 @@ export class MailRouter {
         to: "artezan_015@hotmail.com, artezan.cabrera@gmail.com", // list of receivers
         subject: "Hello ✔", // Subject line
         text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b><p>👻😄</p>" // html body
+        html: "<b>Hello world?</b><p>👻😄</p>", // html body
       };
 
       // send mail with defined transport object
@@ -79,8 +79,8 @@ export class MailRouter {
       port: 465,
       auth: {
         user: "artezan.cabrera@gmail.com", // generated ethereal user
-        pass: "180292CESARartezan" // generated ethereal password
-      }
+        pass: "180292CESARartezan", // generated ethereal password
+      },
     });
     // setup email data with unicode symbols
     const mailOptions: MailOptions = {
@@ -89,7 +89,7 @@ export class MailRouter {
       subject: "Archivo 📁", // Subject line
       text: "Archivo Ajunto", // plain text body
       html: "<b>Hello world file</b><p>✌</p>", // html body
-      attachments: [{ filename: file.originalname, content: file.buffer }]
+      attachments: [{ filename: file.originalname, content: file.buffer }],
     };
     // send mail with defined transport object
     transporter.sendMail(mailOptions, (error, info) => {
@@ -109,7 +109,7 @@ export class MailRouter {
 
     const newEmail = new VerificationEmail({
       email,
-      token
+      token,
     });
     newEmail
       .save()
@@ -120,11 +120,13 @@ export class MailRouter {
           to: email,
           subject: "Verificar Cuenta", // Subject line
           text: "Este es su código de verificación:", // plain text body
-          html: `<p>Este es su código de verificación: </p><b>${token}</b>` // html body
+          html: `<p>Este es su código de verificación: </p><b>${token}</b>`, // html body
         };
         // send mail with defined transport object
         transporterGeneral.sendMail(mailOptions, (error, info) => {
           if (error) {
+            console.log("error");
+
             res.status(500).json({ data: false });
             return console.log(error);
           }

@@ -17,6 +17,8 @@ const Adviser_1 = require("../models/Adviser");
 const Management_1 = require("../models/Management");
 const Maker_1 = require("../models/Maker");
 const Office_1 = require("../models/Office");
+const jwt = require("jsonwebtoken");
+const config_1 = require("../config");
 class UserSession {
     constructor() {
         this.router = express_1.Router();
@@ -24,7 +26,7 @@ class UserSession {
     }
     byPassword(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const strDecode = base64.decode(req.params.base64);
+            const strDecode = base64.decode(req.body.base64);
             const email = strDecode.substring(0, strDecode.indexOf(":"));
             const password = strDecode.substring(strDecode.indexOf(":") + 1, strDecode.length);
             // crea promise con respuesta si encuentra o no
@@ -126,13 +128,21 @@ class UserSession {
                 res.status(200).json({ data: "error" });
             }
             else {
-                res.status(200).json({ data });
+                const token = jwt.sign({ sub: password }, config_1.config.secret);
+                console.log("jwt", token);
+                const result = {
+                    data: data.data,
+                    type: data.type,
+                    token: token,
+                };
+                // const res = Object.assign({}, data, token);
+                res.status(200).json({ data: result });
             }
         });
     }
     // set up our routes
     routes() {
-        this.router.get("/:base64", this.byPassword);
+        this.router.post("/", this.byPassword);
     }
 }
 exports.UserSession = UserSession;

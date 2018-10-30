@@ -103,9 +103,11 @@ class AdministratorRouter {
     createAdmin(req, res) {
         const name = req.body.name;
         const password = req.body.password;
+        const email = req.body.email;
         const admin = new Administrator_1.default({
             name,
             password,
+            email,
         });
         admin
             .save()

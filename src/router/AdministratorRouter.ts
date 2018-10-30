@@ -100,10 +100,12 @@ export class AdministratorRouter {
   public createAdmin(req: Request, res: Response): void {
     const name: string = req.body.name;
     const password: string = req.body.password;
+    const email: string = req.body.email;
 
     const admin = new Administrator({
       name,
       password,
+      email,
     });
     admin
       .save()

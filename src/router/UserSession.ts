@@ -9,6 +9,8 @@ import Adviser from "../models/Adviser";
 import Management from "../models/Management";
 import Maker from "../models/Maker";
 import Office from "../models/Office";
+import * as jwt from "jsonwebtoken";
+import { config } from "../config";
 
 export class UserSession {
   public router: Router;
@@ -18,7 +20,7 @@ export class UserSession {
     this.routes();
   }
   public async byPassword(req: Request, res: Response): Promise<void> {
-    const strDecode: string = base64.decode(req.params.base64);
+    const strDecode: string = base64.decode(req.body.base64);
     const email = strDecode.substring(0, strDecode.indexOf(":"));
     const password = strDecode.substring(
       strDecode.indexOf(":") + 1,
@@ -115,11 +117,19 @@ export class UserSession {
     if (data === "error") {
       res.status(200).json({ data: "error" });
     } else {
-      res.status(200).json({ data });
+      const token = jwt.sign({ sub: password }, config.secret);
+      console.log("jwt", token);
+      const result = {
+        data: data.data,
+        type: data.type,
+        token: token,
+      };
+      // const res = Object.assign({}, data, token);
+      res.status(200).json({ data: result });
     }
   }
   // set up our routes
   public routes() {
-    this.router.get("/:base64", this.byPassword);
+    this.router.post("/", this.byPassword);
   }
 }

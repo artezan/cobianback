@@ -108,8 +108,9 @@ export class ManagementRouter {
     const name: string = req.body.name;
     const password: string = req.body.password;
     const city: string = req.body.city;
+    const email: string = req.body.email;
 
-    const management = new Management({ name, password, city });
+    const management = new Management({ name, password, city, email });
 
     management
       .save()

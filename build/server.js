@@ -27,6 +27,7 @@ const BuildRouter_1 = require("./router/BuildRouter");
 const MakerRouter_1 = require("./router/MakerRouter");
 const SalesRouter_1 = require("./router/SalesRouter");
 const MailRouter_1 = require("./router/MailRouter");
+const jwt = require("./_helpers/jwt");
 class Server {
     constructor() {
         this.administratorRouter = new AdministratorRouter_1.AdministratorRouter();
@@ -85,41 +86,8 @@ class Server {
     // application routes
     routes() {
         const router = express.Router();
-        // seguridad por credenciales
-        /*   this.app.use(async (req, res, next) => {
-          console.log(req.headers.authorization);
-          // pide en el header user y authorization
-          if (!req.headers.authorization && !req.headers.user) {
-            return res.status(403).json({ error: "No credentials sent!" });
-          } else {
-            // cliente
-            if (req.headers.user === "customer") {
-              const isFind = await CustmersLogic.Instance().checkCustomer(
-                req.headers.authorization,
-              );
-              if (!isFind) {
-                return res.status(403).json({ error: "No credentials match!" });
-              } // consultor
-            } else if (req.headers.user === "consultant") {
-              const isFind = await ConsultantsLogic.Instance().checkConsultant(
-                req.headers.authorization,
-              );
-              if (!isFind) {
-                return res.status(403).json({ error: "No credentials match!" });
-              } // company
-            } else if (req.headers.user === "company") {
-              const isFind = await CompaniesLogic.Instance().checkCompany(
-                req.headers.authorization,
-              );
-              if (!isFind) {
-                return res.status(403).json({ error: "No credentials match!" });
-              } // no user
-            } else {
-              return res.status(403).json({ error: "No credentials match!" });
-            }
-          }
-          next();
-        }); */
+        // JWT auth
+        this.app.use(jwt.jwt());
         this.app.use("/", router);
         this.app.use("/api/v1/administrator", this.administratorRouter.router);
         this.app.use("/api/v1/adviser", this.adviserRouter.router);
