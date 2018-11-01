@@ -54,9 +54,10 @@ class Server {
     }
     // application config
     config() {
-        const MONGO_URI = "mongodb://vleeko:180292cesar@ds131942.mlab.com:31942/vleeko";
+        const MONGO_URI = 
+        // "mongodb://vleeko:180292cesar@ds131942.mlab.com:31942/vleeko";
         // "mongodb://cesar:180292@ds117469.mlab.com:17469/cesar";
-        // "mongodb://31.220.52.51:27017/db2";
+        "mongodb://31.220.58.194:27017/db1";
         mongoose.connect(MONGO_URI || process.env.MONGODB_URI);
         // express middleware
         this.app.use(bodyParser.urlencoded({ extended: true }));
