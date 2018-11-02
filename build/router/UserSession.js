@@ -17,7 +17,6 @@ const Adviser_1 = require("../models/Adviser");
 const Management_1 = require("../models/Management");
 const Maker_1 = require("../models/Maker");
 const Office_1 = require("../models/Office");
-const jwt = require("jsonwebtoken");
 class UserSession {
     constructor() {
         this.router = express_1.Router();
@@ -127,14 +126,15 @@ class UserSession {
                 res.status(200).json({ data: "error" });
             }
             else {
-                const token = jwt.sign({ sub: password }, "sss");
-                const result = {
-                    data: data.data,
-                    type: data.type,
-                    token: token,
-                };
+                /*  const token = jwt.sign({ sub: password }, "sss");
+                 const result = {
+                   data: data.data,
+                   type: data.type,
+                   token: token,
+                 }; */
                 // const res = Object.assign({}, data, token);
-                res.status(200).json({ data: result });
+                // res.status(200).json({ data: result });
+                res.status(200).json({ data });
             }
         });
     }
