@@ -25,7 +25,7 @@
   },
   {
     "type": "GET",
-    "url": "/administrator/:b64",
+    "url": "/administrator/:id",
     "title": "Request by Object Id",
     "version": "0.1.0",
     "name": "getByNameAndPassword",
@@ -37,8 +37,8 @@
             "group": "Parameter",
             "type": "ObjectId",
             "optional": false,
-            "field": "b64",
-            "description": "<p>(name:password) Must be provided as QueryParam</p>"
+            "field": "id",
+            "description": "<p>Must be provided as QueryParam</p>"
           }
         ]
       }
@@ -168,6 +168,21 @@
     "version": "0.1.0",
     "name": "deleteByToken",
     "group": "adviser",
+    "filename": "src/router/BuildRouter.ts",
+    "groupTitle": "adviser",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/adviser/:id"
+      }
+    ]
+  },
+  {
+    "type": "DELETE",
+    "url": "/adviser/:id",
+    "title": "Request  Deleted",
+    "version": "0.1.0",
+    "name": "deleteByToken",
+    "group": "adviser",
     "filename": "src/router/AdviserRouter.ts",
     "groupTitle": "adviser",
     "sampleRequest": [
@@ -202,12 +217,51 @@
   },
   {
     "type": "GET",
+    "url": "/adviser/",
+    "title": "Request all",
+    "version": "0.1.0",
+    "name": "get",
+    "group": "adviser",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/adviser/"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response a JSON-Array<consultant>:",
+          "content": "{ \"data\": [ { \"timestamp\": \"2018-08-24T22:12:10.843Z\", \"schedule\": [], \"buyer\": [], \"goal\": [], \"notification\": [], \"_id\": \"5b8082ba69a5a10b589abc75\", \"name\": \"asesor\", \"lastName\": \"apellido\", \"password\": \"cobian2018\", \"email\": \"asesor@correo.com\", \"hourStart\": 9, \"hourEnd\": 18, \"isRenter\": false, \"__v\": 0 }, { \"timestamp\": \"2018-08-24T22:12:43.596Z\", \"schedule\": [], \"buyer\": [], \"goal\": [], \"notification\": [], \"_id\": \"5b8082db69a5a10b589abc76\", \"name\": \"asesor2\", \"lastName\": \"apellido\", \"password\": \"cobian2018\", \"email\": \"asesor2@correo.com\", \"hourStart\": 10, \"hourEnd\": 18, \"isRenter\": true, \"__v\": 0 }, { \"timestamp\": \"2018-08-24T22:13:03.608Z\", \"schedule\": [], \"buyer\": [], \"goal\": [], \"notification\": [], \"_id\": \"5b8082ef69a5a10b589abc77\", \"name\": \"asesor3\", \"lastName\": \"apellido\", \"password\": \"cobian2018\", \"email\": \"asesor3@correo.com\", \"hourStart\": 7, \"hourEnd\": 20, \"isRenter\": true, \"__v\": 0 }, { \"timestamp\": \"2018-08-24T22:13:28.257Z\", \"schedule\": [], \"buyer\": [], \"goal\": [], \"notification\": [], \"_id\": \"5b80830869a5a10b589abc78\", \"name\": \"asesor4\", \"lastName\": \"apellido\", \"password\": \"cobian2018\", \"email\": \"asesor4@correo.com\", \"hourStart\": 7, \"hourEnd\": 21, \"isRenter\": false, \"__v\": 0 }, { \"timestamp\": \"2018-08-27T15:00:31.181Z\", \"schedule\": [], \"buyer\": [], \"goal\": [], \"notification\": [], \"_id\": \"5b84120f0255c71b3c0a21d8\", \"name\": \"asesor5\", \"lastName\": \"apellido\", \"password\": \"cobian2018\", \"email\": \"asesor5@correo.com\", \"hourStart\": 8, \"hourEnd\": 22, \"isRenter\": true, \"__v\": 0 } ] }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/router/BuildRouter.ts",
+    "groupTitle": "adviser"
+  },
+  {
+    "type": "GET",
     "url": "/byadvisercity/:city",
     "title": "Request by Object City",
     "version": "0.1.0",
     "name": "getByCity",
     "group": "adviser",
     "filename": "src/router/AdviserRouter.ts",
+    "groupTitle": "adviser",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/byadvisercity/:city"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/byadvisercity/:city",
+    "title": "Request by Object City",
+    "version": "0.1.0",
+    "name": "getByCity",
+    "group": "adviser",
+    "filename": "src/router/BuildRouter.ts",
     "groupTitle": "adviser",
     "sampleRequest": [
       {
@@ -345,6 +399,270 @@
       }
     },
     "filename": "src/router/AdviserRouter.ts",
+    "groupTitle": "adviser"
+  },
+  {
+    "type": "GET",
+    "url": "/adviser/byadviserid/:id",
+    "title": "Request by Object Id",
+    "version": "0.1.0",
+    "name": "getById",
+    "group": "adviser",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "consultantId",
+            "description": "<p>Must be provided as QueryParam</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/adviser/byadviserid/5b8082ba69a5a10b589abc75"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response Consultant:",
+          "content": "{ \"data\": { \"timestamp\": \"2018-08-24T22:12:10.843Z\", \"schedule\": [], \"buyer\": [], \"goal\": [], \"notification\": [], \"_id\": \"5b8082ba69a5a10b589abc75\", \"name\": \"asesor\", \"lastName\": \"apellido\", \"password\": \"cobian2018\", \"email\": \"asesor@correo.com\", \"hourStart\": 9, \"hourEnd\": 18, \"isRenter\": false, \"__v\": 0 } }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "timestamp",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "ISchedule[]",
+            "optional": false,
+            "field": "schedule",
+            "description": "<p>Calendario</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "hourStart",
+            "description": "<p>Hora inicio servicio</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "hourEnd",
+            "description": "<p>Hora fin de servicio</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "IBuyer[]",
+            "optional": false,
+            "field": "buyer",
+            "description": "<p>Compradores asignados</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "IGoal[]",
+            "optional": false,
+            "field": "goal",
+            "description": "<p>Objetivos planteados</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "INotification[]",
+            "optional": false,
+            "field": "notification",
+            "description": "<p>Historial notificaciones</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "isRenter",
+            "description": "<p>Si renta o vende</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastName",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "companyId",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "filename": "src/router/BuildRouter.ts",
+    "groupTitle": "adviser"
+  },
+  {
+    "type": "GET",
+    "url": "byadviserpassword/:base64",
+    "title": "Request by Object Pass",
+    "version": "0.1.0",
+    "name": "getByPass",
+    "group": "adviser",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "b64",
+            "description": "<p>(name:password) Must be provided as QueryParam</p>"
+          }
+        ]
+      }
+    },
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/adviser/byadviserid/5b8082ba69a5a10b589abc75"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response Consultant:",
+          "content": "{ \"data\": { \"timestamp\": \"2018-08-24T22:12:10.843Z\", \"schedule\": [], \"buyer\": [], \"goal\": [], \"notification\": [], \"_id\": \"5b8082ba69a5a10b589abc75\", \"name\": \"asesor\", \"lastName\": \"apellido\", \"password\": \"cobian2018\", \"email\": \"asesor@correo.com\", \"hourStart\": 9, \"hourEnd\": 18, \"isRenter\": false, \"__v\": 0 } }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "timestamp",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "ISchedule[]",
+            "optional": false,
+            "field": "schedule",
+            "description": "<p>Calendario</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "hourStart",
+            "description": "<p>Hora inicio servicio</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "hourEnd",
+            "description": "<p>Hora fin de servicio</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "IBuyer[]",
+            "optional": false,
+            "field": "buyer",
+            "description": "<p>Compradores asignados</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "IGoal[]",
+            "optional": false,
+            "field": "goal",
+            "description": "<p>Objetivos planteados</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "INotification[]",
+            "optional": false,
+            "field": "notification",
+            "description": "<p>Historial notificaciones</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "isRenter",
+            "description": "<p>Si renta o vende</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastName",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "companyId",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "filename": "src/router/BuildRouter.ts",
     "groupTitle": "adviser"
   },
   {
@@ -657,6 +975,308 @@
     "sampleRequest": [
       {
         "url": "https://cobianback.herokuapp.com/api/v1/adviser/"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/adviser/",
+    "title": "Request New",
+    "version": "0.1.0",
+    "name": "post",
+    "group": "adviser",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "lastName",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "hourStart",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "hourEnd",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "isRenter",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{ \"name\":\"asesor5\", \"password\":\"cobian2018\", \"lastName\":\"apellido\", \"email\":\"asesor5@correo.com\", \"hourStart\":8, \"hourEnd\":22, \"isRenter\":true }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response Created User:",
+          "content": "{ \"data\": { \"timestamp\": \"2018-08-27T15:00:31.181Z\", \"schedule\": [], \"buyer\": [], \"goal\": [], \"notification\": [], \"_id\": \"5b84120f0255c71b3c0a21d8\", \"name\": \"asesor5\", \"lastName\": \"apellido\", \"password\": \"cobian2018\", \"email\": \"asesor5@correo.com\", \"hourStart\": 8, \"hourEnd\": 22, \"isRenter\": true, \"__v\": 0 } }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Date",
+            "optional": false,
+            "field": "timestamp",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "ISchedule[]",
+            "optional": false,
+            "field": "schedule",
+            "description": "<p>Calendario</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "hourStart",
+            "description": "<p>Hora inicio servicio</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "hourEnd",
+            "description": "<p>Hora fin de servicio</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "IBuyer[]",
+            "optional": false,
+            "field": "buyer",
+            "description": "<p>Compradores asignados</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "IGoal[]",
+            "optional": false,
+            "field": "goal",
+            "description": "<p>Objetivos planteados</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "INotification[]",
+            "optional": false,
+            "field": "notification",
+            "description": "<p>Historial notificaciones</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "isRenter",
+            "description": "<p>Si renta o vende</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastName",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "companyId",
+            "description": ""
+          }
+        ]
+      }
+    },
+    "filename": "src/router/BuildRouter.ts",
+    "groupTitle": "adviser",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/adviser/"
+      }
+    ]
+  },
+  {
+    "type": "PUT",
+    "url": "/adviser/:_id",
+    "title": "Request Update",
+    "version": "0.1.0",
+    "name": "put",
+    "group": "adviser",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "adviserId",
+            "description": "<p>Must be provided as QueryParam</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "ISchedule[]",
+            "optional": false,
+            "field": "schedule",
+            "description": "<p>Calendario</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "hourStart",
+            "description": "<p>Hora inicio servicio</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "hourEnd",
+            "description": "<p>Hora fin de servicio</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "IBuyer[]",
+            "optional": false,
+            "field": "buyer",
+            "description": "<p>Compradores asignados</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "IGoal[]",
+            "optional": false,
+            "field": "goal",
+            "description": "<p>Objetivos planteados</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "INotification[]",
+            "optional": false,
+            "field": "notification",
+            "description": "<p>Historial notificaciones</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "isRenter",
+            "description": "<p>Si renta o vende</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "lastName",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{ \"isRenter\": true }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{ \"data\": true }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/router/BuildRouter.ts",
+    "groupTitle": "adviser",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/adviser/:_id"
       }
     ]
   },
@@ -1465,7 +2085,7 @@
             "group": "Parameter",
             "type": "number",
             "optional": false,
-            "field": "phone",
+            "field": "email",
             "description": ""
           }
         ]
@@ -1930,6 +2550,21 @@
     ]
   },
   {
+    "type": "DELETE",
+    "url": "/goal/:id",
+    "title": "Request  Deleted",
+    "version": "0.1.0",
+    "name": "deleteByToken",
+    "group": "goal",
+    "filename": "src/router/MakerRouter.ts",
+    "groupTitle": "goal",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/goal/:id"
+      }
+    ]
+  },
+  {
     "type": "GET",
     "url": "/goal/",
     "title": "Request all by company",
@@ -1937,6 +2572,21 @@
     "name": "get",
     "group": "goal",
     "filename": "src/router/GoalRouter.ts",
+    "groupTitle": "goal",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/goal/"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/goal/",
+    "title": "Request all by company",
+    "version": "0.1.0",
+    "name": "get",
+    "group": "goal",
+    "filename": "src/router/MakerRouter.ts",
     "groupTitle": "goal",
     "sampleRequest": [
       {
@@ -1956,6 +2606,107 @@
     "sampleRequest": [
       {
         "url": "https://cobianback.herokuapp.com/api/v1/goal/bygoalid/:id"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/goal/bygoalid/:id",
+    "title": "Request by Object Id",
+    "version": "0.1.0",
+    "name": "getById",
+    "group": "goal",
+    "filename": "src/router/MakerRouter.ts",
+    "groupTitle": "goal",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/goal/bygoalid/:id"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/goal/",
+    "title": "Request New",
+    "version": "0.1.0",
+    "name": "post",
+    "group": "goal",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>Descripcion de meta</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "ObjetId[]",
+            "optional": false,
+            "field": "adviser",
+            "description": "<p>Asesores</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "dataNumber",
+            "description": "<p>Dato Cuantitativo</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "isByManagement",
+            "description": "<p>Personal o equipo</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Titulo</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "dateLimit",
+            "description": "<p>Fecha limite</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{ \"adviser\":\"5b8082ba69a5a10b589abc75\", \"status\":\"sin completar\", \"dataNumber\":2, \"isByManagement\":false, \"title\":\"Objetivo1\", \"content\": \"Ventas por mes\", \"dateLimit\": \"20/11/2018\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response Created User:",
+          "content": "{ \"data\": { \"timestamp\": \"2018-08-27T21:11:44.455Z\", \"adviser\": [ \"5b8082ba69a5a10b589abc75\" ], \"dataNumber\": 2, \"isComplete\": false, \"_id\": \"5b8469105b769522d8806ff0\", \"content\": \"Ventas por mes\", \"status\": \"sin completar\", \"isByManagement\": false, \"title\": \"Objetivo1\", \"dateLimit\": \"20/11/2018\", \"__v\": 0 } }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/router/MakerRouter.ts",
+    "groupTitle": "goal",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/goal/"
       }
     ]
   },
@@ -2042,6 +2793,21 @@
     "sampleRequest": [
       {
         "url": "https://cobianback.herokuapp.com/api/v1/goal/"
+      }
+    ]
+  },
+  {
+    "type": "PUT",
+    "url": "/goal/:_id",
+    "title": "Request Update",
+    "version": "0.1.0",
+    "name": "put",
+    "group": "goal",
+    "filename": "src/router/MakerRouter.ts",
+    "groupTitle": "goal",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/goal/:_id"
       }
     ]
   },
@@ -3967,6 +4733,41 @@
     ]
   },
   {
+    "type": "POST",
+    "url": "/status/upgradelevelbyid/:id",
+    "title": "Request  UpgradeLevel",
+    "version": "0.1.0",
+    "name": "UpgradeLevel",
+    "group": "status",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": "<p>gris, verde, amarillo, rojo</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/router/SalesRouter.ts",
+    "groupTitle": "status",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/status/upgradelevelbyid/:id"
+      }
+    ]
+  },
+  {
     "type": "DELETE",
     "url": "/status/:id",
     "title": "Request  Deleted",
@@ -3982,6 +4783,36 @@
     ]
   },
   {
+    "type": "DELETE",
+    "url": "/status/:id",
+    "title": "Request  Deleted",
+    "version": "0.1.0",
+    "name": "deleteByToken",
+    "group": "status",
+    "filename": "src/router/SalesRouter.ts",
+    "groupTitle": "status",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/status/:id"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/status/bycompanyid/:companyId",
+    "title": "Request all by company",
+    "version": "0.1.0",
+    "name": "get",
+    "group": "status",
+    "filename": "src/router/SalesRouter.ts",
+    "groupTitle": "status",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/status/bycompanyid/:companyId"
+      }
+    ]
+  },
+  {
     "type": "GET",
     "url": "/status/bycompanyid/:companyId",
     "title": "Request all by company",
@@ -3993,6 +4824,36 @@
     "sampleRequest": [
       {
         "url": "https://cobianback.herokuapp.com/api/v1/status/bycompanyid/:companyId"
+      }
+    ]
+  },
+  {
+    "type": "GET",
+    "url": "/status/bystatusid/:id",
+    "title": "Request by Object Id",
+    "version": "0.1.0",
+    "name": "getById",
+    "group": "status",
+    "filename": "src/router/SalesRouter.ts",
+    "groupTitle": "status",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/status/bystatusid/:id"
+      }
+    ]
+  },
+  {
+    "type": "POST",
+    "url": "/status/bybuyerpropid/",
+    "title": "Request by Object Id",
+    "version": "0.1.0",
+    "name": "getById",
+    "group": "status",
+    "filename": "src/router/StatusBuyerPropertyRouter.ts",
+    "groupTitle": "status",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/status/bybuyerpropid/"
       }
     ]
   },
@@ -4077,6 +4938,71 @@
     ]
   },
   {
+    "type": "POST",
+    "url": "/status/",
+    "title": "Request New",
+    "version": "0.1.0",
+    "name": "post",
+    "group": "status",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "status",
+            "description": "<p>Estado (Negociación,Oferta,Propuesta de crédito  )</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "buyer",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "property",
+            "description": ""
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "note",
+            "description": ""
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Request-Example:",
+          "content": "{ \"status\":\"negociacion\", \"buyer\":\"5b84586674acb1030cabb419\", \"property\":\"5b842b334f965c30a03c1951\", \"note\":\"En proceso\" }",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response Created User:",
+          "content": "{ \"data\": { \"timestamp\": \"2018-08-27T22:18:13.525Z\", \"_id\": \"5b8478a5258cea39b839cbf7\", \"status\": \"negociacion\", \"buyer\": \"5b84586674acb1030cabb419\", \"property\": \"5b842b334f965c30a03c1951\", \"note\": \"En proceso\", \"__v\": 0 } }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/router/SalesRouter.ts",
+    "groupTitle": "status",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/status/"
+      }
+    ]
+  },
+  {
     "type": "PUT",
     "url": "/status/:_id",
     "title": "Request Update",
@@ -4084,6 +5010,21 @@
     "name": "put",
     "group": "status",
     "filename": "src/router/StatusBuyerPropertyRouter.ts",
+    "groupTitle": "status",
+    "sampleRequest": [
+      {
+        "url": "https://cobianback.herokuapp.com/api/v1/status/:_id"
+      }
+    ]
+  },
+  {
+    "type": "PUT",
+    "url": "/status/:_id",
+    "title": "Request Update",
+    "version": "0.1.0",
+    "name": "put",
+    "group": "status",
+    "filename": "src/router/SalesRouter.ts",
     "groupTitle": "status",
     "sampleRequest": [
       {

@@ -17,7 +17,7 @@
     ]
   },
   "apidoc": {
-    "name": "API-Doc-Cobian",
+    "name": "API-Doc-cobianApp",
     "version": "0.1.0",
     "description": "Documentation for Cobian API",
     "url": "https://cobianback.herokuapp.com/api/v1",
