@@ -117,15 +117,14 @@ export class UserSession {
     if (data === "error") {
       res.status(200).json({ data: "error" });
     } else {
-      /*  const token = jwt.sign({ sub: password }, "sss");
-       const result = {
-         data: data.data,
-         type: data.type,
-         token: token,
-       }; */
-      // const res = Object.assign({}, data, token);
-      // res.status(200).json({ data: result });
-      res.status(200).json({ data });
+      const token = jwt.sign({ sub: data.data.password }, "sss");
+      const result = {
+        data: data.data,
+        type: data.type,
+        token: token,
+      };
+      res.status(200).json({ data: result });
+      // res.status(200).json({ data });
     }
   }
   // set up our routes
