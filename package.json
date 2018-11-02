@@ -25,7 +25,6 @@
   },
   "dependencies": {
     "@types/nodemailer": "^4.6.5",
-    "actions-on-google": "^2.1.1",
     "apidoc": "^0.17.6",
     "base-64": "^0.1.0",
     "bcrypt-nodejs": "^0.0.3",
