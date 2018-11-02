@@ -89,25 +89,25 @@ export class UserSession {
                                                   resolve("error");
                                                 }
                                               })
-                                              .catch(error => {});
+                                              .catch(error => { });
                                           }
                                         })
-                                        .catch(error => {});
+                                        .catch(error => { });
                                     }
                                   })
-                                  .catch(error => {});
+                                  .catch(error => { });
                               }
                             })
-                            .catch(error => {});
+                            .catch(error => { });
                         }
                       })
-                      .catch(error => {});
+                      .catch(error => { });
                   }
                 })
-                .catch(error => {});
+                .catch(error => { });
             }
           })
-          .catch(error => {});
+          .catch(error => { });
       } catch (error) {
         console.log("error");
       }
@@ -118,7 +118,6 @@ export class UserSession {
       res.status(200).json({ data: "error" });
     } else {
       const token = jwt.sign({ sub: password }, config.secret);
-      console.log("jwt", token);
       const result = {
         data: data.data,
         type: data.type,

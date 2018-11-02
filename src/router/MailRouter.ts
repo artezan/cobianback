@@ -125,7 +125,6 @@ export class MailRouter {
         // send mail with defined transport object
         transporterGeneral.sendMail(mailOptions, (error, info) => {
           if (error) {
-            console.log("error");
 
             res.status(500).json({ data: false });
             return console.log(error);

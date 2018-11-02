@@ -129,7 +129,6 @@ class UserSession {
             }
             else {
                 const token = jwt.sign({ sub: password }, config_1.config.secret);
-                console.log("jwt", token);
                 const result = {
                     data: data.data,
                     type: data.type,

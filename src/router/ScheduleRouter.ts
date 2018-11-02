@@ -259,7 +259,6 @@ export class ScheduleRouter {
             propertyCan: true,
           };
         }
-        console.log(check);
         res.status(200).json({ data: check });
       })
       .catch(error => {
