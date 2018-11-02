@@ -25,10 +25,8 @@ import { BuildRouter } from "./router/BuildRouter";
 import { MakerRouter } from "./router/MakerRouter";
 import { SalesRouter } from "./router/SalesRouter";
 import { MailRouter } from "./router/MailRouter";
-import * as jwt from "./_helpers/jwt";
 import { config } from "./config";
-import * as expressJwt from "express-jwt";
-const os = require("os");
+// import * as expressJwt from "express-jwt";
 
 class Server {
   public administratorRouter = new AdministratorRouter();
@@ -107,19 +105,21 @@ class Server {
   public routes(): void {
     const router: express.Router = express.Router();
     // JWT auth
-    this.app.use(
-      expressJwt({ secret: "sss" }).unless({
-        path: [
-          // public routes that don't require authentication
-          "/api/v1/usersession/",
-          "/api/v1/buyer/checkbuyer/",
-          "/api/v1/buyer/",
-          "/api/v1/administrator/",
-          "/api/v1/mail/add/",
-          "/api/v1/mail/find/",
-        ],
-      })
-    );
+    /*  this.app.use(
+       expressJwt({ secret: "sss" }).unless({
+         path: [
+           // public routes that don't require authentication
+           "/api/v1/usersession/",
+           "/api/v1/buyer/checkbuyer/",
+           "/api/v1/buyer/",
+           "/api/v1/administrator/",
+           "/api/v1/mail/add/",
+           "/api/v1/mail/find/",
+         ],
+       })
+     );
+    // "express-jwt": "^5.3.1",
+      */
     this.app.use("/", router);
     this.app.use("/api/v1/administrator", this.administratorRouter.router);
     this.app.use("/api/v1/adviser", this.adviserRouter.router);

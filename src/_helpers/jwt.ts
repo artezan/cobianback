@@ -1,4 +1,4 @@
-import * as expressJwt from "express-jwt";
+/* import * as expressJwt from "express-jwt";
 import { config } from "../config";
 
 export function jwt() {
@@ -15,3 +15,4 @@ export function jwt() {
     ],
   });
 }
+ */
