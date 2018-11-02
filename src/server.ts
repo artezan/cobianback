@@ -26,6 +26,9 @@ import { MakerRouter } from "./router/MakerRouter";
 import { SalesRouter } from "./router/SalesRouter";
 import { MailRouter } from "./router/MailRouter";
 import * as jwt from "./_helpers/jwt";
+import { config } from "./config";
+import * as expressJwt from "express-jwt";
+const os = require("os");
 
 class Server {
   public administratorRouter = new AdministratorRouter();
@@ -54,6 +57,9 @@ class Server {
     this.app = express();
     this.config();
     this.routes();
+    /* console.log("CPU", os.cpus());
+    console.log(os.totalmem());
+    console.log(os.freemem()); */
   }
 
   // application config
@@ -81,8 +87,7 @@ class Server {
       res.header("Access-Control-Allow-Origin", "http://localhost:8080");
       res.header("Access-Control-Allow-Origin", "http://localhost:8100");
       res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-      res.header("Access-Control-Allow-Origin", "http://localhost:3005");
-      // res.header("Access-Control-Allow-Origin", "http://31.220.52.51:3002");
+      res.header("Access-Control-Allow-Origin", "http://31.220.52.51:3002");
       res.header("Access-Control-Allow-Origin", "*");
       res.header(
         "Access-Control-Allow-Methods",
@@ -102,7 +107,19 @@ class Server {
   public routes(): void {
     const router: express.Router = express.Router();
     // JWT auth
-    this.app.use(jwt.jwt());
+    this.app.use(
+      expressJwt({ secret: "sss" }).unless({
+        path: [
+          // public routes that don't require authentication
+          "/api/v1/usersession/",
+          "/api/v1/buyer/checkbuyer/",
+          "/api/v1/buyer/",
+          "/api/v1/administrator/",
+          "/api/v1/mail/add/",
+          "/api/v1/mail/find/",
+        ],
+      })
+    );
     this.app.use("/", router);
     this.app.use("/api/v1/administrator", this.administratorRouter.router);
     this.app.use("/api/v1/adviser", this.adviserRouter.router);

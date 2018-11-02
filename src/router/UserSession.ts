@@ -117,7 +117,7 @@ export class UserSession {
     if (data === "error") {
       res.status(200).json({ data: "error" });
     } else {
-      const token = jwt.sign({ sub: password }, config.secret);
+      const token = jwt.sign({ sub: password }, "sss");
       const result = {
         data: data.data,
         type: data.type,
