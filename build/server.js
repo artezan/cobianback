@@ -27,6 +27,7 @@ const BuildRouter_1 = require("./router/BuildRouter");
 const MakerRouter_1 = require("./router/MakerRouter");
 const SalesRouter_1 = require("./router/SalesRouter");
 const MailRouter_1 = require("./router/MailRouter");
+const expressJwt = require("express-jwt");
 const os = require("os");
 class Server {
     constructor() {
@@ -90,19 +91,17 @@ class Server {
     routes() {
         const router = express.Router();
         // JWT auth
-        /*  this.app.use(
-           expressJwt({ secret: "sss" }).unless({
-             path: [
-               // public routes that don't require authentication
-               "/api/v1/usersession/",
-               "/api/v1/buyer/checkbuyer/",
-               "/api/v1/buyer/",
-               "/api/v1/administrator/",
-               "/api/v1/mail/add/",
-               "/api/v1/mail/find/",
-             ],
-           })
-         ); */
+        this.app.use(expressJwt({ secret: "sss" }).unless({
+            path: [
+                // public routes that don't require authentication
+                "/api/v1/usersession/",
+                "/api/v1/buyer/checkbuyer/",
+                "/api/v1/buyer/",
+                "/api/v1/administrator/",
+                "/api/v1/mail/add/",
+                "/api/v1/mail/find/",
+            ],
+        }));
         this.app.use("/", router);
         this.app.use("/api/v1/administrator", this.administratorRouter.router);
         this.app.use("/api/v1/adviser", this.adviserRouter.router);
