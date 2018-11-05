@@ -78,6 +78,8 @@ export class OfertRouter {
     const status: string = req.body.status;
     const notes: string = req.body.notes;
     const ofertPrice: number = req.body.ofertPrice;
+    const apartOfert: number = req.body.apartOfert;
+    const wayToBuy = req.body.wayToBuy;
     const files: string = req.body.files;
 
     const ofert = new Ofert({
@@ -87,6 +89,8 @@ export class OfertRouter {
       notes,
       ofertPrice,
       files,
+      apartOfert,
+      wayToBuy
     });
 
     ofert

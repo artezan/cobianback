@@ -15,24 +15,24 @@ export class StatusBuyerPropertyLogic {
     const posibleStatus = [
       {
         color: "gris",
-        level: 1,
+        level: 1
       },
       {
         color: "verde",
-        level: 2,
+        level: 2
       },
       {
         color: "amarillo",
-        level: 3,
+        level: 3
       },
       {
         color: "rojo",
-        level: 4,
+        level: 4
       },
       {
         color: "azul",
-        level: 5,
-      },
+        level: 5
+      }
     ];
     const newLevel = posibleStatus.find(p => p.color === statusInput);
     const currentLevel = posibleStatus.find(p => p.color === currentStatus);

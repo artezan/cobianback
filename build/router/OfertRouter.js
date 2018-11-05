@@ -72,6 +72,8 @@ class OfertRouter {
         const status = req.body.status;
         const notes = req.body.notes;
         const ofertPrice = req.body.ofertPrice;
+        const apartOfert = req.body.apartOfert;
+        const wayToBuy = req.body.wayToBuy;
         const files = req.body.files;
         const ofert = new Ofert_1.default({
             buyer,
@@ -80,6 +82,8 @@ class OfertRouter {
             notes,
             ofertPrice,
             files,
+            apartOfert,
+            wayToBuy
         });
         ofert
             .save()

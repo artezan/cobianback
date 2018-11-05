@@ -30,45 +30,59 @@ export interface IOfert extends Document {
    * notif id
    */
   notificationOneSignal: string[];
+  /**
+   * apartado
+   */
+  apartOfert: number;
+  /**
+   * Forma de compra FOVISSTE, IMSS, contado, PEMEX, Infonavit, aliados, otros
+   */
+  wayToBuy: string;
 }
 const OfertSchema: Schema = new Schema({
   buyer: {
     type: Schema.Types.ObjectId,
-    ref: "Buyer",
+    ref: "Buyer"
   },
   /**
    * Propiedad
    */
   property: {
     type: Schema.Types.ObjectId,
-    ref: "Property",
+    ref: "Property"
   },
   /**
    * aceptadas, rechazadas o sigue en negociación.
    */
   status: {
-    type: String,
+    type: String
   },
   timestamp: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   notes: {
-    type: String,
+    type: String
+  },
+  wayToBuy: {
+    type: String
   },
   ofertPrice: {
-    type: Number,
+    type: Number
+  },
+  apartOfert: {
+    type: Number
   },
   files: [
     {
       type: String,
-      default: [],
-    },
+      default: []
+    }
   ],
   isAccept: {
-    type: Boolean,
+    type: Boolean
   },
-  notificationOneSignal: [{ type: String, default: [] }],
+  notificationOneSignal: [{ type: String, default: [] }]
 });
 
 export default model<IOfert>("Ofert", OfertSchema);

@@ -4,41 +4,47 @@ const mongoose_1 = require("mongoose");
 const OfertSchema = new mongoose_1.Schema({
     buyer: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: "Buyer",
+        ref: "Buyer"
     },
     /**
      * Propiedad
      */
     property: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: "Property",
+        ref: "Property"
     },
     /**
      * aceptadas, rechazadas o sigue en negociación.
      */
     status: {
-        type: String,
+        type: String
     },
     timestamp: {
         type: Date,
-        default: Date.now,
+        default: Date.now
     },
     notes: {
-        type: String,
+        type: String
+    },
+    wayToBuy: {
+        type: String
     },
     ofertPrice: {
-        type: Number,
+        type: Number
+    },
+    apartOfert: {
+        type: Number
     },
     files: [
         {
             type: String,
-            default: [],
-        },
+            default: []
+        }
     ],
     isAccept: {
-        type: Boolean,
+        type: Boolean
     },
-    notificationOneSignal: [{ type: String, default: [] }],
+    notificationOneSignal: [{ type: String, default: [] }]
 });
 exports.default = mongoose_1.model("Ofert", OfertSchema);
 //# sourceMappingURL=Ofert.js.map
