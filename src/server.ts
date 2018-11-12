@@ -107,7 +107,7 @@ class Server {
   public routes(): void {
     const router: express.Router = express.Router();
     // JWT auth
-    /*  this.app.use(
+    this.app.use(
       expressJwt({ secret: "sss" }).unless({
         path: [
           // public routes that don't require authentication
@@ -119,7 +119,7 @@ class Server {
           "/api/v1/mail/find/",
         ],
       }),
-    ); */
+    );
     this.app.use("/", router);
     this.app.use("/api/v1/administrator", this.administratorRouter.router);
     this.app.use("/api/v1/adviser", this.adviserRouter.router);
