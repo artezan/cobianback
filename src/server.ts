@@ -27,6 +27,7 @@ import { SalesRouter } from "./router/SalesRouter";
 import { MailRouter } from "./router/MailRouter";
 import { config } from "./config";
 import * as expressJwt from "express-jwt";
+import { ChatRouter } from "./router/ChatRouter";
 
 class Server {
   public administratorRouter = new AdministratorRouter();
@@ -47,6 +48,7 @@ class Server {
   public makerRouter = new MakerRouter();
   public saleRouter = new SalesRouter();
   public mailRouter = new MailRouter();
+  public chatRouter = new ChatRouter();
 
   // set app to be of type express.Application
   public app: express.Application;
@@ -116,7 +118,7 @@ class Server {
           "/api/v1/mail/add/",
           "/api/v1/mail/find/",
         ],
-      })
+      }),
     );
     this.app.use("/", router);
     this.app.use("/api/v1/administrator", this.administratorRouter.router);
@@ -137,6 +139,7 @@ class Server {
     this.app.use("/api/v1/maker", this.makerRouter.router);
     this.app.use("/api/v1/sale", this.saleRouter.router);
     this.app.use("/api/v1/mail", this.mailRouter.router);
+    this.app.use("/api/v1/chat", this.chatRouter.router);
   }
 }
 

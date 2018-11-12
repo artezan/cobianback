@@ -183,11 +183,26 @@ class StatusBuyerPropertyRouter {
             res.status(500).json({ error });
         });
     }
+    findByBuyer(req, res) {
+        const buyer = req.body.buyer;
+        StatusBuyerProperty_1.default.find({
+            buyer,
+        })
+            .populate("buyer")
+            .populate("property")
+            .then(data => {
+            res.status(200).json({ data });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
     // set up our routes
     routes() {
         this.router.get("/", this.all);
         this.router.get("/bystatusid/:id", this.oneById);
         this.router.post("/bybuyerpropid", this.oneByPropBuyer);
+        this.router.post("/bybuyerid", this.findByBuyer);
         // this.router.get("/bybuyerpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
         this.router.post("/upgradelevelbyid/:id", this.upgradeLevel);

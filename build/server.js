@@ -28,6 +28,7 @@ const MakerRouter_1 = require("./router/MakerRouter");
 const SalesRouter_1 = require("./router/SalesRouter");
 const MailRouter_1 = require("./router/MailRouter");
 const expressJwt = require("express-jwt");
+const ChatRouter_1 = require("./router/ChatRouter");
 class Server {
     constructor() {
         this.administratorRouter = new AdministratorRouter_1.AdministratorRouter();
@@ -48,6 +49,7 @@ class Server {
         this.makerRouter = new MakerRouter_1.MakerRouter();
         this.saleRouter = new SalesRouter_1.SalesRouter();
         this.mailRouter = new MailRouter_1.MailRouter();
+        this.chatRouter = new ChatRouter_1.ChatRouter();
         this.app = express();
         this.config();
         this.routes();
@@ -120,6 +122,7 @@ class Server {
         this.app.use("/api/v1/maker", this.makerRouter.router);
         this.app.use("/api/v1/sale", this.saleRouter.router);
         this.app.use("/api/v1/mail", this.mailRouter.router);
+        this.app.use("/api/v1/chat", this.chatRouter.router);
     }
 }
 // export
