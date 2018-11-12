@@ -3,6 +3,14 @@ import * as nodemailer from "nodemailer";
 import * as multer from "multer";
 import { MailOptions } from "nodemailer/lib/smtp-transport";
 import VerificationEmail from "../models/VerificationEmail";
+interface MulterFile {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  buffer: any;
+  size: number;
+}
 const uploadService = multer({ storage: multer.memoryStorage() });
 const transporterGeneral = nodemailer.createTransport({
   service: "gmail",
@@ -71,9 +79,17 @@ export class MailRouter {
       });
     });
   }
-  public sendFilesEmail(req, res: Response) {
-    const file = req.file;
-    const transporter = nodemailer.createTransport({
+  public sendFilesEmail(req: any, res: Response) {
+    const files: MulterFile[] = req.files;
+    const mailsToSend = req.body.mails;
+    const msg = req.body.msg;
+    const arrFiles = files.map(file => {
+      return {
+        filename: file.originalname,
+        content: file.buffer,
+      };
+    });
+    /* const transporter = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
       port: 465,
@@ -81,18 +97,18 @@ export class MailRouter {
         user: "artezan.cabrera@gmail.com", // generated ethereal user
         pass: "180292CESARartezan", // generated ethereal password
       },
-    });
+    }); */
     // setup email data with unicode symbols
     const mailOptions: MailOptions = {
-      from: '"Fred Foo 👻" <artezan.cabrera@gmail.com>', // sender address
-      to: "artezan_015@hotmail.com, artezan.cabrera@gmail.com", // list of receivers
-      subject: "Archivo 📁", // Subject line
+      from: "CobianApp <artezan.cabrera@gmail.com>", // sender address
+      to: mailsToSend, // list of receivers
+      subject: "Archivo Adjunto 📁", // Subject line
       text: "Archivo Ajunto", // plain text body
-      html: "<b>Hello world file</b><p>✌</p>", // html body
-      attachments: [{ filename: file.originalname, content: file.buffer }],
+      html: `<p><b>Se han adjuntado archivos</b></p><p>${msg}</p>`, // html body
+      attachments: arrFiles,
     };
     // send mail with defined transport object
-    transporter.sendMail(mailOptions, (error, info) => {
+    transporterGeneral.sendMail(mailOptions, (error, info) => {
       if (error) {
         res.status(500).json({ data: false });
         return console.log(error);
@@ -125,7 +141,6 @@ export class MailRouter {
         // send mail with defined transport object
         transporterGeneral.sendMail(mailOptions, (error, info) => {
           if (error) {
-
             res.status(500).json({ data: false });
             return console.log(error);
           }
@@ -156,7 +171,11 @@ export class MailRouter {
 
   public routes() {
     this.router.get("/", this.sendEmail);
-    // this.router.post("/", uploadService.single("file"), this.sendFilesEmail);
+    this.router.post(
+      "/files",
+      uploadService.array("file"),
+      this.sendFilesEmail,
+    );
     this.router.post("/add", this.addEmail);
     this.router.post("/find", this.verifyEmail);
   }

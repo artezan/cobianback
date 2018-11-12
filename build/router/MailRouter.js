@@ -76,27 +76,35 @@ class MailRouter {
         });
     }
     sendFilesEmail(req, res) {
-        const file = req.file;
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            host: "smtp.gmail.com",
-            port: 465,
-            auth: {
-                user: "artezan.cabrera@gmail.com",
-                pass: "180292CESARartezan",
-            },
+        const files = req.files;
+        const mailsToSend = req.body.mails;
+        const msg = req.body.msg;
+        const arrFiles = files.map(file => {
+            return {
+                filename: file.originalname,
+                content: file.buffer,
+            };
         });
+        /* const transporter = nodemailer.createTransport({
+          service: "gmail",
+          host: "smtp.gmail.com",
+          port: 465,
+          auth: {
+            user: "artezan.cabrera@gmail.com", // generated ethereal user
+            pass: "180292CESARartezan", // generated ethereal password
+          },
+        }); */
         // setup email data with unicode symbols
         const mailOptions = {
-            from: '"Fred Foo 👻" <artezan.cabrera@gmail.com>',
-            to: "artezan_015@hotmail.com, artezan.cabrera@gmail.com",
-            subject: "Archivo 📁",
+            from: "CobianApp <artezan.cabrera@gmail.com>",
+            to: mailsToSend,
+            subject: "Archivo Adjunto 📁",
             text: "Archivo Ajunto",
-            html: "<b>Hello world file</b><p>✌</p>",
-            attachments: [{ filename: file.originalname, content: file.buffer }],
+            html: `<p><b>Se han adjuntado archivos</b></p><p>${msg}</p>`,
+            attachments: arrFiles,
         };
         // send mail with defined transport object
-        transporter.sendMail(mailOptions, (error, info) => {
+        transporterGeneral.sendMail(mailOptions, (error, info) => {
             if (error) {
                 res.status(500).json({ data: false });
                 return console.log(error);
@@ -159,7 +167,7 @@ class MailRouter {
     }
     routes() {
         this.router.get("/", this.sendEmail);
-        // this.router.post("/", uploadService.single("file"), this.sendFilesEmail);
+        this.router.post("/files", uploadService.array("file"), this.sendFilesEmail);
         this.router.post("/add", this.addEmail);
         this.router.post("/find", this.verifyEmail);
     }
