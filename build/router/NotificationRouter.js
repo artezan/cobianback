@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const mongodb_1 = require("mongodb");
@@ -57,7 +65,7 @@ class NotificationRouter {
             receiversId,
             tags,
             status,
-            type,
+            type
         });
         notification
             .save()
@@ -104,18 +112,27 @@ class NotificationRouter {
         });
     }
     deleteAfter(req, res, next) {
-        // dias antes para borrar
-        const prevTime = 60 * 86400000;
-        const schedule = new Date(new Date().getTime() - prevTime);
-        Notification_1.default.find({ timestamp: { $lt: schedule } }).remove();
-        /*  .then(data => {
-            console.log("a");
-            res.status(200).json({ data: data });
-          })
-          .catch(error => {
-            res.status(500).json({ error });
-          }); */
-        next();
+        return __awaiter(this, void 0, void 0, function* () {
+            // dias antes para borrar
+            const prevTime = 60 * 86400000;
+            const schedule = new Date(new Date().getTime() - prevTime);
+            const maxLen = 400;
+            Notification_1.default.find({ timestamp: { $lt: schedule } }).remove();
+            const noti = yield Notification_1.default.find().sort({ timestamp: 1 });
+            console.log(noti.length);
+            if (noti.length >= maxLen) {
+                Notification_1.default.find()
+                    .sort({ timestamp: 1 })
+                    .limit(200)
+                    .then(docs => {
+                    const ids = docs.map(doc => {
+                        return doc._id;
+                    });
+                    Notification_1.default.deleteMany({ _id: { $in: ids } }, function (err) { });
+                });
+            }
+            next();
+        });
     }
     searchByIdOrTags(req, res) {
         const id = req.body.id;
@@ -123,7 +140,7 @@ class NotificationRouter {
         const nPerPage = req.body.nPerPage;
         const tags = req.body.tags;
         Notification_1.default.find({
-            $or: [{ senderId: id }, { receiversId: id }, { tags }],
+            $or: [{ senderId: id }, { receiversId: id }, { tags }]
         })
             .sort({ timestamp: -1 })
             .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
@@ -140,7 +157,7 @@ class NotificationRouter {
         const tags = req.body.tags;
         console.log(id);
         Notification_1.default.find({
-            $or: [{ senderId: id }, { receiversId: id }, { tags }],
+            $or: [{ senderId: id }, { receiversId: id }, { tags }]
         })
             .sort({ timestamp: -1 })
             .limit(20)
@@ -161,8 +178,8 @@ class NotificationRouter {
         this.router.get("/", this.all);
         this.router.get("/bynotificationid/:id", this.oneById);
         // this.router.get("/bybuyerpassword/:base64", this.byPassword);
-        this.router.post("/", this.create);
-        this.router.post("/search", this.deleteAfter, this.searchByIdOrTags);
+        this.router.post("/", this.deleteAfter, this.create);
+        this.router.post("/search", this.searchByIdOrTags);
         this.router.post("/noread", this.searchByNotRead);
         this.router.put("/:id", this.update);
         // this.router.delete("/:id", this.delete);

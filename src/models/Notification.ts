@@ -29,37 +29,37 @@ export interface INotification extends Document {
 const NotificationSchema: Schema = new Schema({
   timestamp: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   title: {
-    type: String,
+    type: String
   },
   message: {
-    type: String,
+    type: String
   },
   senderId: {
-    type: Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId
   },
   receiversId: [
     {
-      type: Schema.Types.ObjectId,
-    },
+      type: Schema.Types.ObjectId
+    }
   ],
   tags: {
-    type: [String],
+    type: [String]
   },
   readBy: [
     {
       readerId: { type: Schema.Types.ObjectId },
-      readAt: { type: Date, default: Date.now },
-    },
+      readAt: { type: Date, default: Date.now }
+    }
   ],
   status: {
-    type: String,
+    type: String
   },
   type: {
-    type: String,
-  },
+    type: String
+  }
 });
 
-export default model("Notification", NotificationSchema);
+export default model<INotification>("Notification", NotificationSchema);

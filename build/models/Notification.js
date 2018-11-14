@@ -4,37 +4,37 @@ const mongoose_1 = require("mongoose");
 const NotificationSchema = new mongoose_1.Schema({
     timestamp: {
         type: Date,
-        default: Date.now,
+        default: Date.now
     },
     title: {
-        type: String,
+        type: String
     },
     message: {
-        type: String,
+        type: String
     },
     senderId: {
-        type: mongoose_1.Schema.Types.ObjectId,
+        type: mongoose_1.Schema.Types.ObjectId
     },
     receiversId: [
         {
-            type: mongoose_1.Schema.Types.ObjectId,
-        },
+            type: mongoose_1.Schema.Types.ObjectId
+        }
     ],
     tags: {
-        type: [String],
+        type: [String]
     },
     readBy: [
         {
             readerId: { type: mongoose_1.Schema.Types.ObjectId },
-            readAt: { type: Date, default: Date.now },
-        },
+            readAt: { type: Date, default: Date.now }
+        }
     ],
     status: {
-        type: String,
+        type: String
     },
     type: {
-        type: String,
-    },
+        type: String
+    }
 });
 exports.default = mongoose_1.model("Notification", NotificationSchema);
 //# sourceMappingURL=Notification.js.map

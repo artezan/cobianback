@@ -28,6 +28,8 @@ import { MailRouter } from "./router/MailRouter";
 import { config } from "./config";
 import * as expressJwt from "express-jwt";
 import { ChatRouter } from "./router/ChatRouter";
+import { PreBuyerRouter } from "./router/PreBuyerRouter";
+import { PreBuildRouter } from "./router/PreBuildRouter";
 
 class Server {
   public administratorRouter = new AdministratorRouter();
@@ -49,6 +51,8 @@ class Server {
   public saleRouter = new SalesRouter();
   public mailRouter = new MailRouter();
   public chatRouter = new ChatRouter();
+  public preBuyerRouter = new PreBuyerRouter();
+  public preBuildRouter = new PreBuildRouter();
 
   // set app to be of type express.Application
   public app: express.Application;
@@ -91,12 +95,12 @@ class Server {
       res.header("Access-Control-Allow-Origin", "*");
       res.header(
         "Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, OPTIONS",
+        "GET, POST, PUT, DELETE, OPTIONS"
       );
       // tslint:disable-next-line:max-line-length
       res.header(
         "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials",
+        "Origin, X-Requested-With, Content-Type, Accept, Authorization, Access-Control-Allow-Credentials"
       );
       res.header("Access-Control-Allow-Credentials", "true");
       next();
@@ -107,7 +111,7 @@ class Server {
   public routes(): void {
     const router: express.Router = express.Router();
     // JWT auth
-    this.app.use(
+    /*  this.app.use(
       expressJwt({ secret: "sss" }).unless({
         path: [
           // public routes that don't require authentication
@@ -116,10 +120,10 @@ class Server {
           "/api/v1/buyer/",
           "/api/v1/administrator/",
           "/api/v1/mail/add/",
-          "/api/v1/mail/find/",
-        ],
-      }),
-    );
+          "/api/v1/mail/find/"
+        ]
+      })
+    ); */
     this.app.use("/", router);
     this.app.use("/api/v1/administrator", this.administratorRouter.router);
     this.app.use("/api/v1/adviser", this.adviserRouter.router);
@@ -140,6 +144,8 @@ class Server {
     this.app.use("/api/v1/sale", this.saleRouter.router);
     this.app.use("/api/v1/mail", this.mailRouter.router);
     this.app.use("/api/v1/chat", this.chatRouter.router);
+    this.app.use("/api/v1/prebuyer", this.preBuyerRouter.router);
+    this.app.use("/api/v1/prebuild", this.preBuildRouter.router);
   }
 }
 

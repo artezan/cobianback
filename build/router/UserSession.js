@@ -18,6 +18,7 @@ const Management_1 = require("../models/Management");
 const Maker_1 = require("../models/Maker");
 const Office_1 = require("../models/Office");
 const jwt = require("jsonwebtoken");
+const PreBuyer_1 = require("../models/PreBuyer");
 class UserSession {
     constructor() {
         this.router = express_1.Router();
@@ -61,41 +62,56 @@ class UserSession {
                                                     // resolve("error");
                                                     Management_1.default.find({
                                                         password: password,
-                                                        email: email,
+                                                        email: email
                                                     })
                                                         .then(data => {
                                                         if (data.length > 0) {
                                                             resolve({
                                                                 data: data,
-                                                                type: "management",
+                                                                type: "management"
                                                             });
                                                         }
                                                         else {
                                                             Maker_1.default.find({
                                                                 password: password,
-                                                                email: email,
+                                                                email: email
                                                             })
                                                                 .then(data => {
                                                                 if (data.length > 0) {
                                                                     resolve({
                                                                         data: data,
-                                                                        type: "maker",
+                                                                        type: "maker"
                                                                     });
                                                                 }
                                                                 else {
                                                                     Office_1.default.find({
                                                                         password: password,
-                                                                        email: email,
+                                                                        email: email
                                                                     })
                                                                         .then(data => {
                                                                         if (data.length > 0) {
                                                                             resolve({
                                                                                 data: data,
-                                                                                type: "office",
+                                                                                type: "office"
                                                                             });
                                                                         }
                                                                         else {
-                                                                            resolve("error");
+                                                                            PreBuyer_1.default.find({
+                                                                                password: password,
+                                                                                email: email
+                                                                            })
+                                                                                .then(data => {
+                                                                                if (data.length > 0) {
+                                                                                    resolve({
+                                                                                        data: data,
+                                                                                        type: "preBuyer"
+                                                                                    });
+                                                                                }
+                                                                                else {
+                                                                                    resolve("error");
+                                                                                }
+                                                                            })
+                                                                                .catch(error => { });
                                                                         }
                                                                     })
                                                                         .catch(error => { });
@@ -131,7 +147,7 @@ class UserSession {
                 const result = {
                     data: data.data,
                     type: data.type,
-                    token: token,
+                    token: token
                 };
                 res.status(200).json({ data: result });
                 // res.status(200).json({ data });

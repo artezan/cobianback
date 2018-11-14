@@ -28,6 +28,8 @@ const MakerRouter_1 = require("./router/MakerRouter");
 const SalesRouter_1 = require("./router/SalesRouter");
 const MailRouter_1 = require("./router/MailRouter");
 const ChatRouter_1 = require("./router/ChatRouter");
+const PreBuyerRouter_1 = require("./router/PreBuyerRouter");
+const PreBuildRouter_1 = require("./router/PreBuildRouter");
 class Server {
     constructor() {
         this.administratorRouter = new AdministratorRouter_1.AdministratorRouter();
@@ -49,6 +51,8 @@ class Server {
         this.saleRouter = new SalesRouter_1.SalesRouter();
         this.mailRouter = new MailRouter_1.MailRouter();
         this.chatRouter = new ChatRouter_1.ChatRouter();
+        this.preBuyerRouter = new PreBuyerRouter_1.PreBuyerRouter();
+        this.preBuildRouter = new PreBuildRouter_1.PreBuildRouter();
         this.app = express();
         this.config();
         this.routes();
@@ -100,9 +104,9 @@ class Server {
               "/api/v1/buyer/",
               "/api/v1/administrator/",
               "/api/v1/mail/add/",
-              "/api/v1/mail/find/",
-            ],
-          }),
+              "/api/v1/mail/find/"
+            ]
+          })
         ); */
         this.app.use("/", router);
         this.app.use("/api/v1/administrator", this.administratorRouter.router);
@@ -124,6 +128,8 @@ class Server {
         this.app.use("/api/v1/sale", this.saleRouter.router);
         this.app.use("/api/v1/mail", this.mailRouter.router);
         this.app.use("/api/v1/chat", this.chatRouter.router);
+        this.app.use("/api/v1/prebuyer", this.preBuyerRouter.router);
+        this.app.use("/api/v1/prebuild", this.preBuildRouter.router);
     }
 }
 // export

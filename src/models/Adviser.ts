@@ -45,62 +45,62 @@ export interface IAdviser extends Document {
 const AdviserSchema: Schema = new Schema({
   timestamp: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   name: {
     type: String,
-    required: true,
+    required: true
   },
   lastName: {
-    type: String,
+    type: String
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   email: {
-    type: String,
+    type: String
   },
   city: {
-    type: String,
+    type: String
   },
   schedule: [
     {
       type: Schema.Types.ObjectId,
       ref: "Schedule",
-      default: [],
-    },
+      default: []
+    }
   ],
   hourStart: {
-    type: Number,
+    type: Number
   },
   hourEnd: {
-    type: Number,
+    type: Number
   },
   isRenter: {
-    type: Boolean,
+    type: Boolean
   },
   buyer: [
     {
       type: Schema.Types.ObjectId,
       ref: "Buyer",
-      default: [],
-    },
+      default: []
+    }
   ],
   goal: [
     {
       type: Schema.Types.ObjectId,
       ref: "Goal",
-      default: [],
-    },
+      default: []
+    }
   ],
   notification: [
     {
       type: Schema.Types.ObjectId,
       ref: "Notification",
-      default: [],
-    },
-  ],
+      default: []
+    }
+  ]
 });
 
 export default model<IAdviser>("Adviser", AdviserSchema);

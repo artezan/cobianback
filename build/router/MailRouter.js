@@ -19,8 +19,8 @@ const transporterGeneral = nodemailer.createTransport({
     port: 465,
     auth: {
         user: "artezan.cabrera@gmail.com",
-        pass: "180292CESARartezan",
-    },
+        pass: "180292CESARartezan" // generated ethereal password
+    }
 });
 class MailRouter {
     constructor() {
@@ -49,8 +49,8 @@ class MailRouter {
                 port: 465,
                 auth: {
                     user: "artezan.cabrera@gmail.com",
-                    pass: "180292CESARartezan",
-                },
+                    pass: "180292CESARartezan" // generated ethereal password
+                }
             });
             // setup email data with unicode symbols
             const mailOptions = {
@@ -58,7 +58,7 @@ class MailRouter {
                 to: "artezan_015@hotmail.com, artezan.cabrera@gmail.com",
                 subject: "Hello ✔",
                 text: "Hello world?",
-                html: "<b>Hello world?</b><p>👻😄</p>",
+                html: "<b>Hello world?</b><p>👻😄</p>" // html body
             };
             // send mail with defined transport object
             transporter.sendMail(mailOptions, (error, info) => {
@@ -82,18 +82,9 @@ class MailRouter {
         const arrFiles = files.map(file => {
             return {
                 filename: file.originalname,
-                content: file.buffer,
+                content: file.buffer
             };
         });
-        /* const transporter = nodemailer.createTransport({
-          service: "gmail",
-          host: "smtp.gmail.com",
-          port: 465,
-          auth: {
-            user: "artezan.cabrera@gmail.com", // generated ethereal user
-            pass: "180292CESARartezan", // generated ethereal password
-          },
-        }); */
         // setup email data with unicode symbols
         const mailOptions = {
             from: "CobianApp <artezan.cabrera@gmail.com>",
@@ -101,7 +92,7 @@ class MailRouter {
             subject: "Archivo Adjunto 📁",
             text: "Archivo Ajunto",
             html: `<p><b>Se han adjuntado archivos</b></p><p>${msg}</p>`,
-            attachments: arrFiles,
+            attachments: arrFiles
         };
         // send mail with defined transport object
         transporterGeneral.sendMail(mailOptions, (error, info) => {
@@ -120,7 +111,7 @@ class MailRouter {
             const isOnDB = yield VerificationEmail_1.default.findOne({ email: email }).remove();
             const newEmail = new VerificationEmail_1.default({
                 email,
-                token,
+                token
             });
             newEmail
                 .save()
@@ -131,7 +122,7 @@ class MailRouter {
                     to: email,
                     subject: "Verificar Cuenta",
                     text: "Este es su código de verificación:",
-                    html: `<p>Este es su código de verificación: </p><b>${token}</b>`,
+                    html: `<p>Este es su código de verificación: </p><b>${token}</b>` // html body
                 };
                 // send mail with defined transport object
                 transporterGeneral.sendMail(mailOptions, (error, info) => {

@@ -11,6 +11,7 @@ import Maker from "../models/Maker";
 import Office from "../models/Office";
 import * as jwt from "jsonwebtoken";
 import { config } from "../config";
+import PreBuyer from "../models/PreBuyer";
 
 export class UserSession {
   public router: Router;
@@ -24,7 +25,7 @@ export class UserSession {
     const email = strDecode.substring(0, strDecode.indexOf(":"));
     const password = strDecode.substring(
       strDecode.indexOf(":") + 1,
-      strDecode.length,
+      strDecode.length
     );
     // crea promise con respuesta si encuentra o no
     const promise = new Promise<any>((resolve, reject) => {
@@ -55,59 +56,73 @@ export class UserSession {
                                 // resolve("error");
                                 Management.find({
                                   password: password,
-                                  email: email,
+                                  email: email
                                 })
                                   .then(data => {
                                     if (data.length > 0) {
                                       resolve({
                                         data: data,
-                                        type: "management",
+                                        type: "management"
                                       });
                                     } else {
                                       Maker.find({
                                         password: password,
-                                        email: email,
+                                        email: email
                                       })
                                         .then(data => {
                                           if (data.length > 0) {
                                             resolve({
                                               data: data,
-                                              type: "maker",
+                                              type: "maker"
                                             });
                                           } else {
                                             Office.find({
                                               password: password,
-                                              email: email,
+                                              email: email
                                             })
                                               .then(data => {
                                                 if (data.length > 0) {
                                                   resolve({
                                                     data: data,
-                                                    type: "office",
+                                                    type: "office"
                                                   });
                                                 } else {
-                                                  resolve("error");
+                                                  PreBuyer.find({
+                                                    password: password,
+                                                    email: email
+                                                  })
+                                                    .then(data => {
+                                                      if (data.length > 0) {
+                                                        resolve({
+                                                          data: data,
+                                                          type: "preBuyer"
+                                                        });
+                                                      } else {
+                                                        resolve("error");
+                                                      }
+                                                    })
+                                                    .catch(error => {});
                                                 }
                                               })
-                                              .catch(error => { });
+                                              .catch(error => {});
                                           }
                                         })
-                                        .catch(error => { });
+                                        .catch(error => {});
                                     }
                                   })
-                                  .catch(error => { });
+                                  .catch(error => {});
                               }
                             })
-                            .catch(error => { });
+                            .catch(error => {});
                         }
                       })
-                      .catch(error => { });
+                      .catch(error => {});
                   }
                 })
-                .catch(error => { });
+                .catch(error => {});
             }
           })
-          .catch(error => { });
+          .catch(error => {});
       } catch (error) {
         console.log("error");
       }
@@ -121,7 +136,7 @@ export class UserSession {
       const result = {
         data: data.data,
         type: data.type,
-        token: token,
+        token: token
       };
       res.status(200).json({ data: result });
       // res.status(200).json({ data });

@@ -63,7 +63,7 @@ export class NotificationRouter {
       receiversId,
       tags,
       status,
-      type,
+      type
     });
 
     notification
@@ -113,18 +113,25 @@ export class NotificationRouter {
         res.status(500).json({ error });
       });
   }
-  public deleteAfter(req, res, next): void {
+  public async deleteAfter(req, res, next): Promise<void> {
     // dias antes para borrar
     const prevTime = 60 * 86400000;
     const schedule = new Date(new Date().getTime() - prevTime);
+    const maxLen = 400;
     Notification.find({ timestamp: { $lt: schedule } }).remove();
-    /*  .then(data => {
-        console.log("a");
-        res.status(200).json({ data: data });
-      })
-      .catch(error => {
-        res.status(500).json({ error });
-      }); */
+    const noti = await Notification.find().sort({ timestamp: 1 });
+    console.log(noti.length);
+    if (noti.length >= maxLen) {
+      Notification.find()
+        .sort({ timestamp: 1 })
+        .limit(200)
+        .then(docs => {
+          const ids = docs.map(doc => {
+            return doc._id;
+          });
+          Notification.deleteMany({ _id: { $in: ids } }, function(err) {});
+        });
+    }
     next();
   }
   public searchByIdOrTags(req: Request, res: Response): void {
@@ -133,7 +140,7 @@ export class NotificationRouter {
     const nPerPage = req.body.nPerPage;
     const tags = req.body.tags;
     Notification.find({
-      $or: [{ senderId: id }, { receiversId: id }, { tags }],
+      $or: [{ senderId: id }, { receiversId: id }, { tags }]
     })
       .sort({ timestamp: -1 })
       .skip(pageNumber > 0 ? (pageNumber - 1) * nPerPage : 0)
@@ -150,7 +157,7 @@ export class NotificationRouter {
     const tags = req.body.tags;
     console.log(id);
     Notification.find({
-      $or: [{ senderId: id }, { receiversId: id }, { tags }],
+      $or: [{ senderId: id }, { receiversId: id }, { tags }]
     })
       .sort({ timestamp: -1 })
       .limit(20)
@@ -161,7 +168,7 @@ export class NotificationRouter {
             !n.readBy.find(
               r =>
                 new ObjectId(r.readerId).toString() ===
-                new ObjectId(id).toString(),
+                new ObjectId(id).toString()
             )
           );
         });
@@ -178,8 +185,8 @@ export class NotificationRouter {
     this.router.get("/", this.all);
     this.router.get("/bynotificationid/:id", this.oneById);
     // this.router.get("/bybuyerpassword/:base64", this.byPassword);
-    this.router.post("/", this.create);
-    this.router.post("/search", this.deleteAfter, this.searchByIdOrTags);
+    this.router.post("/", this.deleteAfter, this.create);
+    this.router.post("/search", this.searchByIdOrTags);
     this.router.post("/noread", this.searchByNotRead);
     this.router.put("/:id", this.update);
     // this.router.delete("/:id", this.delete);
