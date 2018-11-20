@@ -81,7 +81,7 @@ export class ManagementRouter {
     const name = strDecode.substring(0, strDecode.indexOf(":"));
     const password = strDecode.substring(
       strDecode.indexOf(":") + 1,
-      strDecode.length,
+      strDecode.length
     );
 
     Management.find({ password: password, name: name })
@@ -106,11 +106,20 @@ export class ManagementRouter {
 
   public create(req: Request, res: Response): void {
     const name: string = req.body.name;
+    const lastname: string = req.body.lastname;
     const password: string = req.body.password;
     const city: string = req.body.city;
     const email: string = req.body.email;
+    const phone: string = req.body.phone;
 
-    const management = new Management({ name, password, city, email });
+    const management = new Management({
+      name,
+      password,
+      city,
+      email,
+      lastname,
+      phone
+    });
 
     management
       .save()

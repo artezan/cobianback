@@ -26,6 +26,7 @@ export interface IPreBuild extends Document {
    * notas
    */
   notes: string;
+  imgUrls: string[];
 }
 const PreBuildSchema: Schema = new Schema({
   timestamp: {
@@ -67,7 +68,8 @@ const PreBuildSchema: Schema = new Schema({
   city: {
     type: String
   },
-  notificationOneSignal: [{ type: String, default: [] }]
+  notificationOneSignal: [{ type: String, default: [] }],
+  imgUrls: [{ type: String, default: [] }]
 });
 
 export default model("PreBuild", PreBuildSchema);

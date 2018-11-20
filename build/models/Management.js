@@ -4,37 +4,43 @@ const mongoose_1 = require("mongoose");
 const ManagementSchema = new mongoose_1.Schema({
     timestamp: {
         type: Date,
-        default: Date.now,
+        default: Date.now
     },
     name: {
         type: String,
-        required: true,
+        required: true
+    },
+    lastname: {
+        type: String
+    },
+    phone: {
+        type: Number
     },
     email: {
         type: String,
-        required: true,
+        required: true
     },
     password: {
         type: String,
-        required: true,
+        required: true
     },
     city: {
-        type: String,
+        type: String
     },
     schedule: [
         {
             type: mongoose_1.Schema.Types.ObjectId,
             ref: "Schedule",
-            default: [],
-        },
+            default: []
+        }
     ],
     goal: [
         {
             type: mongoose_1.Schema.Types.ObjectId,
             ref: "Goal",
-            default: [],
-        },
-    ],
+            default: []
+        }
+    ]
 });
 exports.default = mongoose_1.model("Management", ManagementSchema);
 //# sourceMappingURL=Management.js.map

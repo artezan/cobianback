@@ -40,7 +40,8 @@ const PreBuildSchema = new mongoose_1.Schema({
     city: {
         type: String
     },
-    notificationOneSignal: [{ type: String, default: [] }]
+    notificationOneSignal: [{ type: String, default: [] }],
+    imgUrls: [{ type: String, default: [] }]
 });
 exports.default = mongoose_1.model("PreBuild", PreBuildSchema);
 //# sourceMappingURL=PreBuild.js.map

@@ -2,37 +2,43 @@ import { model, Schema, Document } from "mongoose";
 const ManagementSchema: Schema = new Schema({
   timestamp: {
     type: Date,
-    default: Date.now,
+    default: Date.now
   },
   name: {
     type: String,
-    required: true,
+    required: true
+  },
+  lastname: {
+    type: String
+  },
+  phone: {
+    type: Number
   },
   email: {
     type: String,
-    required: true,
+    required: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   city: {
-    type: String,
+    type: String
   },
   schedule: [
     {
       type: Schema.Types.ObjectId,
       ref: "Schedule",
-      default: [],
-    },
+      default: []
+    }
   ],
   goal: [
     {
       type: Schema.Types.ObjectId,
       ref: "Goal",
-      default: [],
-    },
-  ],
+      default: []
+    }
+  ]
 });
 
 export default model("Management", ManagementSchema);
