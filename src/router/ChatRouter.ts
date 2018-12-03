@@ -73,6 +73,18 @@ export class ChatRouter {
         res.status(500).json({ error });
       });
   }
+  public byDefault(req: Request, res: Response): void {
+    const property: string = req.body.property;
+    const buyer: string = req.body.buyer;
+
+    Chat.findOne({ property: property, buyer })
+      .then(data => {
+        res.status(200).json({ data });
+      })
+      .catch(error => {
+        res.status(500).json({ error });
+      });
+  }
 
   public create(req: Request, res: Response): void {
     const buyer: string = req.body.buyer;
@@ -172,6 +184,7 @@ export class ChatRouter {
     this.router.get("/", this.all);
     this.router.get("/bychatid/:id", this.oneById);
     this.router.get("/bypropertyid/:id", this.oneByProperty);
+    this.router.post("/byDefault/", this.byDefault);
     this.router.get("/bychatcity/:city", this.byCity);
     this.router.post("/", this.create);
     this.router.post("/addmessage/", this.deleteAfter, this.addMessage);
