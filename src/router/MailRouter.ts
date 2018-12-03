@@ -130,6 +130,46 @@ export class MailRouter {
       });
     });
   }
+  public sendMsgEmail(req: any, res: Response) {
+    const mailsToSend: string = req.body.mails;
+    const names: string = req.body.names;
+    const msg: string = req.body.msg;
+    const template = req.body.template;
+    // setear mails y html
+    const arrNames = names.split(",");
+    const arrToSend = mailsToSend.split(",").map((email, i) => {
+      let themePicked = "";
+      if (template === "theme1") {
+        themePicked = Theme1.Instance().templateHTML(arrNames[i], msg);
+      } else if (template === "theme2") {
+        themePicked = Theme2.Instance().templateHTML(arrNames[i], msg);
+      } else if (template === "theme3") {
+        themePicked = Theme3.Instance().templateHTML(arrNames[i], msg);
+      }
+      return {
+        themePicked,
+        email,
+      };
+    });
+    arrToSend.forEach(dataSend => {
+      // setup email data with unicode symbols
+      const mailOptions: MailOptions = {
+        from: "Inmobiliaria Cobian <artezan.cabrera@gmail.com>", // sender address
+        to: dataSend.email, // list of receivers
+        subject: "Aviso de Inmobiliaria Cobian ", // Subject line
+        html: dataSend.themePicked, // html body
+      };
+      // send mail with defined transport object
+      transporterGeneral.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          res.status(500).json({ data: false });
+          return console.log(error);
+        }
+        // Preview only available when sending through an Ethereal account
+        res.status(200).json({ data: true });
+      });
+    });
+  }
   public async addEmail(req, res): Promise<void> {
     const email: string = req.body.email;
     const token = Math.floor(1000 + Math.random() * 9000);
@@ -189,6 +229,7 @@ export class MailRouter {
       uploadService.array("file"),
       this.sendFilesEmail,
     );
+    this.router.post("/msg", this.sendFilesEmail);
     this.router.post("/add", this.addEmail);
     this.router.post("/find", this.verifyEmail);
   }
