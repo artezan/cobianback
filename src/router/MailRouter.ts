@@ -229,7 +229,7 @@ export class MailRouter {
       uploadService.array("file"),
       this.sendFilesEmail,
     );
-    this.router.post("/msg", this.sendMsgEmail);
+    this.router.post("/msg", uploadService.array("file"), this.sendMsgEmail);
     this.router.post("/add", this.addEmail);
     this.router.post("/find", this.verifyEmail);
   }
