@@ -12,6 +12,9 @@ const express_1 = require("express");
 const nodemailer = require("nodemailer");
 const multer = require("multer");
 const VerificationEmail_1 = require("../models/VerificationEmail");
+const theme1_1 = require("../_helpers/html-templates/theme1");
+const theme2_1 = require("../_helpers/html-templates/theme2");
+const theme3_1 = require("../_helpers/html-templates/theme3");
 const uploadService = multer({ storage: multer.memoryStorage() });
 const transporterGeneral = nodemailer.createTransport({
     service: "gmail",
@@ -19,8 +22,8 @@ const transporterGeneral = nodemailer.createTransport({
     port: 465,
     auth: {
         user: "artezan.cabrera@gmail.com",
-        pass: "180292CESARartezan" // generated ethereal password
-    }
+        pass: "180292CESARartezan",
+    },
 });
 class MailRouter {
     constructor() {
@@ -49,8 +52,8 @@ class MailRouter {
                 port: 465,
                 auth: {
                     user: "artezan.cabrera@gmail.com",
-                    pass: "180292CESARartezan" // generated ethereal password
-                }
+                    pass: "180292CESARartezan",
+                },
             });
             // setup email data with unicode symbols
             const mailOptions = {
@@ -58,7 +61,7 @@ class MailRouter {
                 to: "artezan_015@hotmail.com, artezan.cabrera@gmail.com",
                 subject: "Hello ✔",
                 text: "Hello world?",
-                html: "<b>Hello world?</b><p>👻😄</p>" // html body
+                html: "<b>Hello world?</b><p>👻😄</p>",
             };
             // send mail with defined transport object
             transporter.sendMail(mailOptions, (error, info) => {
@@ -78,30 +81,51 @@ class MailRouter {
     sendFilesEmail(req, res) {
         const files = req.files;
         const mailsToSend = req.body.mails;
+        const names = req.body.names;
         const msg = req.body.msg;
+        const template = req.body.template;
         const arrFiles = files.map(file => {
             return {
                 filename: file.originalname,
-                content: file.buffer
+                content: file.buffer,
             };
         });
-        // setup email data with unicode symbols
-        const mailOptions = {
-            from: "CobianApp <artezan.cabrera@gmail.com>",
-            to: mailsToSend,
-            subject: "Archivo Adjunto 📁",
-            text: "Archivo Ajunto",
-            html: `<p><b>Se han adjuntado archivos</b></p><p>${msg}</p>`,
-            attachments: arrFiles
-        };
-        // send mail with defined transport object
-        transporterGeneral.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                res.status(500).json({ data: false });
-                return console.log(error);
+        // setear mails y html
+        const arrNames = names.split(",");
+        const arrToSend = mailsToSend.split(",").map((email, i) => {
+            let themePicked = "";
+            if (template === "theme1") {
+                themePicked = theme1_1.Theme1.Instance().templateHTML(arrNames[i], msg);
             }
-            // Preview only available when sending through an Ethereal account
-            res.status(200).json({ data: true });
+            else if (template === "theme2") {
+                themePicked = theme2_1.Theme2.Instance().templateHTML(arrNames[i], msg);
+            }
+            else if (template === "theme3") {
+                themePicked = theme3_1.Theme3.Instance().templateHTML(arrNames[i], msg);
+            }
+            return {
+                themePicked,
+                email,
+            };
+        });
+        arrToSend.forEach(dataSend => {
+            // setup email data with unicode symbols
+            const mailOptions = {
+                from: "Inmobiliaria Cobian <artezan.cabrera@gmail.com>",
+                to: dataSend.email,
+                subject: "Archivo Adjunto 📁",
+                html: dataSend.themePicked,
+                attachments: arrFiles,
+            };
+            // send mail with defined transport object
+            transporterGeneral.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    res.status(500).json({ data: false });
+                    return console.log(error);
+                }
+                // Preview only available when sending through an Ethereal account
+                res.status(200).json({ data: true });
+            });
         });
     }
     addEmail(req, res) {
@@ -111,7 +135,7 @@ class MailRouter {
             const isOnDB = yield VerificationEmail_1.default.findOne({ email: email }).remove();
             const newEmail = new VerificationEmail_1.default({
                 email,
-                token
+                token,
             });
             newEmail
                 .save()
@@ -122,7 +146,7 @@ class MailRouter {
                     to: email,
                     subject: "Verificar Cuenta",
                     text: "Este es su código de verificación:",
-                    html: `<p>Este es su código de verificación: </p><b>${token}</b>` // html body
+                    html: `<p>Este es su código de verificación: </p><b>${token}</b>`,
                 };
                 // send mail with defined transport object
                 transporterGeneral.sendMail(mailOptions, (error, info) => {
