@@ -15,6 +15,7 @@ const VerificationEmail_1 = require("../models/VerificationEmail");
 const theme1_1 = require("../_helpers/html-templates/theme1");
 const theme2_1 = require("../_helpers/html-templates/theme2");
 const theme3_1 = require("../_helpers/html-templates/theme3");
+const base64 = require("base-64");
 const uploadService = multer({ storage: multer.memoryStorage() });
 const transporterGeneral = nodemailer.createTransport({
     service: "gmail",
@@ -76,6 +77,36 @@ class MailRouter {
                 // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
                 // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
             });
+        });
+    }
+    sendEmailToReset(req, res) {
+        const email = req.body.email;
+        const name = req.body.name;
+        const password = base64.decode(req.body.base64);
+        // cear acceso https://myaccount.google.com/lesssecureapps?pli=1
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            host: "smtp.gmail.com",
+            port: 465,
+            auth: {
+                user: "artezan.cabrera@gmail.com",
+                pass: "180292CESARartezan",
+            },
+        });
+        // setup email data with unicode symbols
+        const mailOptions = {
+            from: "Inmobiliaria Cobian <artezan.cabrera@gmail.com>",
+            to: email,
+            subject: "Recuperar Contraseña",
+            html: `<p>Hola ${name} </p> <p>Esta es tu nueva contraseña <b>${password}</b> (la puedes cambiar en la app)</p>`,
+        };
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                res.status(500).json({ data: false });
+                return console.log(error);
+            }
+            res.status(200).json({ data: true });
         });
     }
     sendFilesEmail(req, res) {
@@ -224,6 +255,7 @@ class MailRouter {
     }
     routes() {
         this.router.get("/", this.sendEmail);
+        this.router.post("/resetpass", this.sendEmailToReset);
         this.router.post("/files", uploadService.array("file"), this.sendFilesEmail);
         this.router.post("/msg", uploadService.array("file"), this.sendMsgEmail);
         this.router.post("/add", this.addEmail);

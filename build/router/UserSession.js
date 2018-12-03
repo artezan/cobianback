@@ -62,49 +62,49 @@ class UserSession {
                                                     // resolve("error");
                                                     Management_1.default.find({
                                                         password: password,
-                                                        email: email
+                                                        email: email,
                                                     })
                                                         .then(data => {
                                                         if (data.length > 0) {
                                                             resolve({
                                                                 data: data,
-                                                                type: "management"
+                                                                type: "management",
                                                             });
                                                         }
                                                         else {
                                                             Maker_1.default.find({
                                                                 password: password,
-                                                                email: email
+                                                                email: email,
                                                             })
                                                                 .then(data => {
                                                                 if (data.length > 0) {
                                                                     resolve({
                                                                         data: data,
-                                                                        type: "maker"
+                                                                        type: "maker",
                                                                     });
                                                                 }
                                                                 else {
                                                                     Office_1.default.find({
                                                                         password: password,
-                                                                        email: email
+                                                                        email: email,
                                                                     })
                                                                         .then(data => {
                                                                         if (data.length > 0) {
                                                                             resolve({
                                                                                 data: data,
-                                                                                type: "office"
+                                                                                type: "office",
                                                                             });
                                                                         }
                                                                         else {
                                                                             PreBuyer_1.default.find({
                                                                                 password: password,
-                                                                                email: email
+                                                                                email: email,
                                                                             })
                                                                                 .then(data => {
                                                                                 if (data.length > 0) {
                                                                                     resolve({
                                                                                         data: data,
-                                                                                        type: "preBuyer"
+                                                                                        type: "preBuyer",
                                                                                     });
                                                                                 }
                                                                                 else {
@@ -147,7 +147,130 @@ class UserSession {
                 const result = {
                     data: data.data,
                     type: data.type,
-                    token: token
+                    token: token,
+                };
+                res.status(200).json({ data: result });
+                // res.status(200).json({ data });
+            }
+        });
+    }
+    // sin pass
+    byEmail(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const email = req.body.email;
+            // crea promise con respuesta si encuentra o no
+            const promise = new Promise((resolve, reject) => {
+                // busca la info
+                try {
+                    //   admin
+                    Administrator_1.default.find({ email: email })
+                        .then(data => {
+                        if (data.length > 0) {
+                            resolve({ data: data, type: "administrator" });
+                        }
+                        else {
+                            //   buyer
+                            Buyer_1.default.find({ email: email })
+                                .then(data => {
+                                if (data.length > 0) {
+                                    resolve({ data: data, type: "buyer" });
+                                }
+                                else {
+                                    Seller_1.default.find({ email: email })
+                                        .then(data => {
+                                        if (data.length > 0) {
+                                            resolve({ data: data, type: "seller" });
+                                        }
+                                        else {
+                                            Adviser_1.default.find({ email: email })
+                                                .then(data => {
+                                                if (data.length > 0) {
+                                                    resolve({ data: data, type: "adviser" });
+                                                }
+                                                else {
+                                                    // resolve("error");
+                                                    Management_1.default.find({
+                                                        email: email,
+                                                    })
+                                                        .then(data => {
+                                                        if (data.length > 0) {
+                                                            resolve({
+                                                                data: data,
+                                                                type: "management",
+                                                            });
+                                                        }
+                                                        else {
+                                                            Maker_1.default.find({
+                                                                email: email,
+                                                            })
+                                                                .then(data => {
+                                                                if (data.length > 0) {
+                                                                    resolve({
+                                                                        data: data,
+                                                                        type: "maker",
+                                                                    });
+                                                                }
+                                                                else {
+                                                                    Office_1.default.find({
+                                                                        email: email,
+                                                                    })
+                                                                        .then(data => {
+                                                                        if (data.length > 0) {
+                                                                            resolve({
+                                                                                data: data,
+                                                                                type: "office",
+                                                                            });
+                                                                        }
+                                                                        else {
+                                                                            PreBuyer_1.default.find({
+                                                                                email: email,
+                                                                            })
+                                                                                .then(data => {
+                                                                                if (data.length > 0) {
+                                                                                    resolve({
+                                                                                        data: data,
+                                                                                        type: "preBuyer",
+                                                                                    });
+                                                                                }
+                                                                                else {
+                                                                                    resolve("error");
+                                                                                }
+                                                                            })
+                                                                                .catch(error => { });
+                                                                        }
+                                                                    })
+                                                                        .catch(error => { });
+                                                                }
+                                                            })
+                                                                .catch(error => { });
+                                                        }
+                                                    })
+                                                        .catch(error => { });
+                                                }
+                                            })
+                                                .catch(error => { });
+                                        }
+                                    })
+                                        .catch(error => { });
+                                }
+                            })
+                                .catch(error => { });
+                        }
+                    })
+                        .catch(error => { });
+                }
+                catch (error) {
+                    console.log("error");
+                }
+            });
+            const data = yield promise;
+            if (data === "error") {
+                res.status(200).json({ data: "error" });
+            }
+            else {
+                const result = {
+                    data: data.data,
+                    type: data.type,
                 };
                 res.status(200).json({ data: result });
                 // res.status(200).json({ data });
@@ -157,6 +280,7 @@ class UserSession {
     // set up our routes
     routes() {
         this.router.post("/", this.byPassword);
+        this.router.post("/email", this.byEmail);
     }
 }
 exports.UserSession = UserSession;

@@ -6,6 +6,8 @@ import VerificationEmail from "../models/VerificationEmail";
 import { Theme1 } from "../_helpers/html-templates/theme1";
 import { Theme2 } from "../_helpers/html-templates/theme2";
 import { Theme3 } from "../_helpers/html-templates/theme3";
+import * as base64 from "base-64";
+
 interface MulterFile {
   fieldname: string;
   originalname: string;
@@ -80,6 +82,39 @@ export class MailRouter {
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
         // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
       });
+    });
+  }
+  public sendEmailToReset(req: Request, res: Response) {
+    const email = req.body.email;
+    const name = req.body.name;
+    const password = base64.decode(req.body.base64);
+    // cear acceso https://myaccount.google.com/lesssecureapps?pli=1
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      auth: {
+        user: "artezan.cabrera@gmail.com", // generated ethereal user
+        pass: "180292CESARartezan", // generated ethereal password
+      },
+    });
+
+    // setup email data with unicode symbols
+    const mailOptions = {
+      from: "Inmobiliaria Cobian <artezan.cabrera@gmail.com>", // sender address
+      to: email, // list of receivers
+      subject: "Recuperar Contraseña", // Subject line
+      html: `<p>Hola ${name} </p> <p>Esta es tu nueva contraseña <b>${password}</b> (la puedes cambiar en la app)</p>`, // html body
+    };
+
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        res.status(500).json({ data: false });
+        return console.log(error);
+      }
+
+      res.status(200).json({ data: true });
     });
   }
   public sendFilesEmail(req: any, res: Response) {
@@ -224,6 +259,7 @@ export class MailRouter {
 
   public routes() {
     this.router.get("/", this.sendEmail);
+    this.router.post("/resetpass", this.sendEmailToReset);
     this.router.post(
       "/files",
       uploadService.array("file"),

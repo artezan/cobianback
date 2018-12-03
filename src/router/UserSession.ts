@@ -25,7 +25,7 @@ export class UserSession {
     const email = strDecode.substring(0, strDecode.indexOf(":"));
     const password = strDecode.substring(
       strDecode.indexOf(":") + 1,
-      strDecode.length
+      strDecode.length,
     );
     // crea promise con respuesta si encuentra o no
     const promise = new Promise<any>((resolve, reject) => {
@@ -56,46 +56,46 @@ export class UserSession {
                                 // resolve("error");
                                 Management.find({
                                   password: password,
-                                  email: email
+                                  email: email,
                                 })
                                   .then(data => {
                                     if (data.length > 0) {
                                       resolve({
                                         data: data,
-                                        type: "management"
+                                        type: "management",
                                       });
                                     } else {
                                       Maker.find({
                                         password: password,
-                                        email: email
+                                        email: email,
                                       })
                                         .then(data => {
                                           if (data.length > 0) {
                                             resolve({
                                               data: data,
-                                              type: "maker"
+                                              type: "maker",
                                             });
                                           } else {
                                             Office.find({
                                               password: password,
-                                              email: email
+                                              email: email,
                                             })
                                               .then(data => {
                                                 if (data.length > 0) {
                                                   resolve({
                                                     data: data,
-                                                    type: "office"
+                                                    type: "office",
                                                   });
                                                 } else {
                                                   PreBuyer.find({
                                                     password: password,
-                                                    email: email
+                                                    email: email,
                                                   })
                                                     .then(data => {
                                                       if (data.length > 0) {
                                                         resolve({
                                                           data: data,
-                                                          type: "preBuyer"
+                                                          type: "preBuyer",
                                                         });
                                                       } else {
                                                         resolve("error");
@@ -136,14 +136,129 @@ export class UserSession {
       const result = {
         data: data.data,
         type: data.type,
-        token: token
+        token: token,
       };
       res.status(200).json({ data: result });
       // res.status(200).json({ data });
     }
   }
+
+  // sin pass
+  public async byEmail(req: Request, res: Response): Promise<void> {
+    const email = req.body.email;
+    // crea promise con respuesta si encuentra o no
+    const promise = new Promise<any>((resolve, reject) => {
+      // busca la info
+      try {
+        //   admin
+        Administrator.find({ email: email })
+          .then(data => {
+            if (data.length > 0) {
+              resolve({ data: data, type: "administrator" });
+            } else {
+              //   buyer
+              Buyer.find({ email: email })
+                .then(data => {
+                  if (data.length > 0) {
+                    resolve({ data: data, type: "buyer" });
+                  } else {
+                    Seller.find({ email: email })
+                      .then(data => {
+                        if (data.length > 0) {
+                          resolve({ data: data, type: "seller" });
+                        } else {
+                          Adviser.find({ email: email })
+                            .then(data => {
+                              if (data.length > 0) {
+                                resolve({ data: data, type: "adviser" });
+                              } else {
+                                // resolve("error");
+                                Management.find({
+                                  email: email,
+                                })
+                                  .then(data => {
+                                    if (data.length > 0) {
+                                      resolve({
+                                        data: data,
+                                        type: "management",
+                                      });
+                                    } else {
+                                      Maker.find({
+                                        email: email,
+                                      })
+                                        .then(data => {
+                                          if (data.length > 0) {
+                                            resolve({
+                                              data: data,
+                                              type: "maker",
+                                            });
+                                          } else {
+                                            Office.find({
+                                              email: email,
+                                            })
+                                              .then(data => {
+                                                if (data.length > 0) {
+                                                  resolve({
+                                                    data: data,
+                                                    type: "office",
+                                                  });
+                                                } else {
+                                                  PreBuyer.find({
+                                                    email: email,
+                                                  })
+                                                    .then(data => {
+                                                      if (data.length > 0) {
+                                                        resolve({
+                                                          data: data,
+                                                          type: "preBuyer",
+                                                        });
+                                                      } else {
+                                                        resolve("error");
+                                                      }
+                                                    })
+                                                    .catch(error => {});
+                                                }
+                                              })
+                                              .catch(error => {});
+                                          }
+                                        })
+                                        .catch(error => {});
+                                    }
+                                  })
+                                  .catch(error => {});
+                              }
+                            })
+                            .catch(error => {});
+                        }
+                      })
+                      .catch(error => {});
+                  }
+                })
+                .catch(error => {});
+            }
+          })
+          .catch(error => {});
+      } catch (error) {
+        console.log("error");
+      }
+    });
+    const data = await promise;
+
+    if (data === "error") {
+      res.status(200).json({ data: "error" });
+    } else {
+      const result = {
+        data: data.data,
+        type: data.type,
+      };
+      res.status(200).json({ data: result });
+      // res.status(200).json({ data });
+    }
+  }
+
   // set up our routes
   public routes() {
     this.router.post("/", this.byPassword);
+    this.router.post("/email", this.byEmail);
   }
 }
