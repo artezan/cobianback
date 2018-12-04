@@ -2,6 +2,9 @@ import { Request, Response, Router } from "express";
 import { ObjectId } from "../../node_modules/@types/bson";
 import * as base64 from "base-64";
 import Buyer from "../models/Buyer";
+import Schedule from "../models/Schedule";
+import Credit from "../models/Credit";
+import Ofert from "../models/Ofert";
 
 /**
  * @apiDefine BuyerResponseParams
@@ -389,9 +392,11 @@ export class BuyerRouter {
    * @apiParam {ObjectId} buyerId Must be placed as QueryParam
    */
 
-  public delete(req: Request, res: Response): void {
+  public async delete(req: Request, res: Response): Promise<void> {
     const _id: string = req.params.id;
-
+    await Schedule.findOneAndRemove({ buyer: _id });
+    await Credit.findOneAndRemove({ buyer: _id });
+    await Ofert.findOneAndRemove({ buyer: _id });
     Buyer.findByIdAndRemove({ _id: _id })
       .then(() => {
         res.status(200).json({ data: true });
