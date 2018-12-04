@@ -5,6 +5,7 @@ import Buyer from "../models/Buyer";
 import Schedule from "../models/Schedule";
 import Credit from "../models/Credit";
 import Ofert from "../models/Ofert";
+import StatusBuyerProperty from "../models/StatusBuyerProperty";
 
 /**
  * @apiDefine BuyerResponseParams
@@ -397,6 +398,7 @@ export class BuyerRouter {
     await Schedule.findOneAndRemove({ buyer: _id });
     await Credit.findOneAndRemove({ buyer: _id });
     await Ofert.findOneAndRemove({ buyer: _id });
+    await StatusBuyerProperty.findOneAndRemove({ buyer: _id });
     Buyer.findByIdAndRemove({ _id: _id })
       .then(() => {
         res.status(200).json({ data: true });

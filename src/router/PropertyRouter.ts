@@ -4,6 +4,8 @@ import Property from "../models/Property";
 import { PropertyLogic } from "../logic/PropertyLogic";
 import Buyer, { IBuyer } from "../models/Buyer";
 import { ObjectId } from "mongodb";
+import StatusBuyerProperty from "../models/StatusBuyerProperty";
+import Schedule from "../models/Schedule";
 
 /**
  * @apiDefine PropertyResponseParams
@@ -244,9 +246,10 @@ export class PropertyRouter {
    * {"data":true}
    */
 
-  public delete(req: Request, res: Response): void {
+  public async delete(req: Request, res: Response): Promise<void> {
     const _id: string = req.params.id;
-
+    await StatusBuyerProperty.findOneAndRemove({ property: _id });
+    await Schedule.findOneAndRemove({ property: _id });
     Property.findByIdAndRemove({ _id: _id })
       .then(() => {
         res.status(200).json({ data: true });

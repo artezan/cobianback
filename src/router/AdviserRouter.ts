@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { ObjectId } from "../../node_modules/@types/bson";
 import * as base64 from "base-64";
 import Adviser from "../models/Adviser";
+import Schedule from "../models/Schedule";
 
 /**
  * @apiDefine AdviserResponseParams
@@ -249,8 +250,9 @@ export class AdviserRouter {
    *
    */
 
-  public delete(req: Request, res: Response): void {
+  public async delete(req: Request, res: Response): Promise<void> {
     const _id: string = req.params.id;
+    await Schedule.findOneAndRemove({ adviser: _id });
 
     Adviser.findByIdAndRemove({ _id: _id })
       .then(() => {

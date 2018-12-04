@@ -14,6 +14,7 @@ const Buyer_1 = require("../models/Buyer");
 const Schedule_1 = require("../models/Schedule");
 const Credit_1 = require("../models/Credit");
 const Ofert_1 = require("../models/Ofert");
+const StatusBuyerProperty_1 = require("../models/StatusBuyerProperty");
 /**
  * @apiDefine BuyerResponseParams
  * @apiSuccess {Date} timestamp
@@ -392,6 +393,7 @@ class BuyerRouter {
             yield Schedule_1.default.findOneAndRemove({ buyer: _id });
             yield Credit_1.default.findOneAndRemove({ buyer: _id });
             yield Ofert_1.default.findOneAndRemove({ buyer: _id });
+            yield StatusBuyerProperty_1.default.findOneAndRemove({ buyer: _id });
             Buyer_1.default.findByIdAndRemove({ _id: _id })
                 .then(() => {
                 res.status(200).json({ data: true });

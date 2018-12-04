@@ -208,11 +208,13 @@ export class AdministratorRouter {
       });
     });
     sbps.forEach(sbp => {
-      allData.push({
-        type: "sbp",
-        time: sbp.timestamp.toString(),
-        data: { sbps: sbp },
-      });
+      if (sbp.buyer && sbp.property) {
+        allData.push({
+          type: "sbp",
+          time: sbp.timestamp.toString(),
+          data: { sbps: sbp },
+        });
+      }
     });
     allData.sort((a, b) => {
       // Turn your strings into dates, and then subtract them

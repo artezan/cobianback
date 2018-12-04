@@ -13,6 +13,8 @@ const Property_1 = require("../models/Property");
 const PropertyLogic_1 = require("../logic/PropertyLogic");
 const Buyer_1 = require("../models/Buyer");
 const mongodb_1 = require("mongodb");
+const StatusBuyerProperty_1 = require("../models/StatusBuyerProperty");
+const Schedule_1 = require("../models/Schedule");
 /**
  * @apiDefine PropertyResponseParams
  * @apiSuccess {Date} timestamp
@@ -244,13 +246,17 @@ class PropertyRouter {
      * {"data":true}
      */
     delete(req, res) {
-        const _id = req.params.id;
-        Property_1.default.findByIdAndRemove({ _id: _id })
-            .then(() => {
-            res.status(200).json({ data: true });
-        })
-            .catch(error => {
-            res.status(500).json({ error });
+        return __awaiter(this, void 0, void 0, function* () {
+            const _id = req.params.id;
+            yield StatusBuyerProperty_1.default.findOneAndRemove({ property: _id });
+            yield Schedule_1.default.findOneAndRemove({ property: _id });
+            Property_1.default.findByIdAndRemove({ _id: _id })
+                .then(() => {
+                res.status(200).json({ data: true });
+            })
+                .catch(error => {
+                res.status(500).json({ error });
+            });
         });
     }
     /**
