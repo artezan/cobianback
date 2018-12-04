@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import PreBuyer from "../models/PreBuyer";
+import Chat from "../models/Chat";
 
 export class PreBuyerRouter {
   public router: Router;
@@ -48,7 +49,7 @@ export class PreBuyerRouter {
       password,
       email,
       preBuild,
-      phone
+      phone,
     });
 
     preBuyer
@@ -72,8 +73,9 @@ export class PreBuyerRouter {
       });
   }
 
-  public delete(req: Request, res: Response): void {
+  public async delete(req: Request, res: Response): Promise<void> {
     const _id: string = req.params.id;
+    await Chat.find({ buyer: _id }).remove();
 
     PreBuyer.findByIdAndRemove({ _id: _id })
       .then(() => {

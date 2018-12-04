@@ -6,6 +6,7 @@ import Schedule from "../models/Schedule";
 import Credit from "../models/Credit";
 import Ofert from "../models/Ofert";
 import StatusBuyerProperty from "../models/StatusBuyerProperty";
+import Chat from "../models/Chat";
 
 /**
  * @apiDefine BuyerResponseParams
@@ -399,6 +400,7 @@ export class BuyerRouter {
     await Credit.findOneAndRemove({ buyer: _id });
     await Ofert.findOneAndRemove({ buyer: _id });
     await StatusBuyerProperty.findOneAndRemove({ buyer: _id });
+    await Chat.find({ buyer: _id }).remove();
     Buyer.findByIdAndRemove({ _id: _id })
       .then(() => {
         res.status(200).json({ data: true });

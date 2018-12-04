@@ -6,6 +6,7 @@ import Buyer, { IBuyer } from "../models/Buyer";
 import { ObjectId } from "mongodb";
 import StatusBuyerProperty from "../models/StatusBuyerProperty";
 import Schedule from "../models/Schedule";
+import Chat from "../models/Chat";
 
 /**
  * @apiDefine PropertyResponseParams
@@ -250,6 +251,7 @@ export class PropertyRouter {
     const _id: string = req.params.id;
     await StatusBuyerProperty.findOneAndRemove({ property: _id });
     await Schedule.findOneAndRemove({ property: _id });
+    await Chat.findOneAndRemove({ property: _id });
     Property.findByIdAndRemove({ _id: _id })
       .then(() => {
         res.status(200).json({ data: true });
