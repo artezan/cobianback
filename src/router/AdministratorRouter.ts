@@ -187,7 +187,12 @@ export class AdministratorRouter {
       });
     });
     schedules.forEach(schedule => {
-      if (!schedule.administrator && !schedule.personal) {
+      if (
+        !schedule.administrator &&
+        !schedule.personal &&
+        schedule.buyer &&
+        schedule.adviser
+      ) {
         allData.push({
           type: "schedule",
           time: schedule.timestamp.toString(),
