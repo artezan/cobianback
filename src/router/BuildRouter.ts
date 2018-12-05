@@ -240,7 +240,7 @@ export class BuildRouter {
    *
    */
 
-  public delete(req: Request, res: Response): void {
+  public async delete(req: Request, res: Response): Promise<void> {
     const _id: string = req.params.id;
 
     Build.findByIdAndRemove({ _id: _id })

@@ -16,6 +16,9 @@ const mongodb_1 = require("mongodb");
 const StatusBuyerProperty_1 = require("../models/StatusBuyerProperty");
 const Schedule_1 = require("../models/Schedule");
 const Chat_1 = require("../models/Chat");
+const Ofert_1 = require("../models/Ofert");
+const Credit_1 = require("../models/Credit");
+const Sale_1 = require("../models/Sale");
 /**
  * @apiDefine PropertyResponseParams
  * @apiSuccess {Date} timestamp
@@ -249,9 +252,12 @@ class PropertyRouter {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const _id = req.params.id;
-            yield StatusBuyerProperty_1.default.findOneAndRemove({ property: _id });
-            yield Schedule_1.default.findOneAndRemove({ property: _id });
-            yield Chat_1.default.findOneAndRemove({ property: _id });
+            yield Chat_1.default.deleteMany({ property: _id });
+            yield Schedule_1.default.deleteMany({ property: _id });
+            yield StatusBuyerProperty_1.default.deleteMany({ property: _id });
+            yield Ofert_1.default.deleteMany({ property: _id });
+            yield Credit_1.default.deleteMany({ property: _id });
+            yield Sale_1.default.deleteMany({ property: _id });
             Property_1.default.findByIdAndRemove({ _id: _id })
                 .then(() => {
                 res.status(200).json({ data: true });

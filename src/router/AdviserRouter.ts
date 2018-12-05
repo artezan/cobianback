@@ -3,6 +3,8 @@ import { ObjectId } from "../../node_modules/@types/bson";
 import * as base64 from "base-64";
 import Adviser from "../models/Adviser";
 import Schedule from "../models/Schedule";
+import Goal from "../models/Goal";
+import Sale from "../models/Sale";
 
 /**
  * @apiDefine AdviserResponseParams
@@ -252,7 +254,15 @@ export class AdviserRouter {
 
   public async delete(req: Request, res: Response): Promise<void> {
     const _id: string = req.params.id;
-    await Schedule.findOneAndRemove({ adviser: _id });
+    await Schedule.deleteMany({ adviser: _id });
+    await Goal.update(
+      { adviser: { $in: [_id] } },
+      { $pull: { adviser: { $in: [_id] } } },
+    );
+    await Sale.update(
+      { adviser: { $in: [_id] } },
+      { $pull: { adviser: { $in: [_id] } } },
+    );
 
     Adviser.findByIdAndRemove({ _id: _id })
       .then(() => {

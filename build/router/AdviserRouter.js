@@ -12,6 +12,8 @@ const express_1 = require("express");
 const base64 = require("base-64");
 const Adviser_1 = require("../models/Adviser");
 const Schedule_1 = require("../models/Schedule");
+const Goal_1 = require("../models/Goal");
+const Sale_1 = require("../models/Sale");
 /**
  * @apiDefine AdviserResponseParams
  * @apiSuccess {Date} timestamp
@@ -247,7 +249,9 @@ class AdviserRouter {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const _id = req.params.id;
-            yield Schedule_1.default.findOneAndRemove({ adviser: _id });
+            yield Schedule_1.default.deleteMany({ adviser: _id });
+            yield Goal_1.default.update({ adviser: { $in: [_id] } }, { $pull: { adviser: { $in: [_id] } } });
+            yield Sale_1.default.update({ adviser: { $in: [_id] } }, { $pull: { adviser: { $in: [_id] } } });
             Adviser_1.default.findByIdAndRemove({ _id: _id })
                 .then(() => {
                 res.status(200).json({ data: true });

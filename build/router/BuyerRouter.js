@@ -16,6 +16,7 @@ const Credit_1 = require("../models/Credit");
 const Ofert_1 = require("../models/Ofert");
 const StatusBuyerProperty_1 = require("../models/StatusBuyerProperty");
 const Chat_1 = require("../models/Chat");
+const Sale_1 = require("../models/Sale");
 /**
  * @apiDefine BuyerResponseParams
  * @apiSuccess {Date} timestamp
@@ -391,11 +392,12 @@ class BuyerRouter {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const _id = req.params.id;
-            yield Schedule_1.default.findOneAndRemove({ buyer: _id });
-            yield Credit_1.default.findOneAndRemove({ buyer: _id });
-            yield Ofert_1.default.findOneAndRemove({ buyer: _id });
-            yield StatusBuyerProperty_1.default.findOneAndRemove({ buyer: _id });
-            yield Chat_1.default.find({ buyer: _id }).remove();
+            yield Schedule_1.default.deleteMany({ buyer: _id });
+            yield Credit_1.default.find({ buyer: _id }).remove();
+            yield Ofert_1.default.deleteMany({ buyer: _id });
+            yield StatusBuyerProperty_1.default.deleteMany({ buyer: _id });
+            yield Chat_1.default.deleteMany({ buyer: _id });
+            yield Sale_1.default.deleteMany({ buyer: _id });
             Buyer_1.default.findByIdAndRemove({ _id: _id })
                 .then(() => {
                 res.status(200).json({ data: true });

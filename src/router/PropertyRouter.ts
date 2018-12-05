@@ -7,6 +7,9 @@ import { ObjectId } from "mongodb";
 import StatusBuyerProperty from "../models/StatusBuyerProperty";
 import Schedule from "../models/Schedule";
 import Chat from "../models/Chat";
+import Ofert from "../models/Ofert";
+import Credit from "../models/Credit";
+import Sale from "../models/Sale";
 
 /**
  * @apiDefine PropertyResponseParams
@@ -249,9 +252,12 @@ export class PropertyRouter {
 
   public async delete(req: Request, res: Response): Promise<void> {
     const _id: string = req.params.id;
-    await StatusBuyerProperty.findOneAndRemove({ property: _id });
-    await Schedule.findOneAndRemove({ property: _id });
-    await Chat.findOneAndRemove({ property: _id });
+    await Chat.deleteMany({ property: _id });
+    await Schedule.deleteMany({ property: _id });
+    await StatusBuyerProperty.deleteMany({ property: _id });
+    await Ofert.deleteMany({ property: _id });
+    await Credit.deleteMany({ property: _id });
+    await Sale.deleteMany({ property: _id });
     Property.findByIdAndRemove({ _id: _id })
       .then(() => {
         res.status(200).json({ data: true });

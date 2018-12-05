@@ -7,6 +7,7 @@ import Credit from "../models/Credit";
 import Ofert from "../models/Ofert";
 import StatusBuyerProperty from "../models/StatusBuyerProperty";
 import Chat from "../models/Chat";
+import Sale from "../models/Sale";
 
 /**
  * @apiDefine BuyerResponseParams
@@ -396,11 +397,13 @@ export class BuyerRouter {
 
   public async delete(req: Request, res: Response): Promise<void> {
     const _id: string = req.params.id;
-    await Schedule.findOneAndRemove({ buyer: _id });
-    await Credit.findOneAndRemove({ buyer: _id });
-    await Ofert.findOneAndRemove({ buyer: _id });
-    await StatusBuyerProperty.findOneAndRemove({ buyer: _id });
-    await Chat.find({ buyer: _id }).remove();
+    await Schedule.deleteMany({ buyer: _id });
+    await Credit.find({ buyer: _id }).remove();
+    await Ofert.deleteMany({ buyer: _id });
+    await StatusBuyerProperty.deleteMany({ buyer: _id });
+    await Chat.deleteMany({ buyer: _id });
+    await Sale.deleteMany({ buyer: _id });
+
     Buyer.findByIdAndRemove({ _id: _id })
       .then(() => {
         res.status(200).json({ data: true });

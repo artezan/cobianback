@@ -11,6 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const PreBuyer_1 = require("../models/PreBuyer");
 const Chat_1 = require("../models/Chat");
+const PreBuild_1 = require("../models/PreBuild");
 class PreBuyerRouter {
     constructor() {
         this.router = express_1.Router();
@@ -75,6 +76,7 @@ class PreBuyerRouter {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const _id = req.params.id;
+            yield PreBuild_1.default.update({ preBuyer: { $in: [_id] } }, { $pull: { preBuyer: { $in: [_id] } } });
             yield Chat_1.default.find({ buyer: _id }).remove();
             PreBuyer_1.default.findByIdAndRemove({ _id: _id })
                 .then(() => {
