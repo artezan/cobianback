@@ -30,6 +30,7 @@ import * as expressJwt from "express-jwt";
 import { ChatRouter } from "./router/ChatRouter";
 import { PreBuyerRouter } from "./router/PreBuyerRouter";
 import { PreBuildRouter } from "./router/PreBuildRouter";
+import { SubManagementRouter } from "./router/SubManagementRouter";
 
 class Server {
   public administratorRouter = new AdministratorRouter();
@@ -53,6 +54,7 @@ class Server {
   public chatRouter = new ChatRouter();
   public preBuyerRouter = new PreBuyerRouter();
   public preBuildRouter = new PreBuildRouter();
+  public subManagementRouter = new SubManagementRouter();
 
   // set app to be of type express.Application
   public app: express.Application;
@@ -111,7 +113,7 @@ class Server {
   public routes(): void {
     const router: express.Router = express.Router();
     // JWT auth
-    /* this.app.use(
+    /*  this.app.use(
       expressJwt({ secret: "sss" }).unless({
         path: [
           // public routes that don't require authentication
@@ -146,6 +148,7 @@ class Server {
     this.app.use("/api/v1/chat", this.chatRouter.router);
     this.app.use("/api/v1/prebuyer", this.preBuyerRouter.router);
     this.app.use("/api/v1/prebuild", this.preBuildRouter.router);
+    this.app.use("/api/v1/submanagement", this.subManagementRouter.router);
   }
 }
 

@@ -77,36 +77,43 @@ class BuyerRouter {
      * { "data": { "timestamp": "2018-08-27T20:00:38.939Z", "typeOfProperty": "departamento", "tag": [ "mascotas", "estudiante" ], "schedule": [ { "timestamp": "2018-08-27T21:57:08.771Z", "_id": "5b8473b42a3ac4214ce7590b", "title": "Evento2", "address": "La paz", "property": "5b842b334f965c30a03c1951", "buyer": "5b84586674acb1030cabb419", "adviser": "5b8082ba69a5a10b589abc75", "status": "Pendiente", "note": "Ver Propiedad segunda visita", "dateOfEvent": "20/18/2018", "__v": 0 } ], "statusBuyerProperty": [ { "timestamp": "2018-08-27T22:18:13.525Z", "_id": "5b8478a5258cea39b839cbf7", "status": "negociacion", "buyer": "5b84586674acb1030cabb419", "property": "5b842b334f965c30a03c1951", "note": "En proceso", "__v": 0 } ], "credit": [], "files": [], "property": [ { "timestamp": "2018-08-27T16:47:47.968Z", "tag": [ "UPAEP" ], "files": [ "documento1", "documento2", "documento3" ], "_id": "5b842b334f965c30a03c1951", "isRent": true, "name": "Depa 1", "typeOfProperty": "departamento", "space": 45, "dateToBuy": "18/11/2018", "zone": "La Paz", "minPrice": 2500, "maxPrice": 2500, "numRooms": 1, "numCars": 1, "isOld": false, "isClose": false, "numBathrooms": 2, "hasGarden": false, "isLowLevel": false, "hasElevator": false, "allServices": true, "wayToBuy": "otros", "__v": 0 } ], "propertySave": [], "adviser": [ { "timestamp": "2018-08-24T22:12:10.843Z", "schedule": [], "buyer": [], "goal": [], "notification": [], "_id": "5b8082ba69a5a10b589abc75", "name": "asesor", "lastName": "apellido", "password": "cobian2018", "email": "asesor@correo.com", "hourStart": 9, "hourEnd": 18, "isRenter": true, "__v": 0 } ], "notification": [ { "timestamp": "2018-08-27T21:23:47.038Z", "_id": "5b846be3ca86762eb84e7ac3", "title": "Notificacion 1", "content": "Nueva Propiedad Agregada", "__v": 0 } ], "ofert": [ { "timestamp": "2018-08-27T21:34:43.860Z", "files": [], "_id": "5b846e73829f5e1f94efc48a", "buyer": "5b84586674acb1030cabb419", "property": "5b842b334f965c30a03c1951", "status": "negociacion", "notes": "Oferta para ...", "ofertPrice": 3000, "__v": 0 } ], "_id": "5b84586674acb1030cabb419", "name": "Comprador 1", "fatherLastName": "Apellido", "motherLastName": "Apellido", "password": "12345", "email": "comprador@gmail.com", "phone": 2222, "years": 21, "isMale": true, "numOfFamily": 1, "isSingle": true, "space": 40, "isRenter": true, "dateToBuy": "20/12/2018", "zone": "La Paz", "minPrice": 2000, "maxPrice": 4000, "numRooms": 1, "numCars": 0, "isOld": false, "isClose": false, "numBathrooms": 2, "hasGarden": false, "isLowLevel": false, "hasElevator": false, "allServices": true, "wayToBuy": "otro", "__v": 0 } }
      */
     all(req, res) {
-        Buyer_1.default.find()
-            .populate({
-            path: "schedule",
-            populate: [
-                { path: "adviser" },
-                { path: "property" },
-                { path: "seller" },
-            ],
-        })
-            .populate({
-            path: "credit",
-            populate: [{ path: "buyer" }, { path: "property" }],
-        })
-            .populate("property")
-            .populate("adviser")
-            .populate("notification")
-            .populate({
-            path: "ofert",
-            populate: [{ path: "buyer" }, { path: "property" }],
-        })
-            .populate({
-            path: "statusBuyerProperty",
-            populate: [{ path: "buyer" }, { path: "property" }],
-        })
-            .sort({ timestamp: -1 })
-            .then(data => {
-            res.status(200).json({ data });
-        })
-            .catch(error => {
-            res.status(500).json({ error });
+        return __awaiter(this, void 0, void 0, function* () {
+            const city = req.headers.city;
+            const obj = {};
+            if (city !== undefined) {
+                obj["city"] = city;
+            }
+            Buyer_1.default.find(obj)
+                .populate({
+                path: "schedule",
+                populate: [
+                    { path: "adviser" },
+                    { path: "property" },
+                    { path: "seller" },
+                ],
+            })
+                .populate({
+                path: "credit",
+                populate: [{ path: "buyer" }, { path: "property" }],
+            })
+                .populate("property")
+                .populate("adviser")
+                .populate("notification")
+                .populate({
+                path: "ofert",
+                populate: [{ path: "buyer" }, { path: "property" }],
+            })
+                .populate({
+                path: "statusBuyerProperty",
+                populate: [{ path: "buyer" }, { path: "property" }],
+            })
+                .sort({ timestamp: -1 })
+                .then(data => {
+                res.status(200).json({ data });
+            })
+                .catch(error => {
+                res.status(500).json({ error });
+            });
         });
     }
     /**

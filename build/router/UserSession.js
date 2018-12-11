@@ -19,6 +19,7 @@ const Maker_1 = require("../models/Maker");
 const Office_1 = require("../models/Office");
 const jwt = require("jsonwebtoken");
 const PreBuyer_1 = require("../models/PreBuyer");
+const SubManagement_1 = require("../models/SubManagement");
 class UserSession {
     constructor() {
         this.router = express_1.Router();
@@ -108,7 +109,22 @@ class UserSession {
                                                                                     });
                                                                                 }
                                                                                 else {
-                                                                                    resolve("error");
+                                                                                    SubManagement_1.default.find({
+                                                                                        password: password,
+                                                                                        email: email,
+                                                                                    })
+                                                                                        .then(data => {
+                                                                                        if (data.length > 0) {
+                                                                                            resolve({
+                                                                                                data: data,
+                                                                                                type: "subManagement",
+                                                                                            });
+                                                                                        }
+                                                                                        else {
+                                                                                            resolve("error");
+                                                                                        }
+                                                                                    })
+                                                                                        .catch(error => { });
                                                                                 }
                                                                             })
                                                                                 .catch(error => { });
@@ -233,7 +249,19 @@ class UserSession {
                                                                                     });
                                                                                 }
                                                                                 else {
-                                                                                    resolve("error");
+                                                                                    SubManagement_1.default.find({
+                                                                                        email: email,
+                                                                                    }).then(data => {
+                                                                                        if (data.length > 0) {
+                                                                                            resolve({
+                                                                                                data: data,
+                                                                                                type: "subManagement",
+                                                                                            });
+                                                                                        }
+                                                                                        else {
+                                                                                            resolve("error");
+                                                                                        }
+                                                                                    });
                                                                                 }
                                                                             })
                                                                                 .catch(error => { });

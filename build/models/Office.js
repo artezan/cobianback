@@ -21,6 +21,9 @@ const OfficeSchema = new mongoose_1.Schema({
     email: {
         type: String,
     },
+    city: {
+        type: String,
+    },
 });
 exports.default = mongoose_1.model("Office", OfficeSchema);
 //# sourceMappingURL=Office.js.map

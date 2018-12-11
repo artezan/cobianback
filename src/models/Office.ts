@@ -19,6 +19,9 @@ const OfficeSchema: Schema = new Schema({
   email: {
     type: String,
   },
+  city: {
+    type: String,
+  },
 });
 
 export default model("Office", OfficeSchema);

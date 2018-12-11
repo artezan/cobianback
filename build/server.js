@@ -30,6 +30,7 @@ const MailRouter_1 = require("./router/MailRouter");
 const ChatRouter_1 = require("./router/ChatRouter");
 const PreBuyerRouter_1 = require("./router/PreBuyerRouter");
 const PreBuildRouter_1 = require("./router/PreBuildRouter");
+const SubManagementRouter_1 = require("./router/SubManagementRouter");
 class Server {
     constructor() {
         this.administratorRouter = new AdministratorRouter_1.AdministratorRouter();
@@ -53,6 +54,7 @@ class Server {
         this.chatRouter = new ChatRouter_1.ChatRouter();
         this.preBuyerRouter = new PreBuyerRouter_1.PreBuyerRouter();
         this.preBuildRouter = new PreBuildRouter_1.PreBuildRouter();
+        this.subManagementRouter = new SubManagementRouter_1.SubManagementRouter();
         this.app = express();
         this.config();
         this.routes();
@@ -95,7 +97,7 @@ class Server {
     routes() {
         const router = express.Router();
         // JWT auth
-        /* this.app.use(
+        /*  this.app.use(
           expressJwt({ secret: "sss" }).unless({
             path: [
               // public routes that don't require authentication
@@ -130,6 +132,7 @@ class Server {
         this.app.use("/api/v1/chat", this.chatRouter.router);
         this.app.use("/api/v1/prebuyer", this.preBuyerRouter.router);
         this.app.use("/api/v1/prebuild", this.preBuildRouter.router);
+        this.app.use("/api/v1/submanagement", this.subManagementRouter.router);
     }
 }
 // export

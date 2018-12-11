@@ -12,6 +12,7 @@ import Office from "../models/Office";
 import * as jwt from "jsonwebtoken";
 import { config } from "../config";
 import PreBuyer from "../models/PreBuyer";
+import SubManagement from "../models/SubManagement";
 
 export class UserSession {
   public router: Router;
@@ -98,7 +99,24 @@ export class UserSession {
                                                           type: "preBuyer",
                                                         });
                                                       } else {
-                                                        resolve("error");
+                                                        SubManagement.find({
+                                                          password: password,
+                                                          email: email,
+                                                        })
+                                                          .then(data => {
+                                                            if (
+                                                              data.length > 0
+                                                            ) {
+                                                              resolve({
+                                                                data: data,
+                                                                type:
+                                                                  "subManagement",
+                                                              });
+                                                            } else {
+                                                              resolve("error");
+                                                            }
+                                                          })
+                                                          .catch(error => {});
                                                       }
                                                     })
                                                     .catch(error => {});
@@ -213,7 +231,19 @@ export class UserSession {
                                                           type: "preBuyer",
                                                         });
                                                       } else {
-                                                        resolve("error");
+                                                        SubManagement.find({
+                                                          email: email,
+                                                        }).then(data => {
+                                                          if (data.length > 0) {
+                                                            resolve({
+                                                              data: data,
+                                                              type:
+                                                                "subManagement",
+                                                            });
+                                                          } else {
+                                                            resolve("error");
+                                                          }
+                                                        });
                                                       }
                                                     })
                                                     .catch(error => {});

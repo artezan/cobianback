@@ -57,7 +57,12 @@ class PropertyRouter {
      * @apiGroup property
      */
     allNoBuy(req, res) {
-        Property_1.default.find()
+        const city = req.headers.city;
+        const obj = {};
+        if (city !== undefined) {
+            obj["city"] = city;
+        }
+        Property_1.default.find(obj)
             .sort({ timestamp: -1 })
             .then(data => {
             const filterData = data.filter(d => !d.isBuy);
@@ -68,7 +73,12 @@ class PropertyRouter {
         });
     }
     all(req, res) {
-        Property_1.default.find()
+        const city = req.headers.city;
+        const obj = {};
+        if (city !== undefined) {
+            obj["city"] = city;
+        }
+        Property_1.default.find(obj)
             .sort({ timestamp: -1 })
             .then(data => {
             res.status(200).json({ data });

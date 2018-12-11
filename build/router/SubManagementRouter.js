@@ -2,25 +2,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const base64 = require("base-64");
-const Office_1 = require("../models/Office");
-class OfficeRouter {
+const SubManagement_1 = require("../models/SubManagement");
+class SubManagementRouter {
     constructor() {
         this.router = express_1.Router();
         this.routes();
     }
     /**
-     * @api {GET} /office/Request all
+     * @api {GET} /management// Request all
      * @apiVersion  0.1.0
      * @apiName get
-     * @apiGroup office
+     * @apiGroup management
+     *
      */
     all(req, res) {
-        const city = req.headers.city;
-        const obj = {};
-        if (city !== undefined) {
-            obj["city"] = city;
-        }
-        Office_1.default.find(obj)
+        SubManagement_1.default.find()
             .then(data => {
             res.status(200).json({ data });
         })
@@ -29,27 +25,16 @@ class OfficeRouter {
         });
     }
     /**
-     * @api {GET} /office/byofficeid/:id Request by Object Id
+     * @api {GET} /management/bymanagementid/:id Request by Object Id
      * @apiVersion  0.1.0
      * @apiName getById
-     * @apiGroup office
+     * @apiGroup management
      *
      */
     oneById(req, res) {
         const id = req.params.id;
-        Office_1.default.findById(id)
-            .then(data => {
-            res.status(200).json({ data });
-        })
-            .catch(error => {
-            res.status(500).json({ error });
-        });
-    }
-    byPassword(req, res) {
-        const strDecode = base64.decode(req.params.base64);
-        const name = strDecode.substring(0, strDecode.indexOf(":"));
-        const password = strDecode.substring(strDecode.indexOf(":") + 1, strDecode.length);
-        Office_1.default.find({ password: password, name: name })
+        SubManagement_1.default.findById(id)
+            .populate("adviser")
             .then(data => {
             res.status(200).json({ data });
         })
@@ -58,10 +43,51 @@ class OfficeRouter {
         });
     }
     /**
-     * @api {POST} /office/ Request New
+     * @api {GET} /bymanagementcity/:city Request by Object City
+     * @apiVersion  0.1.0
+     * @apiName getByCity
+     * @apiGroup management
+     *
+     *
+     */
+    byCity(req, res) {
+        const city = req.params.city;
+        SubManagement_1.default.find({ city: city })
+            .populate("schedule")
+            .populate("buyer")
+            .populate("goal")
+            .populate("notification")
+            .then(data => {
+            res.status(200).json({ data });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
+    /**
+     * @api {GET} /management/bymanagementpassword/:b64 Request by Object Id
+     * @apiVersion  0.1.0
+     * @apiName getById
+     * @apiGroup management
+     *
+     */
+    byPassword(req, res) {
+        const strDecode = base64.decode(req.params.base64);
+        const name = strDecode.substring(0, strDecode.indexOf(":"));
+        const password = strDecode.substring(strDecode.indexOf(":") + 1, strDecode.length);
+        SubManagement_1.default.find({ password: password, name: name })
+            .then(data => {
+            res.status(200).json({ data });
+        })
+            .catch(error => {
+            res.status(500).json({ error });
+        });
+    }
+    /**
+     * @api {POST} /management/ Request New
      * @apiVersion  0.1.0
      * @apiName post
-     * @apiGroup office
+     * @apiGroup management
      *
      *
      * @apiParam {string} name
@@ -70,20 +96,20 @@ class OfficeRouter {
      */
     create(req, res) {
         const name = req.body.name;
+        const lastname = req.body.lastname;
         const password = req.body.password;
+        const city = req.body.city;
         const email = req.body.email;
         const phone = req.body.phone;
-        const lastname = req.body.lastname;
-        const city = req.body.city;
-        const office = new Office_1.default({
+        const management = new SubManagement_1.default({
             name,
             password,
-            email,
-            phone,
-            lastname,
             city,
+            email,
+            lastname,
+            phone,
         });
-        office
+        management
             .save()
             .then(data => {
             res.status(201).json({ data });
@@ -93,15 +119,15 @@ class OfficeRouter {
         });
     }
     /**
-     * @api {PUT} /office/:_id Request Update
+     * @api {PUT} /management/:_id Request Update
      * @apiVersion  0.1.0
      * @apiName put
-     * @apiGroup office
+     * @apiGroup management
      *
      */
     update(req, res) {
         const _id = req.params.id;
-        Office_1.default.findByIdAndUpdate({ _id: _id }, req.body)
+        SubManagement_1.default.findByIdAndUpdate({ _id: _id }, req.body)
             .then(() => {
             res.status(200).json({ data: true });
         })
@@ -110,15 +136,15 @@ class OfficeRouter {
         });
     }
     /**
-     * @api {DELETE} /office/:id Request  Deleted
+     * @api {DELETE} /management/:id Request  Deleted
      * @apiVersion  0.1.0
      * @apiName deleteByToken
-     * @apiGroup office
+     * @apiGroup management
      *
      */
     delete(req, res) {
         const _id = req.params.id;
-        Office_1.default.findByIdAndRemove({ _id: _id })
+        SubManagement_1.default.findByIdAndRemove({ _id: _id })
             .then(() => {
             res.status(200).json({ data: true });
         })
@@ -129,12 +155,13 @@ class OfficeRouter {
     // set up our routes
     routes() {
         this.router.get("/", this.all);
-        this.router.get("/byofficeid/:id", this.oneById);
-        this.router.get("/byofficepassword/:base64", this.byPassword);
+        this.router.get("/bymanagementid/:id", this.oneById);
+        this.router.get("/bymanagementcity/:city", this.byCity);
+        this.router.get("/bymanagementpassword/:base64", this.byPassword);
         this.router.post("/", this.create);
         this.router.put("/:id", this.update);
         this.router.delete("/:id", this.delete);
     }
 }
-exports.OfficeRouter = OfficeRouter;
-//# sourceMappingURL=OfficeRouter.js.map
+exports.SubManagementRouter = SubManagementRouter;
+//# sourceMappingURL=SubManagementRouter.js.map
