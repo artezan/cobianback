@@ -28,7 +28,13 @@ export class ChatRouter {
   }
 
   public all(req: Request, res: Response): void {
-    Chat.find()
+    const city = req.headers.city;
+    const obj = {};
+    if (city !== undefined) {
+      obj["city"] = city;
+    }
+
+    Chat.find(obj)
       .sort({ timestamp: -1 })
       .then(data => {
         res.status(200).json({ data });

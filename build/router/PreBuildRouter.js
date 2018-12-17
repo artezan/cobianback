@@ -35,12 +35,14 @@ class PreBuildRouter {
         const city = req.body.city;
         const preBuyer = req.body.preBuyer;
         const notes = req.body.notes;
+        const fatherPreBuild = req.body.fatherPreBuild;
         const preBuild = new PreBuild_1.default({
             name,
             timeLine,
             preBuyer,
             city,
-            notes
+            notes,
+            fatherPreBuild,
         });
         preBuild
             .save()

@@ -19,6 +19,7 @@ export class SalesRouter {
    * @apiGroup status
    */
   public all(req: Request, res: Response): void {
+    const city = req.headers.city;
     Sale.find()
       .populate("property")
       .populate("buyer")
@@ -26,7 +27,12 @@ export class SalesRouter {
       .populate("seller")
       .sort({ timestamp: -1 })
       .then(data => {
-        res.status(200).json({ data });
+        if (city !== undefined) {
+          const dataFilter = data.filter(s => s.buyer.city === city);
+          res.status(200).json({ data: dataFilter });
+        } else {
+          res.status(200).json({ data });
+        }
       })
       .catch(error => {
         res.status(500).json({ error });

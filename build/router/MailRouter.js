@@ -253,8 +253,29 @@ class MailRouter {
             res.status(500).json({ error });
         });
     }
+    simpleMail(req, res) {
+        const userEmail = req.body.email;
+        const msg = req.body.msg;
+        const subject = req.body.subject;
+        const mailOptions = {
+            from: "Inmobiliaria Cobian <artezan.cabrera@gmail.com>",
+            to: userEmail,
+            subject: subject,
+            html: msg,
+        };
+        // send mail with defined transport object
+        transporterGeneral.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                res.status(500).json({ data: false });
+                return console.log(error);
+            }
+            // Preview only available when sending through an Ethereal account
+            res.status(200).json({ data: true });
+        });
+    }
     routes() {
         this.router.get("/", this.sendEmail);
+        this.router.post("/simple", this.simpleMail);
         this.router.post("/resetpass", this.sendEmailToReset);
         this.router.post("/files", uploadService.array("file"), this.sendFilesEmail);
         this.router.post("/msg", uploadService.array("file"), this.sendMsgEmail);

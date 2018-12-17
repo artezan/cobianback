@@ -27,23 +27,24 @@ export interface IPreBuild extends Document {
    */
   notes: string;
   imgUrls: string[];
+  fatherPreBuild: string;
 }
 const PreBuildSchema: Schema = new Schema({
   timestamp: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   name: {
     type: String,
-    required: true
+    required: true,
   },
 
   preBuyer: [
     {
       type: Schema.Types.ObjectId,
       ref: "PreBuyer",
-      default: []
-    }
+      default: [],
+    },
   ],
   timeLine: [
     {
@@ -56,20 +57,23 @@ const PreBuildSchema: Schema = new Schema({
       notes: String,
       namePhase: String,
       isComplete: Boolean,
-      imgUrls: [String]
-    }
+      imgUrls: [String],
+    },
   ],
   /**
    * notas
    */
   notes: {
-    type: String
+    type: String,
   },
   city: {
-    type: String
+    type: String,
   },
   notificationOneSignal: [{ type: String, default: [] }],
-  imgUrls: [{ type: String, default: [] }]
+  imgUrls: [{ type: String, default: [] }],
+  fatherPreBuild: {
+    type: String,
+  },
 });
 
 export default model("PreBuild", PreBuildSchema);

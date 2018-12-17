@@ -18,6 +18,8 @@ export class StatusBuyerPropertyRouter {
    * @apiGroup status
    */
   public all(req: Request, res: Response): void {
+    const city = req.headers.city;
+
     StatusBuyerProperty.find()
       .populate("property")
       .populate({
@@ -26,7 +28,12 @@ export class StatusBuyerPropertyRouter {
       })
       .sort({ timestamp: -1 })
       .then(data => {
-        res.status(200).json({ data });
+        if (city !== undefined) {
+          const dataFilter = data.filter(st => st.buyer.city === city);
+          res.status(200).json({ data: dataFilter });
+        } else {
+          res.status(200).json({ data });
+        }
       })
       .catch(error => {
         res.status(500).json({ error });

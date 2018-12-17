@@ -18,7 +18,13 @@ export class MakerRouter {
    *
    */
   public all(req: Request, res: Response): void {
-    Maker.find()
+    const city = req.headers.city;
+    const obj = {};
+    if (city !== undefined) {
+      obj["city"] = city;
+    }
+
+    Maker.find(obj)
       .sort({ timestamp: -1 })
       .populate("build")
       .then(data => {

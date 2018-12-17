@@ -15,12 +15,19 @@ class OfertRouter {
      *
      */
     all(req, res) {
+        const city = req.headers.city;
         Ofert_1.default.find()
             .populate("buyer")
             .populate("property")
             .sort({ timestamp: -1 })
             .then(data => {
-            res.status(200).json({ data });
+            if (city !== undefined) {
+                const dataFilter = data.filter(ofert => ofert.buyer.city === city);
+                res.status(200).json({ data: dataFilter });
+            }
+            else {
+                res.status(200).json({ data });
+            }
         })
             .catch(error => {
             res.status(500).json({ error });
@@ -83,7 +90,7 @@ class OfertRouter {
             ofertPrice,
             files,
             apartOfert,
-            wayToBuy
+            wayToBuy,
         });
         ofert
             .save()

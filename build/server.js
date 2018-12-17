@@ -31,6 +31,8 @@ const ChatRouter_1 = require("./router/ChatRouter");
 const PreBuyerRouter_1 = require("./router/PreBuyerRouter");
 const PreBuildRouter_1 = require("./router/PreBuildRouter");
 const SubManagementRouter_1 = require("./router/SubManagementRouter");
+const PostRouter_1 = require("./router/PostRouter");
+const FatherPreBuildRouter_1 = require("./router/FatherPreBuildRouter");
 class Server {
     constructor() {
         this.administratorRouter = new AdministratorRouter_1.AdministratorRouter();
@@ -55,6 +57,8 @@ class Server {
         this.preBuyerRouter = new PreBuyerRouter_1.PreBuyerRouter();
         this.preBuildRouter = new PreBuildRouter_1.PreBuildRouter();
         this.subManagementRouter = new SubManagementRouter_1.SubManagementRouter();
+        this.postsRouter = new PostRouter_1.PostRouter();
+        this.fatherPreBuildRouter = new FatherPreBuildRouter_1.FatherPreBuildRouter();
         this.app = express();
         this.config();
         this.routes();
@@ -132,6 +136,8 @@ class Server {
         this.app.use("/api/v1/chat", this.chatRouter.router);
         this.app.use("/api/v1/prebuyer", this.preBuyerRouter.router);
         this.app.use("/api/v1/prebuild", this.preBuildRouter.router);
+        this.app.use("/api/v1/post", this.postsRouter.router);
+        this.app.use("/api/v1/father", this.fatherPreBuildRouter.router);
         this.app.use("/api/v1/submanagement", this.subManagementRouter.router);
     }
 }

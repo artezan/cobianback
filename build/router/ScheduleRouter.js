@@ -16,6 +16,7 @@ class ScheduleRouter {
      *
      */
     all(req, res) {
+        const city = req.headers.city;
         Schedule_1.default.find()
             .populate("property")
             .populate("buyer")
@@ -23,7 +24,13 @@ class ScheduleRouter {
             .populate("seller")
             .sort({ timestamp: "asc" })
             .then(data => {
-            res.status(200).json({ data });
+            if (city !== undefined) {
+                const dataFilter = data.filter(sc => sc.buyer && sc.buyer.city === city);
+                res.status(200).json({ data: dataFilter });
+            }
+            else {
+                res.status(200).json({ data });
+            }
         })
             .catch(error => {
             res.status(500).json({ error });

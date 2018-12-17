@@ -256,9 +256,30 @@ export class MailRouter {
         res.status(500).json({ error });
       });
   }
+  public simpleMail(req: any, res: Response) {
+    const userEmail = req.body.email;
+    const msg = req.body.msg;
+    const subject = req.body.subject;
+    const mailOptions: MailOptions = {
+      from: "Inmobiliaria Cobian <artezan.cabrera@gmail.com>", // sender address
+      to: userEmail, // list of receivers
+      subject: subject, // Subject line
+      html: msg, // html body
+    };
+    // send mail with defined transport object
+    transporterGeneral.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        res.status(500).json({ data: false });
+        return console.log(error);
+      }
+      // Preview only available when sending through an Ethereal account
+      res.status(200).json({ data: true });
+    });
+  }
 
   public routes() {
     this.router.get("/", this.sendEmail);
+    this.router.post("/simple", this.simpleMail);
     this.router.post("/resetpass", this.sendEmailToReset);
     this.router.post(
       "/files",

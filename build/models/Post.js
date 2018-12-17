@@ -4,34 +4,22 @@ const mongoose_1 = require("mongoose");
 const PostSchema = new mongoose_1.Schema({
     timestamp: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
     title: {
         type: String,
+        required: true,
     },
     content: {
         type: String,
-        required: true
+        required: true,
     },
-    customer: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: "Customer"
+    status: {
+        type: String,
     },
-    consultant: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: "Consultant"
-    },
-    ticket: {
-        type: mongoose_1.Schema.Types.ObjectId,
-        ref: "Ticket"
-    },
-    isByCustomer: {
-        type: Boolean,
-    },
-    seen: {
-        type: Boolean,
-        default: false
-    }
+    city: [{ type: String, default: [] }],
+    tags: [{ type: String, default: [] }],
+    uids: [{ type: String, default: [] }],
 });
 exports.default = mongoose_1.model("Post", PostSchema);
 //# sourceMappingURL=Post.js.map

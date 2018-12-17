@@ -50,7 +50,12 @@ export class BuildRouter {
    * { "data": [ { "timestamp": "2018-08-24T22:12:10.843Z", "schedule": [], "buyer": [], "goal": [], "notification": [], "_id": "5b8082ba69a5a10b589abc75", "name": "asesor", "lastName": "apellido", "password": "cobian2018", "email": "asesor@correo.com", "hourStart": 9, "hourEnd": 18, "isRenter": false, "__v": 0 }, { "timestamp": "2018-08-24T22:12:43.596Z", "schedule": [], "buyer": [], "goal": [], "notification": [], "_id": "5b8082db69a5a10b589abc76", "name": "asesor2", "lastName": "apellido", "password": "cobian2018", "email": "asesor2@correo.com", "hourStart": 10, "hourEnd": 18, "isRenter": true, "__v": 0 }, { "timestamp": "2018-08-24T22:13:03.608Z", "schedule": [], "buyer": [], "goal": [], "notification": [], "_id": "5b8082ef69a5a10b589abc77", "name": "asesor3", "lastName": "apellido", "password": "cobian2018", "email": "asesor3@correo.com", "hourStart": 7, "hourEnd": 20, "isRenter": true, "__v": 0 }, { "timestamp": "2018-08-24T22:13:28.257Z", "schedule": [], "buyer": [], "goal": [], "notification": [], "_id": "5b80830869a5a10b589abc78", "name": "asesor4", "lastName": "apellido", "password": "cobian2018", "email": "asesor4@correo.com", "hourStart": 7, "hourEnd": 21, "isRenter": false, "__v": 0 }, { "timestamp": "2018-08-27T15:00:31.181Z", "schedule": [], "buyer": [], "goal": [], "notification": [], "_id": "5b84120f0255c71b3c0a21d8", "name": "asesor5", "lastName": "apellido", "password": "cobian2018", "email": "asesor5@correo.com", "hourStart": 8, "hourEnd": 22, "isRenter": true, "__v": 0 } ] }
    */
   public all(req: Request, res: Response): void {
-    Build.find()
+    const city = req.headers.city;
+    const obj = {};
+    if (city !== undefined) {
+      obj["city"] = city;
+    }
+    Build.find(obj)
       .populate("maker")
       .sort({ timestamp: -1 })
       .then(data => {

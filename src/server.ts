@@ -31,6 +31,8 @@ import { ChatRouter } from "./router/ChatRouter";
 import { PreBuyerRouter } from "./router/PreBuyerRouter";
 import { PreBuildRouter } from "./router/PreBuildRouter";
 import { SubManagementRouter } from "./router/SubManagementRouter";
+import { PostRouter } from "./router/PostRouter";
+import { FatherPreBuildRouter } from "./router/FatherPreBuildRouter";
 
 class Server {
   public administratorRouter = new AdministratorRouter();
@@ -55,6 +57,8 @@ class Server {
   public preBuyerRouter = new PreBuyerRouter();
   public preBuildRouter = new PreBuildRouter();
   public subManagementRouter = new SubManagementRouter();
+  public postsRouter = new PostRouter();
+  public fatherPreBuildRouter = new FatherPreBuildRouter();
 
   // set app to be of type express.Application
   public app: express.Application;
@@ -148,6 +152,8 @@ class Server {
     this.app.use("/api/v1/chat", this.chatRouter.router);
     this.app.use("/api/v1/prebuyer", this.preBuyerRouter.router);
     this.app.use("/api/v1/prebuild", this.preBuildRouter.router);
+    this.app.use("/api/v1/post", this.postsRouter.router);
+    this.app.use("/api/v1/father", this.fatherPreBuildRouter.router);
     this.app.use("/api/v1/submanagement", this.subManagementRouter.router);
   }
 }

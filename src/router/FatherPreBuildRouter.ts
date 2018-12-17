@@ -1,7 +1,8 @@
 import { Request, Response, Router } from "express";
+import FatherPreBuild from "../models/FatherPreBuild";
 import PreBuild from "../models/PreBuild";
 
-export class PreBuildRouter {
+export class FatherPreBuildRouter {
   public router: Router;
 
   constructor() {
@@ -10,8 +11,13 @@ export class PreBuildRouter {
   }
 
   public all(req: Request, res: Response): void {
-    PreBuild.find()
-      .populate("preBuyer")
+    const city = req.headers.city;
+    const obj = {};
+    if (city !== undefined) {
+      obj["city"] = city;
+    }
+    FatherPreBuild.find(obj)
+      .populate("preBuild")
       .sort({ timestamp: -1 })
       .then(data => {
         res.status(200).json({ data });
@@ -24,8 +30,8 @@ export class PreBuildRouter {
   public oneById(req: Request, res: Response): void {
     const id: string = req.params.id;
 
-    PreBuild.findById(id)
-      .populate("preBuyer")
+    FatherPreBuild.findById(id)
+      .populate("preBuild")
       .then(data => {
         res.status(200).json({ data });
       })
@@ -36,23 +42,20 @@ export class PreBuildRouter {
 
   public create(req: Request, res: Response): void {
     const name: string = req.body.name;
-    const timeLine: string = req.body.timeLine;
     const city: string = req.body.city;
-    const preBuyer: any[] = req.body.preBuyer;
+    const preBuild: any[] = req.body.preBuild;
     const notes = req.body.notes;
-    const fatherPreBuild = req.body.fatherPreBuild;
+    const numOfChild = req.body.numOfChild;
 
-    const preBuild = new PreBuild({
+    const f = new FatherPreBuild({
       name,
-      timeLine,
-      preBuyer,
       city,
       notes,
-      fatherPreBuild,
+      preBuild,
+      numOfChild,
     });
 
-    preBuild
-      .save()
+    f.save()
       .then(data => {
         res.status(201).json({ data });
       })
@@ -63,7 +66,7 @@ export class PreBuildRouter {
 
   public update(req: Request, res: Response): void {
     const _id: string = req.params.id;
-    PreBuild.findByIdAndUpdate({ _id: _id }, req.body)
+    FatherPreBuild.findByIdAndUpdate({ _id: _id }, req.body)
       .then(() => {
         res.status(200).json({ data: true });
       })
@@ -72,10 +75,10 @@ export class PreBuildRouter {
       });
   }
 
-  public delete(req: Request, res: Response): void {
+  public async delete(req: Request, res: Response): Promise<void> {
     const _id: string = req.params.id;
-
-    PreBuild.findByIdAndRemove({ _id: _id })
+    await PreBuild.deleteMany({ preBuild: _id });
+    FatherPreBuild.findByIdAndRemove({ _id: _id })
       .then(() => {
         res.status(200).json({ data: true });
       })

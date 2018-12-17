@@ -4,18 +4,18 @@ const mongoose_1 = require("mongoose");
 const PreBuildSchema = new mongoose_1.Schema({
     timestamp: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
     name: {
         type: String,
-        required: true
+        required: true,
     },
     preBuyer: [
         {
             type: mongoose_1.Schema.Types.ObjectId,
             ref: "PreBuyer",
-            default: []
-        }
+            default: [],
+        },
     ],
     timeLine: [
         {
@@ -28,20 +28,23 @@ const PreBuildSchema = new mongoose_1.Schema({
             notes: String,
             namePhase: String,
             isComplete: Boolean,
-            imgUrls: [String]
-        }
+            imgUrls: [String],
+        },
     ],
     /**
      * notas
      */
     notes: {
-        type: String
+        type: String,
     },
     city: {
-        type: String
+        type: String,
     },
     notificationOneSignal: [{ type: String, default: [] }],
-    imgUrls: [{ type: String, default: [] }]
+    imgUrls: [{ type: String, default: [] }],
+    fatherPreBuild: {
+        type: String,
+    },
 });
 exports.default = mongoose_1.model("PreBuild", PreBuildSchema);
 //# sourceMappingURL=PreBuild.js.map

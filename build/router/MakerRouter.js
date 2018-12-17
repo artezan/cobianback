@@ -15,7 +15,12 @@ class MakerRouter {
      *
      */
     all(req, res) {
-        Maker_1.default.find()
+        const city = req.headers.city;
+        const obj = {};
+        if (city !== undefined) {
+            obj["city"] = city;
+        }
+        Maker_1.default.find(obj)
             .sort({ timestamp: -1 })
             .populate("build")
             .then(data => {

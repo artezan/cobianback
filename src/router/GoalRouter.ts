@@ -18,11 +18,20 @@ export class GoalRouter {
    *
    */
   public all(req: Request, res: Response): void {
+    const city = req.headers.city;
+
     Goal.find()
       .populate("adviser")
       .sort({ timestamp: -1 })
       .then(data => {
-        res.status(200).json({ data });
+        if (city !== undefined) {
+          const dataFilter = data.filter(ofert =>
+            ofert.adviser.some(a => a.city === city),
+          );
+          res.status(200).json({ data: dataFilter });
+        } else {
+          res.status(200).json({ data });
+        }
       })
       .catch(error => {
         res.status(500).json({ error });
