@@ -23,7 +23,7 @@ const transporterGeneral = nodemailer.createTransport({
   port: 465,
   auth: {
     user: "artezan.cabrera@gmail.com", // generated ethereal user
-    pass: "180292CESARartezan", // generated ethereal password
+    pass: "env.EMAIL", // generated ethereal password
   },
 });
 
